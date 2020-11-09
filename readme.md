@@ -55,14 +55,14 @@ In Intelij choose gradle task run.
   
 ## Public locations
  - H2 web client
-   - https://project-ii.ti.howest.be/db-XX
-   - url: jdbc:h2:/opt/group-XX/db-XX
+   - https://project-ii.ti.howest.be/db-03
+   - url: jdbc:h2:/opt/group-03/db-XX
    - username:group-XX
    - password: see leho
  - Web api
-   - https://project-ii.ti.howest.be/mars-XX/api/
+   - https://project-ii.ti.howest.be/mars-03/api/
  - Web client
-   - https://project-ii.ti.howest.be/mars-XX
+   - https://project-ii.ti.howest.be/mars-03
  - Sonar
-   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-server-XX
-   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-client-XX
+   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-server-03
+   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-client-03
