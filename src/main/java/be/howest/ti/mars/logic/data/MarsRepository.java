@@ -4,10 +4,9 @@ import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.h2.tools.Server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,6 +51,7 @@ public class MarsRepository {
 
     private static final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
             "values(?, ?, ?, ?, ?)";
+    private static final String SQL_SELECT_ALL_USERS = "select * from Users";
 
     public static void createUser(User user) {
         try (Connection con = getConnection();
@@ -66,7 +66,32 @@ public class MarsRepository {
             stmt.executeUpdate();
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
-            throw new MarsException("User was not created!");
+            throw new MarsException("Could not create new user!");
+        }
+    }
+
+    public static List<User> getUsers() {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_USERS);
+             ResultSet rs = stmt.executeQuery()) {
+
+            List<User> users = new ArrayList<>();
+
+            while (rs.next()) {
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String email = rs.getString("email");
+                String phoneNumber = rs.getString("phone_number");
+                String password = rs.getString("password");
+
+                users.add(new User(firstName, lastName, email, phoneNumber, password));
+            }
+
+            return users;
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not get all users!");
         }
     }
 
