@@ -32,3 +32,15 @@ paths:
             application/json:
               schema:
                 type: jsonObject
+
+  /api/users:
+    get:
+      description: Get all user info
+      operationId: getUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: jsonObject
