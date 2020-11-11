@@ -1,5 +1,8 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class User {
@@ -9,7 +12,10 @@ public class User {
     private String email;
     private String password;
 
-    public User(String firstName, String lastName, String phoneNumber, String email, String password) {
+    @JsonCreator
+    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+                @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("email") String email,
+                @JsonProperty("password") String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
