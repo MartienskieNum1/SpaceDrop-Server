@@ -20,3 +20,15 @@ paths:
             application/json:
               schema:
                 type: string
+
+  /api/user:
+    post:
+      description: Create a new user
+      operationId: createUser
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: jsonObject

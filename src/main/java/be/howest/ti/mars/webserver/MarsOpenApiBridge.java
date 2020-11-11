@@ -1,6 +1,8 @@
 package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.controller.MarsController;
+import be.howest.ti.mars.logic.domain.User;
+import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
 class MarsOpenApiBridge {
@@ -12,5 +14,11 @@ class MarsOpenApiBridge {
 
     public Object getMessage(RoutingContext ctx) {
         return controller.getMessage();
+    }
+
+    public Object createUser(RoutingContext ctx) {
+        String body = ctx.getBodyAsString();
+        User newUser = Json.decodeValue(body, User.class);
+        return controller.createUser(newUser);
     }
 }
