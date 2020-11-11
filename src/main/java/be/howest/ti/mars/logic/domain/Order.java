@@ -22,4 +22,19 @@ public class Order {
         this.depth = depth;
         this.cost = cost;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", userId=" + userId +
+                ", rocketId=" + rocketId +
+                ", statusId=" + statusId +
+                ", mass=" + mass +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", cost=" + cost +
+                '}';
+    }
 }

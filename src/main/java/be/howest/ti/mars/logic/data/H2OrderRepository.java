@@ -34,7 +34,7 @@ public class H2OrderRepository implements OrderRepository {
                 orders.add(new Order(userId, rocketId, statusId, mass, width, height, depth, cost));
             }
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
 
         return orders;
