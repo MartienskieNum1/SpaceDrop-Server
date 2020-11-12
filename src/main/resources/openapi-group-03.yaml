@@ -51,3 +51,15 @@ paths:
             application/json:
               schema:
                 type: jsonObject
+
+  /api/orders:
+    get:
+      description: Get all orders details
+      operationId: getOrders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: jsonObject
