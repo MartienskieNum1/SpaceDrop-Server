@@ -1,24 +1,17 @@
 package be.howest.ti.mars.logic.controller;
 
-import be.howest.ti.mars.logic.data.H2OrderRepository;
+import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.util.MarsException;
+import be.howest.ti.mars.logic.util.TokenAES;
 import be.howest.ti.mars.logic.data.MarsRepository;
 import be.howest.ti.mars.logic.data.OrderRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import be.howest.ti.mars.logic.data.MarsRepository;
-import be.howest.ti.mars.logic.domain.User;
-import be.howest.ti.mars.logic.util.MarsException;
-import be.howest.ti.mars.logic.util.TokenAES;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 
 public class MarsController {
     private final MarsRepository marsRepository = new MarsRepository();
