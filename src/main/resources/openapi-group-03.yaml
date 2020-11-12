@@ -3,6 +3,11 @@ info:
   title: 'Mars Concept Title'
   description: 'Please complete this spec as seen in the module Information Module'
   version: 0.0.1
+components:
+  securitySchemes:
+    userToken:
+      type: http
+      scheme: bearer
 servers:
   - url: http://localhost:8080/
     description: 'Local development implementation'
@@ -37,6 +42,8 @@ paths:
     get:
       description: Get all user info
       operationId: getUsers
+      security:
+        - userToken: []
       responses:
         '200':
           description: OK
