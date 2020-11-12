@@ -1,5 +1,8 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Order {
     private int orderId;
     private int userId;
@@ -12,7 +15,11 @@ public class Order {
     private double depth;
     private double cost;
 
-    public Order(int userId, int rocketId, int statusId, double mass, double width, double height, double depth, double cost) {
+    @JsonCreator
+    public Order(@JsonProperty("userId") int userId, @JsonProperty("rocketId") int rocketId,
+                 @JsonProperty("statusId") int statusId, @JsonProperty("mass") double mass,
+                 @JsonProperty("width") double width, @JsonProperty("height") double height,
+                 @JsonProperty("depth") double depth, @JsonProperty("cost") double cost) {
         this.userId = userId;
         this.rocketId = rocketId;
         this.statusId = statusId;
