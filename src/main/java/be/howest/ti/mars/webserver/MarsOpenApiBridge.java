@@ -2,6 +2,7 @@ package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.util.TokenAES;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
@@ -13,7 +14,13 @@ class MarsOpenApiBridge {
     }
 
     public boolean verifyUserToken(String token) {
-        return controller.userExists(token);
+        String email = TokenAES.decrypt(token);
+        return controller.userExists(email);
+    }
+
+    public boolean verifyAdminToken(String token) {
+        String email = TokenAES.decrypt(token);
+        return controller.getRoleViaEmail(email).getName().equals("Admin");
     }
 
     public Object getMessage(RoutingContext ctx) {

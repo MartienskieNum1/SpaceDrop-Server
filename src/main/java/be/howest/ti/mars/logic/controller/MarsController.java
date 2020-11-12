@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.controller;
 
+import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
@@ -27,14 +28,17 @@ public class MarsController {
         return TokenAES.encrypt(user.getEmail());
     }
 
-    public boolean userExists(String token) {
-        String email = TokenAES.decrypt(token);
+    public boolean userExists(String email) {
         try {
-            marsRepository.getUserOnEmail(email);
+            marsRepository.getUserViaEmail(email);
             return true;
         } catch (MarsException ex) {
             return false;
         }
+    }
+
+    public Role getRoleViaEmail(String email) {
+        return marsRepository.getRoleViaEmail(email);
     }
 
     public JsonArray getUsers() {

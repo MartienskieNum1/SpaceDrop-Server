@@ -123,6 +123,9 @@ public class WebServer extends AbstractVerticle {
         // Verify the user's token for all secured operations
         factory.addSecurityHandler("userToken", this::verifyUserToken);
 
+        // Verify the user's token for all secured operations
+        factory.addSecurityHandler("adminToken", this::verifyAdminToken);
+
         // Build the router
         Router router = factory.getRouter();
         router.route("/favicon.ico").handler(FaviconHandler.create());
@@ -152,6 +155,10 @@ public class WebServer extends AbstractVerticle {
 
     private void verifyUserToken(RoutingContext ctx) {
         verifyToken(ctx, bridge::verifyUserToken);
+    }
+
+    private void verifyAdminToken(RoutingContext ctx) {
+        verifyToken(ctx, bridge::verifyAdminToken);
     }
 
     private void verifyToken(RoutingContext ctx, Predicate<String> check) {
