@@ -21,4 +21,8 @@ class MarsOpenApiBridge {
         User newUser = Json.decodeValue(body, User.class);
         return controller.createUser(newUser);
     }
+
+    public Object getUsers(RoutingContext ctx) {
+        return controller.getUsers();
+    }
 }
