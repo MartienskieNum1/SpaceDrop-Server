@@ -8,6 +8,9 @@ components:
     userToken:
       type: http
       scheme: bearer
+    adminToken:
+      type: http
+      scheme: bearer
 servers:
   - url: http://localhost:8080/
     description: 'Local development implementation'
@@ -43,7 +46,7 @@ paths:
       description: Get all user info
       operationId: getUsers
       security:
-        - userToken: []
+        - adminToken: []
       responses:
         '200':
           description: OK
@@ -56,6 +59,8 @@ paths:
     get:
       description: Get all orders details
       operationId: getOrders
+      security:
+        - adminToken: []
       responses:
         '200':
           description: OK
