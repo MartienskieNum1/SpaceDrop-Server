@@ -1,12 +1,9 @@
 package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.controller.MarsController;
-import be.howest.ti.mars.logic.data.H2OrderRepository;
 import be.howest.ti.mars.logic.domain.User;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
-
-import java.util.logging.Logger;
 
 class MarsOpenApiBridge {
     private final MarsController controller;
