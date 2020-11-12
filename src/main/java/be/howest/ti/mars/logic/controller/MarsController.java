@@ -2,6 +2,7 @@ package be.howest.ti.mars.logic.controller;
 
 import be.howest.ti.mars.logic.data.MarsRepository;
 import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.util.TokenAES;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
@@ -11,9 +12,9 @@ public class MarsController {
         return "Hello, Mars!";
     }
 
-    public JsonObject createUser(User user) {
+    public String createUser(User user) {
         MarsRepository.createUser(user);
-        return JsonObject.mapFrom(user);
+        return TokenAES.encrypt(user.getEmail());
     }
 
     public JsonArray getUsers() {
