@@ -14,7 +14,8 @@ class MarsOpenApiBridge {
     }
 
     public boolean verifyUserToken(String token) {
-        return controller.userExists(token);
+        String email = TokenAES.decrypt(token);
+        return controller.userExists(email);
     }
 
     public boolean verifyAdminToken(String token) {

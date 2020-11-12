@@ -28,8 +28,7 @@ public class MarsController {
         return TokenAES.encrypt(user.getEmail());
     }
 
-    public boolean userExists(String token) {
-        String email = TokenAES.decrypt(token);
+    public boolean userExists(String email) {
         try {
             marsRepository.getUserViaEmail(email);
             return true;
