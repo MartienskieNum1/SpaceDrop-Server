@@ -30,6 +30,42 @@ public class Order {
         this.cost = cost;
     }
 
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getRocketId() {
+        return rocketId;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public double getMass() {
+        return mass;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getDepth() {
+        return depth;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
     @Override
     public String toString() {
         return "Order{" +

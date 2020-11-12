@@ -1,7 +1,10 @@
 package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.controller.MarsController;
+import be.howest.ti.mars.logic.data.H2OrderRepository;
 import io.vertx.ext.web.RoutingContext;
+
+import java.util.logging.Logger;
 
 class MarsOpenApiBridge {
     private final MarsController controller;
@@ -14,7 +17,7 @@ class MarsOpenApiBridge {
         return controller.getMessage();
     }
 
-    public Object getUsers(RoutingContext ctx) {
-        return controller.getUsers();
+    public Object getOrders(RoutingContext ctx) {
+        return controller.getOrders();
     }
 }
