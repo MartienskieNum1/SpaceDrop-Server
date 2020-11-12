@@ -5,6 +5,7 @@ import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Promise;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.Json;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,6 +120,9 @@ public class WebServer extends AbstractVerticle {
         // Add all route handlers
         addRoutes(factory);
 
+        // Verify the user's token for all secured operations
+        factory.addSecurityHandler("userToken", this::verifyUserToken);
+
         // Build the router
         Router router = factory.getRouter();
         router.route("/favicon.ico").handler(FaviconHandler.create());
@@ -145,6 +150,22 @@ public class WebServer extends AbstractVerticle {
         ctx.response().setStatusCode(200).end(Json.encodePrettily(result));
     }
 
+    private void verifyUserToken(RoutingContext ctx) {
+        verifyToken(ctx, bridge::verifyUserToken);
+    }
+
+    private void verifyToken(RoutingContext ctx, Predicate<String> check) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (token == null) {
+            ctx.fail(401);
+        } else if (check.test(token)) {
+            ctx.next();
+        } else {
+            ctx.fail(403);
+        }
+    }
+
     private void installGeneralErrorHandlers(Router router) {
         router.errorHandler(400, this::onBadRequest)
             .errorHandler(401, this::onUnAuthorised)
@@ -163,6 +184,7 @@ public class WebServer extends AbstractVerticle {
                 .allowedHeader("Access-Control-Allow-Origin")
                 .allowedHeader("origin")
                 .allowedHeader("Content-Type")
+                .allowedHeader("Authorization")
                 .allowedHeader("accept")
                 .allowCredentials(true)
                 .allowedMethod(HttpMethod.GET)
