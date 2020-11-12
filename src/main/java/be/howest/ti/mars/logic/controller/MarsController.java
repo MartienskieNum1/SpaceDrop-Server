@@ -13,12 +13,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import be.howest.ti.mars.logic.data.MarsRepository;
+import be.howest.ti.mars.logic.domain.User;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+
 public class MarsController {
     OrderRepository repo = Repositories.getOrderRepo();
     private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
 
     public String getMessage() {
         return "Hello, Mars!";
+    }
+
+    public JsonObject createUser(User user) {
+        MarsRepository.createUser(user);
+        return JsonObject.mapFrom(user);
+    }
+
+    public JsonArray getUsers() {
+        JsonArray array = new JsonArray();
+        for (User user : MarsRepository.getUsers()) {
+            array.add(JsonObject.mapFrom(user));
+        }
+        return array;
     }
 
     public List<JsonObject> getOrders() {

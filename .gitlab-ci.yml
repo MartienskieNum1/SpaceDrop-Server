@@ -1,4 +1,4 @@
-image: azul/zulu-openjdk:11
+image: monitor:5000/howest-azul-openjdk:11
 
 stages:
   - build
@@ -29,7 +29,7 @@ sonarqube:
   script: ./gradlew test sonarqube -Dsonar.host.url=http://sonarqube.ti.howest.be/sonar/ -d
 
 deploy:
-  image: debian:latest
+  image: monitor:5000/howest-debian:latest
   before_script:
     - echo "we don't need gradle or maven anymore"
   stage: deploy
