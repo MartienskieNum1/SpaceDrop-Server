@@ -124,7 +124,7 @@ public class WebServer extends AbstractVerticle {
         factory.addSecurityHandler("userToken", this::verifyUserToken);
 
         // Verify the user's token for all secured operations
-        factory.addSecurityHandler("userToken", this::verifyAdminToken);
+        factory.addSecurityHandler("adminToken", this::verifyAdminToken);
 
         // Build the router
         Router router = factory.getRouter();
