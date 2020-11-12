@@ -118,7 +118,7 @@ public class MarsRepository {
         }
     }
 
-    private Connection getConnection() throws SQLException {
+    protected static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
     }
 }
