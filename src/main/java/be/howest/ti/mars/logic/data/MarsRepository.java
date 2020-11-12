@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.h2.tools.Server;
@@ -52,7 +53,9 @@ public class MarsRepository {
     private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
             "values(?, ?, ?, ?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
-    private final String SQL_SELECT_USER_ON_EMAIL = "select * from Users where email = ?";
+    private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
+    private final String SQL_GET_ROLE_VIA_EMAIL = "select name from roles join userroles on roles.id = userroles.role_id " +
+            "join users on userroles.user_id = users.id where email = ?";
 
     public void createUser(User user) {
         try (Connection con = getConnection();
@@ -68,28 +71,6 @@ public class MarsRepository {
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Could not create new user!");
-        }
-    }
-
-    public User getUserOnEmail(String email) {
-        try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_ON_EMAIL)) {
-
-            stmt.setString(1, email);
-
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            String phoneNumber = rs.getString("phone_number");
-            String userPassword = rs.getString("password");
-
-            return new User(firstName, lastName, email, phoneNumber, userPassword);
-
-        } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not find the user!");
         }
     }
 
@@ -115,6 +96,48 @@ public class MarsRepository {
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get all users!");
+        }
+    }
+
+    public User getUserViaEmail(String email) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
+
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String phoneNumber = rs.getString("phone_number");
+            String userPassword = rs.getString("password");
+
+            return new User(firstName, lastName, email, phoneNumber, userPassword);
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
+    }
+
+    public Role getRoleViaEmail(String email) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_ROLE_VIA_EMAIL)) {
+
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            String roleName = rs.getString("name");
+            int rank = rs.getInt("rank");
+
+            return new Role(roleName, rank);
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not get the role!");
         }
     }
 
