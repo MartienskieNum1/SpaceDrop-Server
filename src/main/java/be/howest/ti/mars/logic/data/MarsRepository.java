@@ -54,7 +54,7 @@ public class MarsRepository {
             "values(?, ?, ?, ?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
-    private final String SQL_GET_ROLE_VIA_EMAIL = "select name from roles join userroles on roles.id = userroles.role_id " +
+    private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
 
     public void createUser(User user) {
