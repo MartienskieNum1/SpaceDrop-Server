@@ -32,6 +32,14 @@ public class Order {
         this.cost = cost;
     }
 
+    public Order(@JsonProperty("userId") int userId,
+                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
+                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
+                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
+                 @JsonProperty("cost") double cost) {
+        this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
+    }
+
     public int getOrderId() {
         return orderId;
     }
