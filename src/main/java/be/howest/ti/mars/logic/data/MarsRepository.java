@@ -22,14 +22,14 @@ To make this class useful, please complete it with the topics seen in the module
  */
 public class MarsRepository {
     private static final MarsRepository INSTANCE = new MarsRepository();
-    private static final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
+    private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
 
     private Server dbWebConsole;
     private String username;
     private String password;
     private String url;
 
-    private MarsRepository() { }
+    public MarsRepository() { }
 
     public static MarsRepository getInstance() {
         return INSTANCE;
@@ -49,11 +49,12 @@ public class MarsRepository {
                 "-webPort", String.valueOf(console)).start();
     }
 
-    private static final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
+    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
             "values(?, ?, ?, ?, ?)";
-    private static final String SQL_SELECT_ALL_USERS = "select * from Users";
+    private final String SQL_SELECT_ALL_USERS = "select * from Users";
+    private final String SQL_SELECT_USER_ON_EMAIL = "select * from Users where email = ?";
 
-    public static void createUser(User user) {
+    public void createUser(User user) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER)) {
 
@@ -70,7 +71,29 @@ public class MarsRepository {
         }
     }
 
-    public static List<User> getUsers() {
+    public User getUserOnEmail(String email) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_ON_EMAIL)) {
+
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String phoneNumber = rs.getString("phone_number");
+            String userPassword = rs.getString("password");
+
+            return new User(firstName, lastName, email, phoneNumber, userPassword);
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
+    }
+
+    public List<User> getUsers() {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_USERS);
              ResultSet rs = stmt.executeQuery()) {
@@ -82,9 +105,9 @@ public class MarsRepository {
                 String lastName = rs.getString("last_name");
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("phone_number");
-                String password = rs.getString("password");
+                String userPassword = rs.getString("password");
 
-                users.add(new User(firstName, lastName, email, phoneNumber, password));
+                users.add(new User(firstName, lastName, email, phoneNumber, userPassword));
             }
 
             return users;
@@ -95,7 +118,7 @@ public class MarsRepository {
         }
     }
 
-    private static Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
     }
 }
