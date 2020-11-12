@@ -12,6 +12,10 @@ class MarsOpenApiBridge {
         this.controller = new MarsController();
     }
 
+    public boolean verifyUserToken(String token) {
+        return controller.userExists(token);
+    }
+
     public Object getMessage(RoutingContext ctx) {
         return controller.getMessage();
     }
