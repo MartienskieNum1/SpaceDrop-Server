@@ -13,4 +13,8 @@ class MarsOpenApiBridge {
     public Object getMessage(RoutingContext ctx) {
         return controller.getMessage();
     }
+
+    public Object getUsers(RoutingContext ctx) {
+        return controller.getUsers();
+    }
 }

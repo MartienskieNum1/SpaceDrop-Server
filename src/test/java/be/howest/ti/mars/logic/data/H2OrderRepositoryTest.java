@@ -1,6 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
-import be.howest.ti.mars.*;
+import be.howest.ti.mars.logic.domain.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
