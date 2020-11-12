@@ -24,6 +24,7 @@ public class H2OrderRepository implements OrderRepository {
             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ORDERS);
              ResultSet results = stmt.executeQuery()) {
             while (results.next()) {
+                int orderId = results.getInt("id");
                 int userId = results.getInt("user_id");
                 int rocketId = results.getInt("rocket_id");
                 int statusId = results.getInt("status_id");
@@ -33,7 +34,7 @@ public class H2OrderRepository implements OrderRepository {
                 double depth = results.getDouble("depth");
                 double cost = results.getDouble("cost");
 
-                orders.add(new Order(userId, rocketId, statusId, mass, width, height, depth, cost));
+                orders.add(new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost));
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());

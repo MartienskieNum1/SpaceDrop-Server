@@ -16,10 +16,12 @@ public class Order {
     private double cost;
 
     @JsonCreator
-    public Order(@JsonProperty("userId") int userId, @JsonProperty("rocketId") int rocketId,
-                 @JsonProperty("statusId") int statusId, @JsonProperty("mass") double mass,
-                 @JsonProperty("width") double width, @JsonProperty("height") double height,
-                 @JsonProperty("depth") double depth, @JsonProperty("cost") double cost) {
+    public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
+                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
+                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
+                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
+                 @JsonProperty("cost") double cost) {
+        this.orderId = orderId;
         this.userId = userId;
         this.rocketId = rocketId;
         this.statusId = statusId;
