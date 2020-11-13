@@ -156,11 +156,14 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
+            String roleName;
+            int rank;
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
 
-            String roleName = rs.getString("name");
-            int rank = rs.getInt("rank");
+                roleName = rs.getString("name");
+                rank = rs.getInt("rank");
+            }
 
             return new Role(roleName, rank);
 
