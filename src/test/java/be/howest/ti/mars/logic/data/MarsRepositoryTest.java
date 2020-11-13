@@ -1,9 +1,13 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,12 +15,14 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MarsRepositoryTest {
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
+    private final MarsRepository marsRepository = new MarsRepository();
     private static final String URL = "jdbc:h2:~/mars-db";
 
     @BeforeAll
@@ -27,6 +33,12 @@ public class MarsRepositoryTest {
     @BeforeEach
     void setupTest() throws IOException {
         createDatabase();
+    }
+
+    @Test
+    void getUsers() {
+        List<User> users = marsRepository.getUsers();
+        assertEquals(2, users.size());
     }
 
     private void createDatabase() throws IOException {
