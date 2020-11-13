@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class H2OrderRepository implements OrderRepository {
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
-    private static final String SQL_INSERT_ORDER = "insert into Orders(userId, rocketId, statusID, mass, width, height, depth, cost) " +
+    private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final Logger LOGGER = Logger.getLogger(H2OrderRepository.class.getName());
