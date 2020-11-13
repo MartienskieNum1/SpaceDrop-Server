@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class MarsController {
     private final MarsRepository marsRepository = new MarsRepository();
-    OrderRepository repo = Repositories.getOrderRepo();
+    OrderRepository orderRepo = Repositories.getOrderRepo();
     private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
 
     public String getMessage() {
@@ -50,7 +50,7 @@ public class MarsController {
     public List<JsonObject> getOrders() {
         List<JsonObject> jsonList = new ArrayList<>();
 
-        for (Order order : repo.getOrders()) {
+        for (Order order : orderRepo.getOrders()) {
             JsonObject json = new JsonObject();
             json.put("orderId", order.getOrderId());
             json.put("userId", order.getUserId());
@@ -66,5 +66,11 @@ public class MarsController {
         }
 
         return jsonList;
+    }
+
+    public JsonObject createOrder(Order newOrder) {
+        Order completedOrder = orderRepo.createOrder(newOrder);
+
+        return JsonObject.mapFrom(completedOrder);
     }
 }
