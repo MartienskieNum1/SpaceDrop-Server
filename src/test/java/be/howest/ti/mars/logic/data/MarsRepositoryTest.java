@@ -53,6 +53,9 @@ public class MarsRepositoryTest {
         User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass");
         marsRepository.createUser(newUser);
         assertEquals(3, marsRepository.getUsers().size());
+
+        Role userRole = new Role("User", 2);
+        assertEquals(userRole, marsRepository.getRoleViaEmail("jos@lol.be"));
     }
 
     private void createDatabase() throws IOException {
