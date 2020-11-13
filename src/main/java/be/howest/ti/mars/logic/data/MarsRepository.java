@@ -73,7 +73,7 @@ public class MarsRepository {
             try (ResultSet rsKey = stmt.getGeneratedKeys()) {
                 rsKey.next();
 
-                bindUserRole(rsKey.getInt(1), 2);
+                bindUserRole(rsKey.getInt(1));
             }
 
         } catch (SQLException ex) {
@@ -82,12 +82,12 @@ public class MarsRepository {
         }
     }
 
-    private void bindUserRole(int userId, int roleId) {
+    private void bindUserRole(int userId) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_BIND_ROLE_TO_USER)) {
 
             stmt.setInt(1, userId);
-            stmt.setInt(2,roleId);
+            stmt.setInt(2, 2);
 
             stmt.executeUpdate();
 
@@ -129,13 +129,18 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
+            String firstName;
+            String lastName;
+            String phoneNumber;
+            String userPassword;
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
 
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            String phoneNumber = rs.getString("phone_number");
-            String userPassword = rs.getString("password");
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+                phoneNumber = rs.getString("phone_number");
+                userPassword = rs.getString("password");
+            }
 
             return new User(firstName, lastName, email, phoneNumber, userPassword);
 
@@ -151,11 +156,14 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
+            String roleName;
+            int rank;
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
 
-            String roleName = rs.getString("name");
-            int rank = rs.getInt("rank");
+                roleName = rs.getString("name");
+                rank = rs.getInt("rank");
+            }
 
             return new Role(roleName, rank);
 
