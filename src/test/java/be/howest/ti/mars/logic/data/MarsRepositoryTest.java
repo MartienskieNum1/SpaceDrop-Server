@@ -48,6 +48,13 @@ public class MarsRepositoryTest {
         assertEquals(role, marsRepository.getRoleViaEmail("maarten.demeyere@hotmail.com"));
     }
 
+    @Test
+    void createUser() {
+        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass");
+        marsRepository.createUser(newUser);
+        assertEquals(3, marsRepository.getUsers().size());
+    }
+
     private void createDatabase() throws IOException {
         executeScript("src/test/resources/testdb-create.sql");
         executeScript("src/test/resources/testdb-populate.sql");
