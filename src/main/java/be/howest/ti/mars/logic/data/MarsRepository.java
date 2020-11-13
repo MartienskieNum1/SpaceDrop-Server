@@ -73,7 +73,7 @@ public class MarsRepository {
             try (ResultSet rsKey = stmt.getGeneratedKeys()) {
                 rsKey.next();
 
-                bindUserRole(rsKey.getInt(1), 2);
+                bindUserRole(rsKey.getInt(1));
             }
 
         } catch (SQLException ex) {
@@ -82,12 +82,12 @@ public class MarsRepository {
         }
     }
 
-    private void bindUserRole(int userId, int roleId) {
+    private void bindUserRole(int userId) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_BIND_ROLE_TO_USER)) {
 
             stmt.setInt(1, userId);
-            stmt.setInt(2,roleId);
+            stmt.setInt(2, 2);
 
             stmt.executeUpdate();
 
