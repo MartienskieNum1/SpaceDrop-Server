@@ -32,6 +32,7 @@ public class Order {
         this.cost = cost;
     }
 
+    @JsonCreator
     public Order(@JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
                  @JsonProperty("mass") double mass, @JsonProperty("width") double width,
