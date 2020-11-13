@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Order {
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
     private int orderId;
     private int userId;
     private int rocketId;

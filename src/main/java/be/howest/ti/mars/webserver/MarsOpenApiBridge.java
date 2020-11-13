@@ -39,14 +39,14 @@ class MarsOpenApiBridge {
         return controller.getOrders();
     }
 
-    /*public String createOrder(RoutingContext ctx) {
+    public JsonObject createOrder(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
         Order newOrder = Json.decodeValue(body, Order.class);
         LOGGER.log(Level.SEVERE, "Done");
         LOGGER.log(Level.SEVERE, newOrder.toString());
 
-        return "Completed!";
-    }*/
+        return controller.createOrder(newOrder);
+    }
 
     public Object createUser(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
