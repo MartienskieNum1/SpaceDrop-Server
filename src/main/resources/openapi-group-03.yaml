@@ -68,3 +68,14 @@ paths:
             application/json:
               schema:
                 type: jsonObject
+  /api/order:
+    post:
+      description: Create a new order
+      operationId: createOrder
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: jsonObject
