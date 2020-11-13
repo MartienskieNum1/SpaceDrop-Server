@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,6 +40,22 @@ public class MarsRepositoryTest {
     void getUsers() {
         List<User> users = marsRepository.getUsers();
         assertEquals(2, users.size());
+    }
+
+    @Test
+    void getRole() {
+        Role role = new Role("Admin", 1);
+        assertEquals(role, marsRepository.getRoleViaEmail("maarten.demeyere@hotmail.com"));
+    }
+
+    @Test
+    void createUser() {
+        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass");
+        marsRepository.createUser(newUser);
+        assertEquals(3, marsRepository.getUsers().size());
+
+        Role userRole = new Role("User", 2);
+        assertEquals(userRole, marsRepository.getRoleViaEmail("jos@lol.be"));
     }
 
     private void createDatabase() throws IOException {
