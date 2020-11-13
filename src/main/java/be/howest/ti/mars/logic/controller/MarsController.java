@@ -71,17 +71,6 @@ public class MarsController {
     public JsonObject createOrder(Order newOrder) {
         Order completedOrder = orderRepo.createOrder(newOrder);
 
-        JsonObject json = new JsonObject();
-        json.put("orderId", completedOrder.getOrderId());
-        json.put("userId", completedOrder.getUserId());
-        json.put("rocketId", completedOrder.getRocketId());
-        json.put("statusId", completedOrder.getStatusId());
-        json.put("mass", completedOrder.getMass());
-        json.put("width", completedOrder.getWidth());
-        json.put("height", completedOrder.getHeight());
-        json.put("depth", completedOrder.getDepth());
-        json.put("cost", completedOrder.getCost());
-
-        return json;
+        return JsonObject.mapFrom(completedOrder);
     }
 }
