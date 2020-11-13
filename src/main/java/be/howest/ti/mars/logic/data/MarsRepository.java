@@ -52,6 +52,7 @@ public class MarsRepository {
 
     private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
             "values(?, ?, ?, ?, ?)";
+    private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
     private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
@@ -59,7 +60,7 @@ public class MarsRepository {
 
     public void createUser(User user) {
         try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, user.getFirstName());
             stmt.setString(2, user.getLastName());
@@ -68,10 +69,33 @@ public class MarsRepository {
             stmt.setString(5, user.getPassword());
 
             stmt.executeUpdate();
+
+            try (ResultSet rsKey = stmt.getGeneratedKeys()) {
+                rsKey.next();
+
+                bindUserRole(rsKey.getInt(1), 2);
+            }
+
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Could not create new user!");
         }
+    }
+
+    private void bindUserRole(int userId, int roleId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_BIND_ROLE_TO_USER)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2,roleId);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Could not bind user to role!");
+        }
+
     }
 
     public List<User> getUsers() {
