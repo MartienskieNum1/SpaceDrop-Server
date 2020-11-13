@@ -129,13 +129,18 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
+            String firstName;
+            String lastName;
+            String phoneNumber;
+            String userPassword;
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
 
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            String phoneNumber = rs.getString("phone_number");
-            String userPassword = rs.getString("password");
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+                phoneNumber = rs.getString("phone_number");
+                userPassword = rs.getString("password");
+            }
 
             return new User(firstName, lastName, email, phoneNumber, userPassword);
 
