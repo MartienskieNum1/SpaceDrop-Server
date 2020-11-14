@@ -123,6 +123,17 @@ paths:
         - Users
       description: Login as user or admin
       operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
       responses:
         '200':
           description: User logged in
