@@ -1,8 +1,10 @@
 openapi: 3.0.0
+
 info:
   title: 'Mars Concept Title'
   description: 'Please complete this spec as seen in the module Information Module'
   version: 0.0.1
+
 components:
   securitySchemes:
     userToken:
@@ -11,14 +13,61 @@ components:
     adminToken:
       type: http
       scheme: bearer
+  schemas:
+    user:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        password:
+          type: string
+    order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        userId:
+          type: integer
+        rocketId:
+          type: integer
+        statusId:
+          type: integer
+        mass:
+          type: number
+        width:
+          type: number
+        height:
+          type: number
+        depth:
+          type: number
+        cost:
+          type: number
+
 servers:
   - url: http://localhost:8080/
     description: 'Local development implementation'
   - url: https://project-ii.ti.howest.be/mars-03
     description: 'Public web api'
+
+tags:
+  - name: Users
+    description: Handle users
+  - name: Orders
+    description: Handle orders
+  - name: Miscellaneous
+    description: Some other api calls
+
 paths:
   /api/message:
     get:
+      tags:
+        - Miscellaneous
       description: Get a nice message
       operationId: getMessage
       responses:
@@ -29,20 +78,10 @@ paths:
               schema:
                 type: string
 
-  /api/user:
-    post:
-      description: Create a new user
-      operationId: createUser
-      responses:
-        '200':
-          description: User created
-          content:
-            application/json:
-              schema:
-                type: jsonObject
-
   /api/users:
     get:
+      tags:
+        - Users
       description: Get all user info
       operationId: getUsers
       security:
@@ -53,10 +92,61 @@ paths:
           content:
             application/json:
               schema:
-                type: jsonObject
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+
+  /api/user:
+    post:
+      tags:
+        - Users
+      description: Create a new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
+              schema:
+                type: string
+
+  /api/login:
+    post:
+      tags:
+        - Users
+      description: Login as user or admin
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in
+          content:
+            application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
+              schema:
+                type: string
 
   /api/orders:
     get:
+      tags:
+        - Orders
       description: Get all orders details
       operationId: getOrders
       security:
@@ -67,15 +157,26 @@ paths:
           content:
             application/json:
               schema:
-                type: jsonObject
+                type: array
+                items:
+                  $ref: '#/components/schemas/order'
+
   /api/order:
     post:
+      tags:
+        - Orders
       description: Create a new order
       operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: jsonObject
+                $ref: '#/components/schemas/order'
