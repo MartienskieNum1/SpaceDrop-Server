@@ -85,7 +85,7 @@ paths:
       description: Get all user info
       operationId: getUsers
       security:
-        - adminToken: [ ]
+        - adminToken: []
       responses:
         '200':
           description: OK
@@ -102,11 +102,18 @@ paths:
         - Users
       description: Create a new user
       operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
       responses:
         '200':
           description: User created
           content:
             application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
 
@@ -121,6 +128,7 @@ paths:
           description: User logged in
           content:
             application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
 
@@ -148,6 +156,12 @@ paths:
         - Orders
       description: Create a new order
       operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'
       responses:
         '200':
           description: OK
