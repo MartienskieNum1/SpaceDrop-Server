@@ -57,4 +57,14 @@ class MarsOpenApiBridge {
     public Object getUsers(RoutingContext ctx) {
         return controller.getUsers();
     }
+
+    public Object login(RoutingContext ctx) {
+        JsonObject body = ctx.getBodyAsJson();
+        String email = body.getString("email");
+        String password = body.getString("password");
+        String token = controller.login(email, password);
+        if (token == null)
+            ctx.fail(403);
+        return token;
+    }
 }
