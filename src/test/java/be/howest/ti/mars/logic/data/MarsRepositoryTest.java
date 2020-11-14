@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,6 +57,16 @@ public class MarsRepositoryTest {
 
         Role userRole = new Role("User", 2);
         assertEquals(userRole, marsRepository.getRoleViaEmail("jos@lol.be"));
+    }
+
+    @Test
+    void getUserViaMail() {
+        assertNotNull(marsRepository.getUserViaEmail("maarten.demeyere@hotmail.com"));
+    }
+
+    @Test
+    void getUserViaLogin() {
+        assertNotNull(marsRepository.getUserViaLogin("maarten.demeyere@hotmail.com", "pass"));
     }
 
     private void createDatabase() throws IOException {
