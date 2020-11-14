@@ -4,7 +4,6 @@ import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -42,9 +41,6 @@ class MarsOpenApiBridge {
     public JsonObject createOrder(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
         Order newOrder = Json.decodeValue(body, Order.class);
-        LOGGER.log(Level.SEVERE, "Done");
-        LOGGER.log(Level.SEVERE, newOrder.toString());
-
         return controller.createOrder(newOrder);
     }
 
