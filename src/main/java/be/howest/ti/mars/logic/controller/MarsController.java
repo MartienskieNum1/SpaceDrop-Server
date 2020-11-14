@@ -30,7 +30,7 @@ public class MarsController {
 
     public String login(String email, String password) {
         try {
-            marsRepository.getUserViaLogin(email, password);
+            marsRepository.getUserViaLogin(email, TokenAES.encrypt(password));
             return TokenAES.encrypt(email);
         } catch (MarsException ex) {
             return null;
