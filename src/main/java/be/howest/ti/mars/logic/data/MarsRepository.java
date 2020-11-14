@@ -3,6 +3,7 @@ package be.howest.ti.mars.logic.data;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
+import be.howest.ti.mars.logic.util.TokenAES;
 import org.h2.tools.Server;
 
 import java.sql.*;
@@ -67,7 +68,7 @@ public class MarsRepository {
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
-            stmt.setString(5, user.getPassword());
+            stmt.setString(5, TokenAES.encrypt(user.getPassword()));
 
             stmt.executeUpdate();
 
