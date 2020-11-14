@@ -55,6 +55,7 @@ public class MarsRepository {
     private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
+    private final String SQL_SELECT_USER_VIA_LOGIN = "select * from users where email = ? and password = ?";
     private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
 
@@ -128,6 +129,34 @@ public class MarsRepository {
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
 
             stmt.setString(1, email);
+
+            String firstName;
+            String lastName;
+            String phoneNumber;
+            String userPassword;
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+                phoneNumber = rs.getString("phone_number");
+                userPassword = rs.getString("password");
+            }
+
+            return new User(firstName, lastName, email, phoneNumber, userPassword);
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
+    }
+
+    public User getUserViaLogin(String email, String password) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_LOGIN)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
 
             String firstName;
             String lastName;

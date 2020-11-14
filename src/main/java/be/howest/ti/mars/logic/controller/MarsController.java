@@ -28,6 +28,15 @@ public class MarsController {
         return TokenAES.encrypt(user.getEmail());
     }
 
+    public String login(String email, String password) {
+        try {
+            marsRepository.getUserViaLogin(email, password);
+            return TokenAES.encrypt(email);
+        } catch (MarsException ex) {
+            return null;
+        }
+    }
+
     public boolean userExists(String email) {
         try {
             marsRepository.getUserViaEmail(email);
