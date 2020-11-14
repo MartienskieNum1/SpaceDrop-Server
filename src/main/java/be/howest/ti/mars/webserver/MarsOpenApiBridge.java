@@ -8,7 +8,6 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class MarsOpenApiBridge {
