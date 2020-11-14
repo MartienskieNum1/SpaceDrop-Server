@@ -8,12 +8,8 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
-import java.util.logging.Logger;
-
 class MarsOpenApiBridge {
     private final MarsController controller;
-
-    private static final Logger LOGGER = Logger.getLogger(MarsOpenApiBridge.class.getName());
 
     MarsOpenApiBridge() {
         this.controller = new MarsController();
