@@ -1,6 +1,7 @@
 package be.howest.ti.mars.logic.domain;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Rocket {
     private String name;
@@ -62,5 +63,32 @@ public class Rocket {
 
     public void setAvailableVolume(float availableVolume) {
         this.availableVolume = availableVolume;
+    }
+
+    @Override
+    public String toString() {
+        return "Rocket{" +
+                "name='" + name + '\'' +
+                ", departure=" + departure +
+                ", arrival=" + arrival +
+                ", pricePerKilo=" + pricePerKilo +
+                ", maxMass=" + maxMass +
+                ", maxVolume=" + maxVolume +
+                ", availableMass=" + availableMass +
+                ", availableVolume=" + availableVolume +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rocket rocket = (Rocket) o;
+        return name.equals(rocket.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
