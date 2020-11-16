@@ -4,12 +4,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Rocket {
-    private String name;
-    private DateTimeFormatter departure;
-    private DateTimeFormatter arrival;
-    private float pricePerKilo;
-    private float maxMass;
-    private float maxVolume;
+    private final String name;
+    private final DateTimeFormatter departure;
+    private final DateTimeFormatter arrival;
+    private final float pricePerKilo;
+    private final float maxMass;
+    private final float maxVolume;
     private float availableMass;
     private float availableVolume;
 
