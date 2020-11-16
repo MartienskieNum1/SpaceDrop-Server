@@ -23,4 +23,44 @@ public class Rocket {
         this.availableMass = maxMass;
         this.availableVolume = maxVolume;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public DateTimeFormatter getDeparture() {
+        return departure;
+    }
+
+    public DateTimeFormatter getArrival() {
+        return arrival;
+    }
+
+    public float getPricePerKilo() {
+        return pricePerKilo;
+    }
+
+    public float getMaxMass() {
+        return maxMass;
+    }
+
+    public float getMaxVolume() {
+        return maxVolume;
+    }
+
+    public float getAvailableMass() {
+        return availableMass;
+    }
+
+    public void setAvailableMass(float availableMass) {
+        this.availableMass = availableMass;
+    }
+
+    public float getAvailableVolume() {
+        return availableVolume;
+    }
+
+    public void setAvailableVolume(float availableVolume) {
+        this.availableVolume = availableVolume;
+    }
 }
