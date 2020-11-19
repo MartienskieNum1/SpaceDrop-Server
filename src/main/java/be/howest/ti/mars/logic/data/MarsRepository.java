@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Address;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -51,8 +52,8 @@ public class MarsRepository {
                 "-webPort", String.valueOf(console)).start();
     }
 
-    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
-            "values(?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
@@ -69,6 +70,11 @@ public class MarsRepository {
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
             stmt.setString(5, TokenAES.encrypt(user.getPassword()));
+            stmt.setString(6, user.getAddress().getPlanet());
+            stmt.setString(7, user.getAddress().getCountryOrColony());
+            stmt.setString(8, user.getAddress().getCityOrDistrict());
+            stmt.setString(9, user.getAddress().getStreet());
+            stmt.setInt(10, user.getAddress().getNumber());
 
             stmt.executeUpdate();
 
@@ -108,13 +114,7 @@ public class MarsRepository {
             List<User> users = new ArrayList<>();
 
             while (rs.next()) {
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String email = rs.getString("email");
-                String phoneNumber = rs.getString("phone_number");
-                String userPassword = rs.getString("password");
-
-                users.add(new User(firstName, lastName, email, phoneNumber, userPassword));
+                users.add(getUserFromResultSet(rs));
             }
 
             return users;
@@ -131,20 +131,10 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            String firstName;
-            String lastName;
-            String phoneNumber;
-            String userPassword;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
-
-                firstName = rs.getString("first_name");
-                lastName = rs.getString("last_name");
-                phoneNumber = rs.getString("phone_number");
-                userPassword = rs.getString("password");
+                return getUserFromResultSet(rs);
             }
-
-            return new User(firstName, lastName, email, phoneNumber, userPassword);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
@@ -159,20 +149,10 @@ public class MarsRepository {
             stmt.setString(1, email);
             stmt.setString(2, password);
 
-            String firstName;
-            String lastName;
-            String phoneNumber;
-            String userPassword;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
-
-                firstName = rs.getString("first_name");
-                lastName = rs.getString("last_name");
-                phoneNumber = rs.getString("phone_number");
-                userPassword = rs.getString("password");
+                return getUserFromResultSet(rs);
             }
-
-            return new User(firstName, lastName, email, phoneNumber, userPassword);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
@@ -201,6 +181,24 @@ public class MarsRepository {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get the role!");
         }
+    }
+
+    private User getUserFromResultSet(ResultSet rs) throws SQLException {
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String email = rs.getString("email");
+        String phoneNumber = rs.getString("phone_number");
+        String userPassword = rs.getString("password");
+
+        String planet = rs.getString("planet");
+        String countryOrColony = rs.getString("country_or_colony");
+        String cityOrDistrict = rs.getString("city_or_district");
+        String street = rs.getString("street");
+        int number = rs.getInt("number");
+
+        Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+
+        return new User(firstName, lastName, email, phoneNumber, userPassword, address);
     }
 
     protected static Connection getConnection() throws SQLException {

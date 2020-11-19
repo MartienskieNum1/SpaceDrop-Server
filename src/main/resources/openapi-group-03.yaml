@@ -27,6 +27,19 @@ components:
           type: string
         password:
           type: string
+        address:
+          type: object
+          properties:
+            planet:
+              type: string
+            countryOrColony:
+              type: string
+            cityOrDistrict:
+              type: string
+            street:
+              type: string
+            number:
+              type: number
     order:
       type: object
       properties:
