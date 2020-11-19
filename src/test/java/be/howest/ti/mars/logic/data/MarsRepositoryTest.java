@@ -77,6 +77,14 @@ public class MarsRepositoryTest {
         assertEquals(2, orders.size());
     }
 
+    @Test
+    void createOrder() {
+        Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
+        orderRepository.createOrder(newOrder);
+
+        assertEquals(3, orderRepository.getOrders().size());
+    }
+
     private void createDatabase() throws IOException {
         executeScript("src/test/resources/testdb-create.sql");
         executeScript("src/test/resources/testdb-populate.sql");
