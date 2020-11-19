@@ -52,8 +52,8 @@ public class MarsRepository {
                 "-webPort", String.valueOf(console)).start();
     }
 
-    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password) " +
-            "values(?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
@@ -70,6 +70,11 @@ public class MarsRepository {
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
             stmt.setString(5, TokenAES.encrypt(user.getPassword()));
+            stmt.setString(6, user.getAddress().getPlanet());
+            stmt.setString(7, user.getAddress().getCountryOrColony());
+            stmt.setString(8, user.getAddress().getCityOrDistrict());
+            stmt.setString(9, user.getAddress().getStreet());
+            stmt.setInt(10, user.getAddress().getNumber());
 
             stmt.executeUpdate();
 
