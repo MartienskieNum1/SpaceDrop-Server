@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Address;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -113,8 +114,14 @@ public class MarsRepository {
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("phone_number");
                 String userPassword = rs.getString("password");
+                String planet = rs.getString("planet");
+                String countryOrColony = rs.getString("country_or_colony");
+                String cityOrDistrict = rs.getString("city_or_district");
+                String street = rs.getString("street");
+                int number = rs.getInt("number");
 
-                users.add(new User(firstName, lastName, email, phoneNumber, userPassword));
+                Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+                users.add(new User(firstName, lastName, email, phoneNumber, userPassword, address));
             }
 
             return users;
