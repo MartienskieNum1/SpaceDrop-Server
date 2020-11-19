@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 public class MarsRepositoryTest {
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
     private final MarsRepository marsRepository = new MarsRepository();
+    private final OrderRepository orderRepository = new H2OrderRepository();
     private static final String URL = "jdbc:h2:~/mars-db";
 
     @BeforeAll
@@ -67,6 +69,12 @@ public class MarsRepositoryTest {
     @Test
     void getUserViaLogin() {
         assertNotNull(marsRepository.getUserViaLogin("maarten.demeyere@hotmail.com", "pass"));
+    }
+
+    @Test
+    void getOrders() {
+        List<Order> orders = orderRepository.getOrders();
+        assertEquals(2, orders.size());
     }
 
     private void createDatabase() throws IOException {
