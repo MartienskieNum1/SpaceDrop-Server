@@ -11,16 +11,18 @@ public class User {
     private String phoneNumber;
     private String email;
     private String password;
+    private Address address;
 
     @JsonCreator
     public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
                 @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("email") String email,
-                @JsonProperty("password") String password) {
+                @JsonProperty("password") String password, @JsonProperty("address") Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -61,6 +63,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     @Override
