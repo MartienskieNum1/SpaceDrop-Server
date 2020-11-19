@@ -7,3 +7,12 @@ values('Admin', 1), ('User', 2);
 
 insert into userroles(user_id, role_id)
 values(1, 1), (2, 2);
+
+insert into rockets(name, departure, arrival, price_per_kilo, max_mass, max_volume, available_mass, available_volume)
+values ('Rocket One', '20520613', '20520713', 100, 800, 800, 452, 402);
+
+insert into statuses(status)
+values ('Travelling'), ('Returning'), ('Finished');
+
+insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost)
+values (1, 1, 2, 50, 20, 20, 15, 100), (1, 1, 1, 150, 75, 82, 31, 150)
