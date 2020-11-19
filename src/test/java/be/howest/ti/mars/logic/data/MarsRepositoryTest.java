@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
+import be.howest.ti.mars.logic.domain.Address;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
@@ -27,7 +28,7 @@ public class MarsRepositoryTest {
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
     private final MarsRepository marsRepository = new MarsRepository();
     private final OrderRepository orderRepository = new H2OrderRepository();
-    private static final String URL = "jdbc:h2:~/mars-db";
+    private static final String URL = "jdbc:h2:~/test";
 
     @BeforeAll
     void setupTestSuite() throws SQLException {
@@ -53,7 +54,8 @@ public class MarsRepositoryTest {
 
     @Test
     void createUser() {
-        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass");
+        Address address = new Address("Earth", "Belgium", "City", "Street", 1);
+        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
         marsRepository.createUser(newUser);
         assertEquals(3, marsRepository.getUsers().size());
 
