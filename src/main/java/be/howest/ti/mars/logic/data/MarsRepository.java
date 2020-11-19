@@ -109,19 +109,7 @@ public class MarsRepository {
             List<User> users = new ArrayList<>();
 
             while (rs.next()) {
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String email = rs.getString("email");
-                String phoneNumber = rs.getString("phone_number");
-                String userPassword = rs.getString("password");
-                String planet = rs.getString("planet");
-                String countryOrColony = rs.getString("country_or_colony");
-                String cityOrDistrict = rs.getString("city_or_district");
-                String street = rs.getString("street");
-                int number = rs.getInt("number");
-
-                Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
-                users.add(new User(firstName, lastName, email, phoneNumber, userPassword, address));
+                users.add(getUserFromResultSet(rs));
             }
 
             return users;
@@ -138,29 +126,10 @@ public class MarsRepository {
 
             stmt.setString(1, email);
 
-            String firstName;
-            String lastName;
-            String phoneNumber;
-            String userPassword;
-            Address address;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
-
-                firstName = rs.getString("first_name");
-                lastName = rs.getString("last_name");
-                phoneNumber = rs.getString("phone_number");
-                userPassword = rs.getString("password");
-
-                String planet = rs.getString("planet");
-                String countryOrColony = rs.getString("country_or_colony");
-                String cityOrDistrict = rs.getString("city_or_district");
-                String street = rs.getString("street");
-                int number = rs.getInt("number");
-
-                address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+                return getUserFromResultSet(rs);
             }
-
-            return new User(firstName, lastName, email, phoneNumber, userPassword, address);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
@@ -175,29 +144,10 @@ public class MarsRepository {
             stmt.setString(1, email);
             stmt.setString(2, password);
 
-            String firstName;
-            String lastName;
-            String phoneNumber;
-            String userPassword;
-            Address address;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
-
-                firstName = rs.getString("first_name");
-                lastName = rs.getString("last_name");
-                phoneNumber = rs.getString("phone_number");
-                userPassword = rs.getString("password");
-
-                String planet = rs.getString("planet");
-                String countryOrColony = rs.getString("country_or_colony");
-                String cityOrDistrict = rs.getString("city_or_district");
-                String street = rs.getString("street");
-                int number = rs.getInt("number");
-
-                address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+                return getUserFromResultSet(rs);
             }
-
-            return new User(firstName, lastName, email, phoneNumber, userPassword, address);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
@@ -226,6 +176,24 @@ public class MarsRepository {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get the role!");
         }
+    }
+
+    private User getUserFromResultSet(ResultSet rs) throws SQLException {
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String email = rs.getString("email");
+        String phoneNumber = rs.getString("phone_number");
+        String userPassword = rs.getString("password");
+
+        String planet = rs.getString("planet");
+        String countryOrColony = rs.getString("country_or_colony");
+        String cityOrDistrict = rs.getString("city_or_district");
+        String street = rs.getString("street");
+        int number = rs.getInt("number");
+
+        Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+
+        return new User(firstName, lastName, email, phoneNumber, userPassword, address);
     }
 
     protected static Connection getConnection() throws SQLException {
