@@ -26,17 +26,7 @@ public class H2OrderRepository implements OrderRepository {
             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ORDERS);
              ResultSet results = stmt.executeQuery()) {
             while (results.next()) {
-                int orderId = results.getInt("id");
-                int userId = results.getInt("user_id");
-                int rocketId = results.getInt("rocket_id");
-                int statusId = results.getInt("status_id");
-                double mass = results.getDouble("mass");
-                double width = results.getDouble("width");
-                double height = results.getDouble("height");
-                double depth = results.getDouble("depth");
-                double cost = results.getDouble("cost");
-
-                orders.add(new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost));
+                orders.add(createOrderFromDatabase(results));
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -85,17 +75,27 @@ public class H2OrderRepository implements OrderRepository {
             try (ResultSet results = stmt.executeQuery()) {
                 results.next();
 
-                int userId = results.getInt("user_id");
-                int rocketId = results.getInt("rocket_id");
-                int statusId = results.getInt("status_id");
-                double mass = results.getDouble("mass");
-                double width = results.getDouble("width");
-                double height = results.getDouble("height");
-                double depth = results.getDouble("depth");
-                double cost = results.getDouble("cost");
-
-                return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
+                return createOrderFromDatabase(results);
             }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    private Order createOrderFromDatabase(ResultSet results) {
+        try {
+            int orderId = results.getInt("id");
+            int userId = results.getInt("user_id");
+            int rocketId = results.getInt("rocket_id");
+            int statusId = results.getInt("status_id");
+            double mass = results.getDouble("mass");
+            double width = results.getDouble("width");
+            double height = results.getDouble("height");
+            double depth = results.getDouble("depth");
+            double cost = results.getDouble("cost");
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to get all orders");
