@@ -31,7 +31,7 @@ public class MarsRepositoryTest {
 
     @BeforeAll
     void setupTestSuite() throws SQLException {
-        MarsRepository.configure(URL, "sa", "", 9000);
+        MarsRepository.configure(URL, "", "", 9000);
     }
 
     @BeforeEach
