@@ -142,6 +142,7 @@ public class MarsRepository {
             String lastName;
             String phoneNumber;
             String userPassword;
+            Address address;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
 
@@ -149,9 +150,17 @@ public class MarsRepository {
                 lastName = rs.getString("last_name");
                 phoneNumber = rs.getString("phone_number");
                 userPassword = rs.getString("password");
+
+                String planet = rs.getString("planet");
+                String countryOrColony = rs.getString("country_or_colony");
+                String cityOrDistrict = rs.getString("city_or_district");
+                String street = rs.getString("street");
+                int number = rs.getInt("number");
+
+                address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
             }
 
-            return new User(firstName, lastName, email, phoneNumber, userPassword);
+            return new User(firstName, lastName, email, phoneNumber, userPassword, address);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
@@ -170,6 +179,7 @@ public class MarsRepository {
             String lastName;
             String phoneNumber;
             String userPassword;
+            Address address;
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
 
@@ -177,9 +187,17 @@ public class MarsRepository {
                 lastName = rs.getString("last_name");
                 phoneNumber = rs.getString("phone_number");
                 userPassword = rs.getString("password");
+
+                String planet = rs.getString("planet");
+                String countryOrColony = rs.getString("country_or_colony");
+                String cityOrDistrict = rs.getString("city_or_district");
+                String street = rs.getString("street");
+                int number = rs.getInt("number");
+
+                address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
             }
 
-            return new User(firstName, lastName, email, phoneNumber, userPassword);
+            return new User(firstName, lastName, email, phoneNumber, userPassword, address);
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
