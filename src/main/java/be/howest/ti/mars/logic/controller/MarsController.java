@@ -82,4 +82,10 @@ public class MarsController {
 
         return JsonObject.mapFrom(completedOrder);
     }
+
+    public Object getOrderById(int orderId) {
+        Order order = orderRepo.getOrderViaOrderId(orderId);
+
+        return JsonObject.mapFrom(order);
+    }
 }

@@ -58,4 +58,9 @@ class MarsOpenApiBridge {
             ctx.fail(403);
         return token;
     }
+
+    public Object getOrderById(RoutingContext ctx) {
+        int orderId = Integer.parseInt(ctx.request().getParam("id"));
+        return controller.getOrderById(orderId);
+    }
 }
