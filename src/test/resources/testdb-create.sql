@@ -13,8 +13,7 @@ CREATE TABLE `Users` (
                          `phone_number` nvarchar NOT NULL,
                          `password` nvarchar NOT NULL,
                          `planet` nvarchar NOT NULL,
-                         `colony` nvarchar,
-                         `country` nvarchar,
+                         `country_or_colony` nvarchar NOT NULL,
                          `city_or_district` nvarchar NOT NULL,
                          `street` nvarchar NOT NULL,
                          `number` int NOT NULL
