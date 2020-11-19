@@ -1,5 +1,8 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Address {
@@ -9,7 +12,9 @@ public class Address {
     private String street;
     private int number;
 
-    public Address(String planet, String countryOrColony, String cityOrDistrict, String street, int number) {
+    @JsonCreator
+    public Address(@JsonProperty("planet") String planet, @JsonProperty("countryOrColony") String countryOrColony,
+                   @JsonProperty("cityOrDistrict") String cityOrDistrict, @JsonProperty("street") String street, @JsonProperty("number") int number) {
         this.planet = planet;
         this.countryOrColony = countryOrColony;
         this.cityOrDistrict = cityOrDistrict;
