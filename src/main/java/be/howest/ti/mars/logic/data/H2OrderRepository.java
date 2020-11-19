@@ -98,7 +98,7 @@ public class H2OrderRepository implements OrderRepository {
             return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("Failed to get all orders");
+            throw new IllegalStateException("Failed to create order from database results");
         }
     }
 }
