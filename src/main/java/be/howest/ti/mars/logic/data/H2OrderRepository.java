@@ -14,6 +14,7 @@ public class H2OrderRepository implements OrderRepository {
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
 
     private static final Logger LOGGER = Logger.getLogger(H2OrderRepository.class.getName());
 
@@ -25,17 +26,7 @@ public class H2OrderRepository implements OrderRepository {
             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ORDERS);
              ResultSet results = stmt.executeQuery()) {
             while (results.next()) {
-                int orderId = results.getInt("id");
-                int userId = results.getInt("user_id");
-                int rocketId = results.getInt("rocket_id");
-                int statusId = results.getInt("status_id");
-                double mass = results.getDouble("mass");
-                double width = results.getDouble("width");
-                double height = results.getDouble("height");
-                double depth = results.getDouble("depth");
-                double cost = results.getDouble("cost");
-
-                orders.add(new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost));
+                orders.add(createOrderFromDatabase(results));
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -72,5 +63,42 @@ public class H2OrderRepository implements OrderRepository {
         }
 
         return order;
+    }
+
+    @Override
+    public Order getOrderById(int orderId) {
+        try (Connection con = MarsRepository.getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
+
+            stmt.setInt(1, orderId);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                return createOrderFromDatabase(results);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    private Order createOrderFromDatabase(ResultSet results) {
+        try {
+            int orderId = results.getInt("id");
+            int userId = results.getInt("user_id");
+            int rocketId = results.getInt("rocket_id");
+            int statusId = results.getInt("status_id");
+            double mass = results.getDouble("mass");
+            double width = results.getDouble("width");
+            double height = results.getDouble("height");
+            double depth = results.getDouble("depth");
+            double cost = results.getDouble("cost");
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to create order from database results");
+        }
     }
 }
