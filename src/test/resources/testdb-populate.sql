@@ -1,6 +1,6 @@
-insert into users(first_name, last_name, email, phone_number, password)
-values('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass'),
-       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass');
+insert into users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number)
+values('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
+       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1);
 
 insert into roles(name, rank)
 values('Admin', 1), ('User', 2);
