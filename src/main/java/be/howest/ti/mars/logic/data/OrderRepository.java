@@ -7,5 +7,5 @@ import java.util.List;
 public interface OrderRepository {
     List<Order> getOrders();
     Order createOrder(Order order);
-    Order getOrderViaOrderId(int orderId);
+    Order getOrderById(int orderId);
 }

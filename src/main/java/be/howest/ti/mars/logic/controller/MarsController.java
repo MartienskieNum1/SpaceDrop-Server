@@ -84,7 +84,7 @@ public class MarsController {
     }
 
     public Object getOrderById(int orderId) {
-        Order order = orderRepo.getOrderViaOrderId(orderId);
+        Order order = orderRepo.getOrderById(orderId);
 
         return JsonObject.mapFrom(order);
     }

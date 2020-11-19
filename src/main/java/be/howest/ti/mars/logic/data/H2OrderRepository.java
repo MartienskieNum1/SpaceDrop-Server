@@ -66,7 +66,7 @@ public class H2OrderRepository implements OrderRepository {
     }
 
     @Override
-    public Order getOrderViaOrderId(int orderId) {
+    public Order getOrderById(int orderId) {
         try (Connection con = MarsRepository.getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
 
