@@ -11,7 +11,13 @@ CREATE TABLE `Users` (
                          `last_name` nvarchar NOT NULL,
                          `email` nvarchar UNIQUE NOT NULL,
                          `phone_number` nvarchar NOT NULL,
-                         `password` nvarchar NOT NULL
+                         `password` nvarchar NOT NULL,
+                         `planet` nvarchar NOT NULL,
+                         `colony` nvarchar,
+                         `country` nvarchar,
+                         `city_or_district` nvarchar NOT NULL,
+                         `street` nvarchar NOT NULL,
+                         `number` int NOT NULL
 );
 
 CREATE TABLE `UserRoles` (
@@ -63,4 +69,3 @@ ALTER TABLE `Orders` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 ALTER TABLE `Orders` ADD FOREIGN KEY (`rocket_id`) REFERENCES `Rockets` (`id`);
 
 ALTER TABLE `Orders` ADD FOREIGN KEY (`status_id`) REFERENCES `Statuses` (`id`);
-
