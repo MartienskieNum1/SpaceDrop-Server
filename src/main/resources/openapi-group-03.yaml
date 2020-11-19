@@ -60,6 +60,8 @@ tags:
     description: Handle users
   - name: Orders
     description: Handle orders
+  - name: Details
+    description: Receive details
   - name: Miscellaneous
     description: Some other api calls
 
@@ -142,6 +144,23 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+
+  /api/details/user:
+    get:
+      tags:
+        - Users
+        - Details
+      description: Get your user details
+      operationId: getUser
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: User details received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
 
   /api/orders:
     get:

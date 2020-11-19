@@ -56,6 +56,10 @@ public class MarsController {
         return array;
     }
 
+    public User getUser(String email) {
+        return marsRepository.getUserViaEmail(email);
+    }
+
     public List<JsonObject> getOrders() {
         List<JsonObject> jsonList = new ArrayList<>();
 

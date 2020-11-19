@@ -4,6 +4,7 @@ import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -47,6 +48,12 @@ class MarsOpenApiBridge {
 
     public Object getUsers(RoutingContext ctx) {
         return controller.getUsers();
+    }
+
+    public Object getUser(RoutingContext ctx) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+        String email = TokenAES.decrypt(token);
+        return controller.getUser(email);
     }
 
     public Object login(RoutingContext ctx) {
