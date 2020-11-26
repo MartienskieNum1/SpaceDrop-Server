@@ -33,7 +33,7 @@ class MarsOpenApiBridge {
         return controller.getOrders();
     }
 
-    public JsonObject createOrder(RoutingContext ctx) {
+    public Order createOrder(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
         Order newOrder = Json.decodeValue(body, Order.class);
         return controller.createOrder(newOrder);
