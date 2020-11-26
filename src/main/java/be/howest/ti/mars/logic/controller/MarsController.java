@@ -60,25 +60,8 @@ public class MarsController {
         return marsRepository.getUserViaEmail(email);
     }
 
-    public List<JsonObject> getOrders() {
-        List<JsonObject> jsonList = new ArrayList<>();
-
-        for (Order order : orderRepo.getOrders()) {
-            JsonObject json = new JsonObject();
-            json.put("orderId", order.getOrderId());
-            json.put("userId", order.getUserId());
-            json.put("rocketId", order.getRocketId());
-            json.put("statusId", order.getStatusId());
-            json.put("mass", order.getMass());
-            json.put("width", order.getWidth());
-            json.put("height", order.getHeight());
-            json.put("depth", order.getDepth());
-            json.put("cost", order.getCost());
-
-            jsonList.add(json);
-        }
-
-        return jsonList;
+    public List<Order> getOrders() {
+        return new ArrayList<>(orderRepo.getOrders());
     }
 
     public Order createOrder(Order newOrder) {
