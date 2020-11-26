@@ -81,10 +81,8 @@ public class MarsController {
         return jsonList;
     }
 
-    public JsonObject createOrder(Order newOrder) {
-        Order completedOrder = orderRepo.createOrder(newOrder);
-
-        return JsonObject.mapFrom(completedOrder);
+    public Order createOrder(Order newOrder) {
+        return orderRepo.createOrder(newOrder);
     }
 
     public Object getOrderById(int orderId) {
