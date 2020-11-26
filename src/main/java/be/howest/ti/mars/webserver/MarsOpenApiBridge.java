@@ -6,6 +6,7 @@ import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
@@ -28,16 +29,6 @@ class MarsOpenApiBridge {
 
     public Object getMessage(RoutingContext ctx) {
         return controller.getMessage();
-    }
-
-    public Object getOrders(RoutingContext ctx) {
-        return controller.getOrders();
-    }
-
-    public Order createOrder(RoutingContext ctx) {
-        String body = ctx.getBodyAsString();
-        Order newOrder = Json.decodeValue(body, Order.class);
-        return controller.createOrder(newOrder);
     }
 
     public Object createUser(RoutingContext ctx) {
@@ -64,6 +55,32 @@ class MarsOpenApiBridge {
         if (token == null)
             ctx.fail(403);
         return token;
+    }
+
+    public Object setUser(RoutingContext ctx) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+        String email = TokenAES.decrypt(token);
+
+        JsonArray body = ctx.getBodyAsJsonArray();
+        String password = body.getString(0);
+        JsonObject userObject = body.getJsonObject(1);
+        String userString = userObject.encode();
+        User user = Json.decodeValue(userString, User.class);
+
+        String newToken = controller.setUser(email, password, user);
+        if (newToken == null)
+            ctx.fail(403);
+        return newToken;
+    }
+
+    public Object getOrders(RoutingContext ctx) {
+        return controller.getOrders();
+    }
+
+    public Order createOrder(RoutingContext ctx) {
+        String body = ctx.getBodyAsString();
+        Order newOrder = Json.decodeValue(body, Order.class);
+        return controller.createOrder(newOrder);
     }
 
     public Object getOrderById(RoutingContext ctx) {
