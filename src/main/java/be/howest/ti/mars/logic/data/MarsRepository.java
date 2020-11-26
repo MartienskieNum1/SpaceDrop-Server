@@ -70,16 +70,7 @@ public class MarsRepository {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, user.getFirstName());
-            stmt.setString(2, user.getLastName());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getPhoneNumber());
-            stmt.setString(5, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-            stmt.setString(6, user.getAddress().getPlanet());
-            stmt.setString(7, user.getAddress().getCountryOrColony());
-            stmt.setString(8, user.getAddress().getCityOrDistrict());
-            stmt.setString(9, user.getAddress().getStreet());
-            stmt.setInt(10, user.getAddress().getNumber());
+            createUserStatement(stmt, user);
 
             stmt.executeUpdate();
 
@@ -115,16 +106,7 @@ public class MarsRepository {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_USER)) {
 
-            stmt.setString(1, moddedUser.getFirstName());
-            stmt.setString(2, moddedUser.getLastName());
-            stmt.setString(3, moddedUser.getEmail());
-            stmt.setString(4, moddedUser.getPhoneNumber());
-            stmt.setString(5, BCrypt.hashpw(moddedUser.getPassword(), BCrypt.gensalt()));
-            stmt.setString(6, moddedUser.getAddress().getPlanet());
-            stmt.setString(7, moddedUser.getAddress().getCountryOrColony());
-            stmt.setString(8, moddedUser.getAddress().getCityOrDistrict());
-            stmt.setString(9, moddedUser.getAddress().getStreet());
-            stmt.setInt(10, moddedUser.getAddress().getNumber());
+            createUserStatement(stmt, moddedUser);
 
             stmt.setString(11, ogUser.getEmail());
 
@@ -221,6 +203,19 @@ public class MarsRepository {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get rockets!");
         }
+    }
+
+    private void createUserStatement(PreparedStatement stmt, User user) throws SQLException {
+        stmt.setString(1, user.getFirstName());
+        stmt.setString(2, user.getLastName());
+        stmt.setString(3, user.getEmail());
+        stmt.setString(4, user.getPhoneNumber());
+        stmt.setString(5, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        stmt.setString(6, user.getAddress().getPlanet());
+        stmt.setString(7, user.getAddress().getCountryOrColony());
+        stmt.setString(8, user.getAddress().getCityOrDistrict());
+        stmt.setString(9, user.getAddress().getStreet());
+        stmt.setInt(10, user.getAddress().getNumber());
     }
 
     private User getUserFromResultSet(ResultSet rs) throws SQLException {
