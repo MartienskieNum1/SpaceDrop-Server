@@ -68,9 +68,7 @@ public class MarsController {
         return orderRepo.createOrder(newOrder);
     }
 
-    public Object getOrderById(int orderId) {
-        Order order = orderRepo.getOrderById(orderId);
-
-        return JsonObject.mapFrom(order);
+    public Order getOrderById(int orderId) {
+        return orderRepo.getOrderById(orderId);
     }
 }
