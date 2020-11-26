@@ -92,4 +92,8 @@ public class MarsController {
 
         return JsonObject.mapFrom(order);
     }
+
+    public Object getRockets() {
+        return marsRepository.getRockets();
+    }
 }

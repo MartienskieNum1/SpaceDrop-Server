@@ -1,16 +1,11 @@
 package be.howest.ti.mars.logic.domain;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 public class Rocket {
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
     private final String name;
-    private final Date departure;
-    private final Date arrival;
+    private final String departure;
+    private final String arrival;
     private final float pricePerKilo;
     private final float maxMass;
     private final float maxVolume;
@@ -18,26 +13,26 @@ public class Rocket {
     private float availableVolume;
 
     public Rocket(String name, String departure, String arrival, float pricePerKilo, float maxMass,
-                  float maxVolume) throws ParseException {
+                  float maxVolume, float availableMass, float availableVolume) {
         this.name = name;
-        this.departure = format.parse(departure);
-        this.arrival = format.parse(arrival);
+        this.departure = departure;
+        this.arrival = arrival;
         this.pricePerKilo = pricePerKilo;
         this.maxMass = maxMass;
         this.maxVolume = maxVolume;
-        this.availableMass = maxMass;
-        this.availableVolume = maxVolume;
+        this.availableMass = availableMass;
+        this.availableVolume = availableVolume;
     }
 
     public String getName() {
         return name;
     }
 
-    public Date getDeparture() {
+    public String getDeparture() {
         return departure;
     }
 
-    public Date getArrival() {
+    public String getArrival() {
         return arrival;
     }
 
