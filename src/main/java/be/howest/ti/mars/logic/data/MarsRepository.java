@@ -57,10 +57,11 @@ public class MarsRepository {
 
     private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_UPDATE_USER = "update users set first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
+            "password = ?, planet = ?, country_or_colony = ?, city_or_district = ?, street = ?, number = ? where email = ?";
     private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
-    private final String SQL_SELECT_USER_VIA_LOGIN = "select * from users where email = ? and password = ?";
     private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
     private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
@@ -108,6 +109,31 @@ public class MarsRepository {
             throw new MarsException("Could not bind user to role!");
         }
 
+    }
+
+    public void setUser(User ogUser, User moddedUser) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_USER)) {
+
+            stmt.setString(1, moddedUser.getFirstName());
+            stmt.setString(2, moddedUser.getLastName());
+            stmt.setString(3, moddedUser.getEmail());
+            stmt.setString(4, moddedUser.getPhoneNumber());
+            stmt.setString(5, BCrypt.hashpw(moddedUser.getPassword(), BCrypt.gensalt()));
+            stmt.setString(6, moddedUser.getAddress().getPlanet());
+            stmt.setString(7, moddedUser.getAddress().getCountryOrColony());
+            stmt.setString(8, moddedUser.getAddress().getCityOrDistrict());
+            stmt.setString(9, moddedUser.getAddress().getStreet());
+            stmt.setInt(10, moddedUser.getAddress().getNumber());
+
+            stmt.setString(11, ogUser.getEmail());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not update the user!");
+        }
     }
 
     public List<User> getUsers() {
