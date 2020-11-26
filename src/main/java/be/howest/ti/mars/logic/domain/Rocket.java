@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Rocket {
     private final String name;
+    private final String departLocation;
     private final String departure;
     private final String arrival;
     private final float pricePerKilo;
@@ -12,9 +13,10 @@ public class Rocket {
     private float availableMass;
     private float availableVolume;
 
-    public Rocket(String name, String departure, String arrival, float pricePerKilo, float maxMass,
+    public Rocket(String name, String departLocation, String departure, String arrival, float pricePerKilo, float maxMass,
                   float maxVolume, float availableMass, float availableVolume) {
         this.name = name;
+        this.departLocation = departLocation;
         this.departure = departure;
         this.arrival = arrival;
         this.pricePerKilo = pricePerKilo;
@@ -26,6 +28,10 @@ public class Rocket {
 
     public String getName() {
         return name;
+    }
+
+    public String getDepartLocation() {
+        return departLocation;
     }
 
     public String getDeparture() {
@@ -68,8 +74,9 @@ public class Rocket {
     public String toString() {
         return "Rocket{" +
                 "name='" + name + '\'' +
-                ", departure=" + departure +
-                ", arrival=" + arrival +
+                ", departLocation='" + departLocation + '\'' +
+                ", departure='" + departure + '\'' +
+                ", arrival='" + arrival + '\'' +
                 ", pricePerKilo=" + pricePerKilo +
                 ", maxMass=" + maxMass +
                 ", maxVolume=" + maxVolume +
