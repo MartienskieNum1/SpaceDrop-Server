@@ -197,6 +197,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
+  /api/update/user:
+    patch:
+      tags:
+        - Users
+      description: Update a user's details
+      operationId: setUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - type: string
+                  - $ref: '#/components/schemas/user'
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: User's info updated
+          content:
+            application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
+              schema:
+                type: string
+
   /api/orders:
     get:
       tags:
