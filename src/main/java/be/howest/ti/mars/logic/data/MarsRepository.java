@@ -211,7 +211,7 @@ public class MarsRepository {
 
         Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
 
-        return new User(firstName, lastName, email, phoneNumber, userPassword, address);
+        return new User(firstName, lastName, phoneNumber, email, userPassword, address);
     }
 
     protected static Connection getConnection() throws SQLException {
