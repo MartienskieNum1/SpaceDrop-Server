@@ -178,6 +178,7 @@ public class MarsRepository {
 
             while (rs.next()) {
                 String name = rs.getString("name");
+                String departLocation = rs.getString("depart_location");
                 String departure = rs.getString("departure");
                 String arrival = rs.getString("arrival");
                 int pricePerKilo = rs.getInt("price_per_kilo");
@@ -185,7 +186,7 @@ public class MarsRepository {
                 int maxVolume = rs.getInt("max_volume");
                 int availableMass = rs.getInt("available_mass");
                 int availableVolume = rs.getInt("available_volume");
-                rockets.add(new Rocket(name, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+                rockets.add(new Rocket(name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
             }
 
             return rockets;
