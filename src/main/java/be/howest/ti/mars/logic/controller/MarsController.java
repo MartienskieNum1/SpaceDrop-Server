@@ -50,10 +50,8 @@ public class MarsController {
         return marsRepository.getRoleViaEmail(email);
     }
 
-    public JsonArray getUsers() {
-        JsonArray array = new JsonArray();
-        marsRepository.getUsers().forEach(user -> array.add(JsonObject.mapFrom(user)));
-        return array;
+    public List<User> getUsers() {
+        return new ArrayList<>(marsRepository.getUsers());
     }
 
     public User getUser(String email) {
