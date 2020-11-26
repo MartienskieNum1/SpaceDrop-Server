@@ -5,8 +5,8 @@ import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
-import be.howest.ti.mars.logic.util.TokenAES;
 import org.h2.tools.Server;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class MarsRepository {
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
-            stmt.setString(5, TokenAES.encrypt(user.getPassword()));
+            stmt.setString(5, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             stmt.setString(6, user.getAddress().getPlanet());
             stmt.setString(7, user.getAddress().getCountryOrColony());
             stmt.setString(8, user.getAddress().getCityOrDistrict());
@@ -134,24 +134,6 @@ public class MarsRepository {
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
 
             stmt.setString(1, email);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                rs.next();
-                return getUserFromResultSet(rs);
-            }
-
-        } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not find the user!");
-        }
-    }
-
-    public User getUserViaLogin(String email, String password) {
-        try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_LOGIN)) {
-
-            stmt.setString(1, email);
-            stmt.setString(2, password);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();

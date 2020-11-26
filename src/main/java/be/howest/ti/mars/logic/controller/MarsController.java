@@ -10,6 +10,8 @@ import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -30,8 +32,10 @@ public class MarsController {
 
     public String login(String email, String password) {
         try {
-            marsRepository.getUserViaLogin(email, TokenAES.encrypt(password));
-            return TokenAES.encrypt(email);
+            User user = marsRepository.getUserViaEmail(email);
+            if (BCrypt.checkpw(password, user.getPassword()))
+                return TokenAES.encrypt(email);
+            return null;
         } catch (MarsException ex) {
             return null;
         }

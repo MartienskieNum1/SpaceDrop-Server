@@ -66,11 +66,6 @@ public class MarsRepositoryTest {
     }
 
     @Test
-    void getUserViaLogin() {
-        assertNotNull(marsRepository.getUserViaLogin("maarten.demeyere@hotmail.com", "pass"));
-    }
-
-    @Test
     void getOrders() {
         List<Order> orders = orderRepository.getOrders();
         assertEquals(2, orders.size());
