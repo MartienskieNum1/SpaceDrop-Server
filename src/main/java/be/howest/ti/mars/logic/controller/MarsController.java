@@ -77,4 +77,8 @@ public class MarsController {
     public Object getRockets() {
         return marsRepository.getRockets();
     }
+
+    public int getUserId(String email) {
+        return marsRepository.getIdViaEmail(email);
+    }
 }
