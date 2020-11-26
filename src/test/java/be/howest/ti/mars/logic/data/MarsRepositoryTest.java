@@ -1,8 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
-import be.howest.ti.mars.logic.domain.Order;
-import be.howest.ti.mars.logic.domain.Role;
-import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.domain.*;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +25,7 @@ public class MarsRepositoryTest {
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
     private final MarsRepository marsRepository = new MarsRepository();
     private final OrderRepository orderRepository = new H2OrderRepository();
-    private static final String URL = "jdbc:h2:~/mars-db";
+    private static final String URL = "jdbc:h2:~/test";
 
     @BeforeAll
     void setupTestSuite() throws SQLException {
@@ -53,7 +51,8 @@ public class MarsRepositoryTest {
 
     @Test
     void createUser() {
-        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass");
+        Address address = new Address("Earth", "Belgium", "City", "Street", 1);
+        User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
         marsRepository.createUser(newUser);
         assertEquals(3, marsRepository.getUsers().size());
 
@@ -83,6 +82,12 @@ public class MarsRepositoryTest {
         orderRepository.createOrder(newOrder);
 
         assertEquals(3, orderRepository.getOrders().size());
+    }
+
+    @Test
+    void getRockets() {
+        List<Rocket> rockets = marsRepository.getRockets();
+        assertEquals(2, rockets.size());
     }
 
     private void createDatabase() throws IOException {

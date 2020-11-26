@@ -27,6 +27,19 @@ components:
           type: string
         password:
           type: string
+        address:
+          type: object
+          properties:
+            planet:
+              type: string
+            countryOrColony:
+              type: string
+            cityOrDistrict:
+              type: string
+            street:
+              type: string
+            number:
+              type: number
     order:
       type: object
       properties:
@@ -49,6 +62,26 @@ components:
         cost:
           type: number
 
+    rocket:
+      type: object
+      properties:
+        name:
+          type: string
+        departure:
+          type: string
+        arrival:
+          type: string
+        pricePerKilo:
+          type: number
+        maxMass:
+          type: number
+        maxVolume:
+          type: number
+        availableMass:
+          type: number
+        availableVolume:
+          type: number
+
 servers:
   - url: http://localhost:8080/
     description: 'Local development implementation'
@@ -60,6 +93,10 @@ tags:
     description: Handle users
   - name: Orders
     description: Handle orders
+  - name: Rockets
+    description: Handle rockets
+  - name: Details
+    description: Receive details
   - name: Miscellaneous
     description: Some other api calls
 
@@ -143,6 +180,23 @@ paths:
               schema:
                 type: string
 
+  /api/details/user:
+    get:
+      tags:
+        - Users
+        - Details
+      description: Get your user details
+      operationId: getUser
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: User details received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
   /api/orders:
     get:
       tags:
@@ -204,3 +258,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order'
+
+  /api/rockets:
+    get:
+      tags:
+        - Rockets
+      description: Get info of all rockets
+      operationId: getRockets
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/rocket'
