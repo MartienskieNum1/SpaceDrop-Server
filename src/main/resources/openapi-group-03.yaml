@@ -265,6 +265,8 @@ paths:
         - Rockets
       description: Get info of all rockets
       operationId: getRockets
+      security:
+        - userToken: []
       responses:
         '200':
           description: OK
