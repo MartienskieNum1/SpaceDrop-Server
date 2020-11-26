@@ -11,9 +11,9 @@ values(1, 1), (2, 2);
 insert into statuses(status)
 values ('Travelling'), ('Returning'), ('Finished');
 
-insert into rockets(name, departure, arrival, price_per_kilo, max_mass, max_volume, available_mass, available_volume)
-values('Falcon Heavy', '2057-06-05 13:30:00', '2057-07-05 08:20:30', 100.0, 100000.0, 270.0, 100000.0, 270.0),
-        ('Starship', '2056-02-13 12:15:20', '2056-03-15 22:30:00', 120.0, 150000.0, 1100.0, 150000.0, 1100.0);
+insert into rockets(name, depart_location, departure, arrival, price_per_kilo, max_mass, max_volume, available_mass, available_volume)
+values('Falcon Heavy', 'Mars', '2057-06-05 13:30:00', '2057-07-05 08:20:30', 100.0, 100000.0, 270.0, 100000.0, 270.0),
+        ('Starship', 'Earth', '2056-02-13 12:15:20', '2056-03-15 22:30:00', 120.0, 150000.0, 1100.0, 150000.0, 1100.0);
 
 insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost)
 values (1, 1, 2, 50, 20, 20, 15, 100), (1, 1, 1, 150, 75, 82, 31, 150);

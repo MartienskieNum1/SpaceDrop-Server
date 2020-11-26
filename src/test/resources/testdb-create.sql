@@ -50,6 +50,7 @@ CREATE TABLE `Statuses` (
 CREATE TABLE `Rockets` (
                            `id` int PRIMARY KEY AUTO_INCREMENT,
                            `name` nvarchar NOT NULL,
+                           `depart_location` nvarchar NOT NULL,
                            `departure` datetime NOT NULL,
                            `arrival` datetime NOT NULL,
                            `price_per_kilo` float NOT NULL,

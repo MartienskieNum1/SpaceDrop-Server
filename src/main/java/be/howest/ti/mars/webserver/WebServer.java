@@ -195,6 +195,7 @@ public class WebServer extends AbstractVerticle {
                 .allowedHeader("origin")
                 .allowedHeader("Content-Type")
                 .allowedHeader("accept")
+                .allowedHeader("Authorization")
                 .allowedMethod(HttpMethod.GET)
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.OPTIONS)
