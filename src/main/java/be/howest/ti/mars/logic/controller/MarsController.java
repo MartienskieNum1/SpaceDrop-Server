@@ -69,4 +69,8 @@ public class MarsController {
     public Order getOrderById(int orderId) {
         return orderRepo.getOrderById(orderId);
     }
+
+    public Object getRockets() {
+        return marsRepository.getRockets();
+    }
 }

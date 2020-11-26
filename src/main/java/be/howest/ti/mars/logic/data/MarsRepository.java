@@ -1,6 +1,7 @@
 package be.howest.ti.mars.logic.data;
 
 import be.howest.ti.mars.logic.domain.Address;
+import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -32,7 +33,9 @@ public class MarsRepository {
     private String password;
     private String url;
 
-    public MarsRepository() { }
+    public MarsRepository() {
+        // Should not be called
+    }
 
     public static MarsRepository getInstance() {
         return INSTANCE;
@@ -60,6 +63,7 @@ public class MarsRepository {
     private final String SQL_SELECT_USER_VIA_LOGIN = "select * from users where email = ? and password = ?";
     private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
+    private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
 
     public void createUser(User user) {
         try (Connection con = getConnection();
@@ -180,6 +184,33 @@ public class MarsRepository {
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get the role!");
+        }
+    }
+
+    public List<Rocket> getRockets() {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ROCKETS);
+             ResultSet rs = stmt.executeQuery()) {
+
+            List<Rocket> rockets = new ArrayList<>();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String departure = rs.getString("departure");
+                String arrival = rs.getString("arrival");
+                int pricePerKilo = rs.getInt("price_per_kilo");
+                int maxMass = rs.getInt("max_mass");
+                int maxVolume = rs.getInt("max_volume");
+                int availableMass = rs.getInt("available_mass");
+                int availableVolume = rs.getInt("available_volume");
+                rockets.add(new Rocket(name, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+            }
+
+            return rockets;
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not get rockets!");
         }
     }
 

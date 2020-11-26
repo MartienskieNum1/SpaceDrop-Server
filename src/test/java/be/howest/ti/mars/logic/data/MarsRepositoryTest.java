@@ -1,9 +1,6 @@
 package be.howest.ti.mars.logic.data;
 
-import be.howest.ti.mars.logic.domain.Address;
-import be.howest.ti.mars.logic.domain.Order;
-import be.howest.ti.mars.logic.domain.Role;
-import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.domain.*;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +82,12 @@ public class MarsRepositoryTest {
         orderRepository.createOrder(newOrder);
 
         assertEquals(3, orderRepository.getOrders().size());
+    }
+
+    @Test
+    void getRockets() {
+        List<Rocket> rockets = marsRepository.getRockets();
+        assertEquals(2, rockets.size());
     }
 
     private void createDatabase() throws IOException {

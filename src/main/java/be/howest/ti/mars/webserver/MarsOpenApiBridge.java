@@ -70,4 +70,8 @@ class MarsOpenApiBridge {
         int orderId = Integer.parseInt(ctx.request().getParam("id"));
         return controller.getOrderById(orderId);
     }
+
+    public Object getRockets(RoutingContext ctx) {
+        return controller.getRockets();
+    }
 }
