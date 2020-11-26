@@ -92,4 +92,10 @@ class MarsOpenApiBridge {
     public Object getRockets(RoutingContext ctx) {
         return controller.getRockets();
     }
+
+    public int getUserId(RoutingContext ctx) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+        String email = TokenAES.decrypt(token);
+        return controller.getUserId(email);
+    }
 }

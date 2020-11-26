@@ -239,4 +239,24 @@ public class MarsRepository {
     protected static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
     }
+
+    public int getIdViaEmail(String email) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
+
+            stmt.setString(1, email);
+            int id = -1;
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                id = rs.getInt("id");
+            }
+
+            return id;
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
+    }
 }

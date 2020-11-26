@@ -197,6 +197,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
+  /api/userId/user:
+    get:
+      tags:
+        - Users
+      description: Get your unique userId
+      operationId: getUserId
+      security:
+        - userToken: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+
   /api/update/user:
     patch:
       tags:
@@ -223,6 +239,7 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+
 
   /api/orders:
     get:
