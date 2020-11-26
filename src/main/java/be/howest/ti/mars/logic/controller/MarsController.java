@@ -50,47 +50,24 @@ public class MarsController {
         return marsRepository.getRoleViaEmail(email);
     }
 
-    public JsonArray getUsers() {
-        JsonArray array = new JsonArray();
-        marsRepository.getUsers().forEach(user -> array.add(JsonObject.mapFrom(user)));
-        return array;
+    public List<User> getUsers() {
+        return new ArrayList<>(marsRepository.getUsers());
     }
 
     public User getUser(String email) {
         return marsRepository.getUserViaEmail(email);
     }
 
-    public List<JsonObject> getOrders() {
-        List<JsonObject> jsonList = new ArrayList<>();
-
-        for (Order order : orderRepo.getOrders()) {
-            JsonObject json = new JsonObject();
-            json.put("orderId", order.getOrderId());
-            json.put("userId", order.getUserId());
-            json.put("rocketId", order.getRocketId());
-            json.put("statusId", order.getStatusId());
-            json.put("mass", order.getMass());
-            json.put("width", order.getWidth());
-            json.put("height", order.getHeight());
-            json.put("depth", order.getDepth());
-            json.put("cost", order.getCost());
-
-            jsonList.add(json);
-        }
-
-        return jsonList;
+    public List<Order> getOrders() {
+        return new ArrayList<>(orderRepo.getOrders());
     }
 
-    public JsonObject createOrder(Order newOrder) {
-        Order completedOrder = orderRepo.createOrder(newOrder);
-
-        return JsonObject.mapFrom(completedOrder);
+    public Order createOrder(Order newOrder) {
+        return orderRepo.createOrder(newOrder);
     }
 
-    public Object getOrderById(int orderId) {
-        Order order = orderRepo.getOrderById(orderId);
-
-        return JsonObject.mapFrom(order);
+    public Order getOrderById(int orderId) {
+        return orderRepo.getOrderById(orderId);
     }
 
     public Object getRockets() {
