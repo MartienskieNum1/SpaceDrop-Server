@@ -83,6 +83,11 @@ public class H2OrderRepository implements OrderRepository {
         }
     }
 
+    @Override
+    public List<Order> getOrdersForUser(String email) {
+        return null;
+    }
+
     private Order createOrderFromDatabase(ResultSet results) {
         try {
             int orderId = results.getInt("id");

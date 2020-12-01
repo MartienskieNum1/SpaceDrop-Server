@@ -8,4 +8,5 @@ public interface OrderRepository {
     List<Order> getOrders();
     Order createOrder(Order order);
     Order getOrderById(int orderId);
+    List<Order> getOrdersForUser(String email);
 }

@@ -74,6 +74,7 @@ public class MarsController {
         return marsRepository.getRockets();
     }
 
-    public List<Order> getOrdersForUser() {
+    public List<Order> getOrdersForUser(String email) {
+        return orderRepo.getOrdersForUser(email);
     }
 }
