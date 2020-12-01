@@ -73,4 +73,7 @@ public class MarsController {
     public Object getRockets() {
         return marsRepository.getRockets();
     }
+
+    public List<Order> getOrdersForUser() {
+    }
 }

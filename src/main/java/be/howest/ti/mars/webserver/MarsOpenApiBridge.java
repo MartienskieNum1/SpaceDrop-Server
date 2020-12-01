@@ -9,6 +9,8 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
+import java.util.List;
+
 class MarsOpenApiBridge {
     private final MarsController controller;
 
@@ -73,5 +75,12 @@ class MarsOpenApiBridge {
 
     public Object getRockets(RoutingContext ctx) {
         return controller.getRockets();
+    }
+
+    public Object getOrdersForUser(RoutingContext ctx) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+        String email = TokenAES.decrypt(token);
+
+        List<Order> orders = controller.getOrdersForUser();
     }
 }
