@@ -81,6 +81,6 @@ class MarsOpenApiBridge {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
 
-        List<Order> orders = controller.getOrdersForUser(email);
+        return controller.getOrdersForUser(email);
     }
 }
