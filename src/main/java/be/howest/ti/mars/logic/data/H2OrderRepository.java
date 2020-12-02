@@ -15,7 +15,7 @@ public class H2OrderRepository implements OrderRepository {
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
-    private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where userId = (select id from users where email = ?)";
+    private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
 
     private static final Logger LOGGER = Logger.getLogger(H2OrderRepository.class.getName());
 
@@ -96,6 +96,7 @@ public class H2OrderRepository implements OrderRepository {
             try (ResultSet results = stmt.executeQuery()) {
                 while(results.next()) {
                     orders.add(createOrderFromDatabase(results));
+                    System.out.println(results);
                 }
 
                 return orders;
