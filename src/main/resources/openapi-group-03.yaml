@@ -65,6 +65,8 @@ components:
     rocket:
       type: object
       properties:
+        id:
+          type: integer
         name:
           type: string
         departure:
@@ -197,6 +199,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
+  /api/userId/user:
+    get:
+      tags:
+        - Users
+      description: Get your unique userId
+      operationId: getUserId
+      security:
+        - userToken: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+
+  /api/update/user:
+    patch:
+      tags:
+        - Users
+      description: Update a user's details
+      operationId: setUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - type: string
+                  - $ref: '#/components/schemas/user'
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: User's info updated
+          content:
+            application/json:
+              example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
+              schema:
+                type: string
+
+
   /api/details/orders:
     get:
       tags:
@@ -282,8 +328,6 @@ paths:
         - Rockets
       description: Get info of all rockets
       operationId: getRockets
-      security:
-        - userToken: []
       responses:
         '200':
           description: OK

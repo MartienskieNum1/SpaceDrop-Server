@@ -3,7 +3,9 @@ package be.howest.ti.mars.logic.domain;
 import java.util.Objects;
 
 public class Rocket {
+    private final int id;
     private final String name;
+    private final String departLocation;
     private final String departure;
     private final String arrival;
     private final float pricePerKilo;
@@ -12,9 +14,11 @@ public class Rocket {
     private float availableMass;
     private float availableVolume;
 
-    public Rocket(String name, String departure, String arrival, float pricePerKilo, float maxMass,
+    public Rocket(int id, String name, String departLocation, String departure, String arrival, float pricePerKilo, float maxMass,
                   float maxVolume, float availableMass, float availableVolume) {
+        this.id = id;
         this.name = name;
+        this.departLocation = departLocation;
         this.departure = departure;
         this.arrival = arrival;
         this.pricePerKilo = pricePerKilo;
@@ -24,8 +28,16 @@ public class Rocket {
         this.availableVolume = availableVolume;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getDepartLocation() {
+        return departLocation;
     }
 
     public String getDeparture() {
@@ -67,9 +79,11 @@ public class Rocket {
     @Override
     public String toString() {
         return "Rocket{" +
-                "name='" + name + '\'' +
-                ", departure=" + departure +
-                ", arrival=" + arrival +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", departLocation='" + departLocation + '\'' +
+                ", departure='" + departure + '\'' +
+                ", arrival='" + arrival + '\'' +
                 ", pricePerKilo=" + pricePerKilo +
                 ", maxMass=" + maxMass +
                 ", maxVolume=" + maxVolume +
@@ -83,11 +97,11 @@ public class Rocket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rocket rocket = (Rocket) o;
-        return name.equals(rocket.name);
+        return id == rocket.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

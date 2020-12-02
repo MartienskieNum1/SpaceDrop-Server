@@ -142,10 +142,12 @@ public class WebServer extends AbstractVerticle {
         addRouteWithCtxFunction(factory, "getUsers", bridge::getUsers);
         addRouteWithCtxFunction(factory, "getUser", bridge::getUser);
         addRouteWithCtxFunction(factory, "login", bridge::login);
+        addRouteWithCtxFunction(factory, "setUser", bridge::setUser);
         addRouteWithCtxFunction(factory, "getOrders", bridge::getOrders);
         addRouteWithCtxFunction(factory, "createOrder", bridge::createOrder);
         addRouteWithCtxFunction(factory, "getOrderById", bridge::getOrderById);
         addRouteWithCtxFunction(factory, "getRockets", bridge::getRockets);
+        addRouteWithCtxFunction(factory, "getUserId", bridge::getUserId);
         addRouteWithCtxFunction(factory, "getOrdersForUser", bridge::getOrdersForUser);
     }
 
@@ -196,6 +198,7 @@ public class WebServer extends AbstractVerticle {
                 .allowedHeader("origin")
                 .allowedHeader("Content-Type")
                 .allowedHeader("accept")
+                .allowedHeader("Authorization")
                 .allowedMethod(HttpMethod.GET)
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.OPTIONS)

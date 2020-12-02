@@ -61,13 +61,22 @@ public class MarsRepositoryTest {
     }
 
     @Test
-    void getUserViaMail() {
-        assertNotNull(marsRepository.getUserViaEmail("maarten.demeyere@hotmail.com"));
+    void setUser() {
+        Address ogAddress = new Address("Earth", "Belgium", "City", "Street", 1);
+        User ogUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", ogAddress);
+
+        Address moddedAddress = new Address("Mars", "France", "Stad", "Straat", 500);
+        User moddedUser = new User("Janneke", "Jan", "123456", "jos@lol.be", "lol", moddedAddress);
+
+        marsRepository.createUser(ogUser);
+        marsRepository.setUser(ogUser, moddedUser);
+
+        assertEquals(moddedUser, marsRepository.getUserViaEmail("jos@lol.be"));
     }
 
     @Test
-    void getUserViaLogin() {
-        assertNotNull(marsRepository.getUserViaLogin("maarten.demeyere@hotmail.com", "pass"));
+    void getUserViaMail() {
+        assertNotNull(marsRepository.getUserViaEmail("maarten.demeyere@hotmail.com"));
     }
 
     @Test

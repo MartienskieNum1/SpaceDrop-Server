@@ -10,6 +10,8 @@ import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,24 @@ public class MarsController {
 
     public String login(String email, String password) {
         try {
-            marsRepository.getUserViaLogin(email, TokenAES.encrypt(password));
-            return TokenAES.encrypt(email);
+            User user = marsRepository.getUserViaEmail(email);
+            if (BCrypt.checkpw(password, user.getPassword()))
+                return TokenAES.encrypt(email);
+            return null;
+        } catch (MarsException ex) {
+            return null;
+        }
+    }
+
+    public String setUser(String email, String oldPassword, User moddedUser) {
+        try {
+            User ogUser = marsRepository.getUserViaEmail(email);
+            if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
+                marsRepository.setUser(ogUser, moddedUser);
+                return TokenAES.encrypt(moddedUser.getEmail());
+            } else {
+                return null;
+            }
         } catch (MarsException ex) {
             return null;
         }
@@ -73,6 +91,10 @@ public class MarsController {
 
     public Object getRockets() {
         return marsRepository.getRockets();
+    }
+
+    public int getUserId(String email) {
+        return marsRepository.getIdViaEmail(email);
     }
 
     public List<Order> getOrdersForUser(String email) {
