@@ -5,6 +5,7 @@ import be.howest.ti.mars.logic.util.MarsException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -111,7 +112,20 @@ public class H2OrderRepository implements OrderRepository {
 
     @Override
     public Map<Integer, String> getIdsForStatuses() {
-        return null;
+        Map<Integer, String> statuses = new HashMap<>();
+
+        try (Connection con = MarsRepository.getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_STATUS_ID_AND_NAME);
+             ResultSet results = stmt.executeQuery()) {
+            while (results.next()) {
+                statuses.put(results.getInt("Id"), results.getString("Status"));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all statuses");
+        }
+
+        return statuses;
     }
 
     private Order createOrderFromDatabase(ResultSet results) {
