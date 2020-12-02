@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 public class User {
+    private int id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -14,15 +15,28 @@ public class User {
     private Address address;
 
     @JsonCreator
-    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+    public User(@JsonProperty("id") int id, @JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
                 @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("email") String email,
                 @JsonProperty("password") String password, @JsonProperty("address") Address address) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.address = address;
+    }
+
+    public User(String firstName, String lastName, String phoneNumber, String email, String password, Address address) {
+        this(-1, firstName, lastName, phoneNumber, email, password, address);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

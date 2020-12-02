@@ -220,6 +220,7 @@ public class MarsRepository {
     }
 
     private User getUserFromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         String email = rs.getString("email");
@@ -234,7 +235,7 @@ public class MarsRepository {
 
         Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
 
-        return new User(firstName, lastName, phoneNumber, email, userPassword, address);
+        return new User(id, firstName, lastName, phoneNumber, email, userPassword, address);
     }
 
     protected static Connection getConnection() throws SQLException {
