@@ -243,6 +243,23 @@ paths:
                 type: string
 
 
+  /api/details/orders:
+    get:
+      tags:
+        - Orders
+        - Details
+      description: Get your specific user
+      operationId: getOrdersForUser
+      security:
+        - userToken: []
+      responses:
+        '200':
+          description: User orders received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+
   /api/orders:
     get:
       tags:

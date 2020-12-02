@@ -14,6 +14,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class MarsController {
@@ -94,5 +95,13 @@ public class MarsController {
 
     public int getUserId(String email) {
         return marsRepository.getIdViaEmail(email);
+    }
+
+    public List<Order> getOrdersForUser(String email) {
+        return orderRepo.getOrdersForUser(email);
+    }
+
+    public Map<Integer, String> getIdsForStatuses() {
+        return orderRepo.getIdsForStatuses();
     }
 }

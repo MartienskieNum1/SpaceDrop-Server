@@ -5,7 +5,9 @@ import be.howest.ti.mars.logic.util.MarsException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,8 @@ public class H2OrderRepository implements OrderRepository {
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
+    private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     private static final Logger LOGGER = Logger.getLogger(H2OrderRepository.class.getName());
 
@@ -81,6 +85,47 @@ public class H2OrderRepository implements OrderRepository {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to get all orders");
         }
+    }
+
+    @Override
+    public List<Order> getOrdersForUser(String email) {
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection con = MarsRepository.getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDERS_FOR_USER)) {
+
+            stmt.setString(1, email);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                while(results.next()) {
+                    orders.add(createOrderFromDatabase(results));
+                    System.out.println(results);
+                }
+
+                return orders;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    @Override
+    public Map<Integer, String> getIdsForStatuses() {
+        Map<Integer, String> statuses = new HashMap<>();
+
+        try (Connection con = MarsRepository.getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_STATUS_ID_AND_NAME);
+             ResultSet results = stmt.executeQuery()) {
+            while (results.next()) {
+                statuses.put(results.getInt("Id"), results.getString("Status"));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all statuses");
+        }
+
+        return statuses;
     }
 
     private Order createOrderFromDatabase(ResultSet results) {

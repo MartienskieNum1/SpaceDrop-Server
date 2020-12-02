@@ -10,6 +10,10 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 class MarsOpenApiBridge {
     private final MarsController controller;
 
@@ -91,6 +95,31 @@ class MarsOpenApiBridge {
 
     public Object getRockets(RoutingContext ctx) {
         return controller.getRockets();
+    }
+
+    public Object getOrdersForUser(RoutingContext ctx) {
+        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
+        String email = TokenAES.decrypt(token);
+        Map<Integer, String> statuses = controller.getIdsForStatuses();
+        List<Order> orders = controller.getOrdersForUser(email);
+        List<JsonObject> jsonList = new ArrayList<>();
+
+        for (Order order: orders) {
+            JsonObject json = new JsonObject();
+            json.put("orderId", order.getOrderId());
+            json.put("userId", order.getUserId());
+            json.put("rocketId", order.getRocketId());
+            json.put("status", statuses.get(order.getStatusId()));
+            json.put("mass", order.getMass());
+            json.put("width", order.getWidth());
+            json.put("height", order.getHeight());
+            json.put("depth", order.getDepth());
+            json.put("cost", order.getCost());
+
+            jsonList.add(json);
+        }
+
+        return jsonList;
     }
 
     public int getUserId(RoutingContext ctx) {
