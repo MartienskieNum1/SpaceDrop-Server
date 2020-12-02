@@ -17,6 +17,7 @@ public class H2OrderRepository implements OrderRepository {
             "values(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
     private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     private static final Logger LOGGER = Logger.getLogger(H2OrderRepository.class.getName());
 
