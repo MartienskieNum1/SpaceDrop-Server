@@ -204,7 +204,8 @@ paths:
         - Details
       description: Get your specific user
       operationId: getOrdersForUser
-
+      security:
+        - adminToken: []
       responses:
         '200':
           description: User orders received
