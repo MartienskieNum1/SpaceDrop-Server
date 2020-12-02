@@ -10,6 +10,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
 import java.util.List;
+import java.util.Map;
 
 class MarsOpenApiBridge {
     private final MarsController controller;
@@ -80,6 +81,7 @@ class MarsOpenApiBridge {
     public Object getOrdersForUser(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
+        Map<Integer, String> statuses = controller.getIdsForStatuses();
 
         return controller.getOrdersForUser(email);
     }

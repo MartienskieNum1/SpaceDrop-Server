@@ -12,6 +12,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class MarsController {
@@ -76,5 +77,9 @@ public class MarsController {
 
     public List<Order> getOrdersForUser(String email) {
         return orderRepo.getOrdersForUser(email);
+    }
+
+    public Map<Integer, String> getIdsForStatuses() {
+        return orderRepo.getIdsForStatuses();
     }
 }
