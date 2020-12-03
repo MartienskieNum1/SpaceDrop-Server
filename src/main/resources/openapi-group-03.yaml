@@ -181,6 +181,8 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '403':
+          description: Unknown email or wrong password
 
   /api/details/user:
     get:
@@ -241,6 +243,8 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '403':
+          description: Wrong password
 
 
   /api/details/orders:
