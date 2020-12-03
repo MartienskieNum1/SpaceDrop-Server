@@ -154,11 +154,22 @@ public class WebServer extends AbstractVerticle {
     private void addRouteWithCtxFunction(OpenAPI3RouterFactory factory, String operationId,
                                             Function<RoutingContext, Object> bridgeFunction) {
         factory.addHandlerByOperationId(operationId,
-                ctx -> handleResult(bridgeFunction.apply(ctx), ctx));
+                ctx -> {
+                    setHttpStatusCode(ctx);
+                    handleResult(bridgeFunction.apply(ctx), ctx);
+                });
+    }
+
+    private void setHttpStatusCode(RoutingContext ctx) {
+        if (ctx.request().method().equals(HttpMethod.POST)) {
+            ctx.response().setStatusCode(201);
+        } else {
+            ctx.response().setStatusCode(200);
+        }
     }
 
     private void handleResult(Object result, RoutingContext ctx) {
-        ctx.response().setStatusCode(200).end(Json.encodePrettily(result));
+        ctx.response().end(Json.encodePrettily(result));
     }
 
     private void verifyUserToken(RoutingContext ctx) {

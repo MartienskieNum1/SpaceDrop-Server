@@ -148,7 +148,7 @@ paths:
             schema:
               $ref: '#/components/schemas/user'
       responses:
-        '200':
+        '201':
           description: User created
           content:
             application/json:
@@ -174,7 +174,7 @@ paths:
                 password:
                   type: string
       responses:
-        '200':
+        '201':
           description: User logged in
           content:
             application/json:
@@ -315,8 +315,8 @@ paths:
             schema:
               $ref: '#/components/schemas/order'
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Order created
           content:
             application/json:
               schema:
