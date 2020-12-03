@@ -25,8 +25,12 @@ public class MarsController {
     }
 
     public String createUser(User user) {
-        marsRepository.createUser(user);
-        return TokenAES.encrypt(user.getEmail());
+        try {
+            marsRepository.createUser(user);
+            return TokenAES.encrypt(user.getEmail());
+        } catch (MarsException ex) {
+            return null;
+        }
     }
 
     public String login(String email, String password) {

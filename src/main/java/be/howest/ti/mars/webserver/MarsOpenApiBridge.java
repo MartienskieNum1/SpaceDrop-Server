@@ -38,7 +38,10 @@ class MarsOpenApiBridge {
     public Object createUser(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
         User newUser = Json.decodeValue(body, User.class);
-        return controller.createUser(newUser);
+        String token = controller.createUser(newUser);
+        if (token == null)
+            ctx.fail(409);
+        return token;
     }
 
     public Object getUsers(RoutingContext ctx) {
