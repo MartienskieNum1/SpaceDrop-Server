@@ -61,7 +61,6 @@ class MarsOpenApiBridge {
         return token;
     }
 
-    // todo create error codes for wrong password, wrong header, email already exists
     public Object setUser(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
