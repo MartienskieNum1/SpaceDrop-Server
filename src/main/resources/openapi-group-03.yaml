@@ -155,6 +155,8 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '409':
+          description: Email is already used
 
   /api/login:
     post:
