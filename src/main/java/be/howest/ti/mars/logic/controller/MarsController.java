@@ -8,8 +8,6 @@ import be.howest.ti.mars.logic.data.MarsRepository;
 import be.howest.ti.mars.logic.data.OrderRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
