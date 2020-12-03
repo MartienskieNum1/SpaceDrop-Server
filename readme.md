@@ -1,68 +1,63 @@
-# Project II - Mars Server
-This is the **server side start-project** for Project II. 
+# Project II - SpaceDrop Server
+This is the openapi webserver for SpaceDrop. This server works together with the client by using api calls. When users request their account information in the client, a call is made and the server receives the request. The information is then fetched from the database and served back to the client in the form of json. As you can request data from the server, you can also serve up data that is then processed and written to the database. The SpaceDrop server is written in Java. 
 
-You can change the whole code to the wishes of your team.
+## What is currently possible?
+Most endpoints are about users or orders:
+- `/api/user` Create a new user, creates and returns unique user token
+- `/api/login` Log in an existing user, returns unique user token
+- `api/details/user` Get your user information
+- `/api/userId/user` Get your own user id
+- `api/update/user` Update the user details
+- `api/users` Get a list of all users [admin]
+- `api/order` Create a new order, returns order information
+- `api/orders` Get all orders [admin]
+- `api/orders/{id}` Get a order information for a specific order through order id
+- `api/rockets` Get a list of all the rockets
 
-The start project provides the basic scaffolding for an openapi webserver.
+## How to run the server locally
+Make sure to have Java installed. We are using [Azul Zulu 11](https://www.azul.com/downloads/zulu-community/?package=jdk).
 
-## Before you start:
-- Choose Zulu jdk version 11 (Configure through this through intelij)
-- Install the sonarlint plugin through intelij plugins.
-- **Assign your group number** to the following locations (change XX by your group number, 2 digits, zero-padding):
-  - `settings.gradle`: `rootProject.name = "2020.project-ii.mars-server-XX"`
-  - `gradle.properties`: `systemProp.sonar.projectName=2020.project-ii.mars-server-XX`
-  - `openapi-group-XX.yaml`: `https://project-ii.ti.howest.be/mars-XX`
-  - `WebServer.java`: `OPEN_API_SPEC = "openapi-group-XX.yaml";`
-  - `replace XX in file name openapi-group-XX.yaml`
-  - Search the string XX in all files (ctr shift f)
-    - There should only be readme entries
+Use an editor of choice. Here we will use either Visual Studio Code or Intellij.
 
-- **Attach the TI sonarqube server to your project in intelij.**
-    - Go to Intelij settings/other settings/SonarLint General Settings
-        - Create a new connection by clicking on the plus sign.
-        - Choose a configuration name.
-        - Choose sonarcube.
-        - Enter URL: https://sonar.ti.howest.be/sonar
-        - Use token: `a71c618ef467e72256e59bbbb48a8eb441cf3629`
-        - Save configuration.
-    - Go to Intelij settings/other settings/SonarLint Project Settings
-        - Choose your newly created connection.
-        - Choose your project by clicking **search in list.**
-    - Go to Intelij settings/other settings/SonarLint General Settings
-        - Click update binding (no error messages should pop up).
-- At the bottom of your screen a sonarlint tab should be available.
-    - Code smells will be available at this location.
+Clone the server repository to your computer
+- ssh: `git clone git@git.ti.howest.be:TI/2020-2021/s3/project-ii/projects/groep-03/server.git`
+- https: `git clone https://git.ti.howest.be/TI/2020-2021/s3/project-ii/projects/groep-03/server.git`
 
-## How to run the start project
-In Intelij choose gradle task run.
+Open the project in your editor of choice, if you are running with vscode, you will need these two plugins:
+- [Gradle Tasks](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-gradle).
+- [Gradle Language Support](https://marketplace.visualstudio.com/items?itemName=naco-siren.gradle-language).
 
-## What is included
-  - a very basic openapi spec
-    - localhost:8080/api/message
-  - H2 database web console
-  - The setup of a vert.x web api (WebServer.java)
-    - It's allowed to change this file.
+Now you can run the gradle task 'run' and your server should be up and running. 
+However, to use the server, you will need a working database and set a port.
+
+## Configuring database and setting a port
+For the database, we will be using a local H2 database.
+
+For this we need to make a folder in the root `conf` which contains `config.json`. Here we will set a port and configure the database.
+```json
+{
+  "http": {
+    "port": 8080
+  },
+  "db" : {
+    "url": "jdbc:h2:~/mars-db",
+    "username": "sa",
+    "password": "",
+    "webconsole.port": 9000
+  }
+}
+```
+
+First a port is set for the api, here this is port 8080. This means that the api will be accessible at `localhost:8080`.
+Second, we configure the database. The database is contained in a file on your local system, here `~/mars-db`. Username and password can be set. We also configure a port for the H2 webinterface, here accessible at `localhost:9000`.
+
+
+## Testing if setup was successful
+If everything went well you should now be able to use the api. Start with visiting `localhost:8080/api/message`, this should return "Hello, Mars!".
   
-## Local locations
+## Standard Local locations
  - H2 web client
    - localhost:9000
    - url: ~/mars-db
-   - no credentials
  - Web api
-   - localhost:8080/api/message
-   - map openapi paths to the MarsOpenApiBridge in the WebServer.java
-     - function: addRouteWithCtxFunction
-  
-## Public locations
- - H2 web client
-   - https://project-ii.ti.howest.be/db-03
-   - url: jdbc:h2:/opt/group-03/db-XX
-   - username:group-XX
-   - password: see leho
- - Web api
-   - https://project-ii.ti.howest.be/mars-03/api/
- - Web client
-   - https://project-ii.ti.howest.be/mars-03
- - Sonar
-   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-server-03
-   - https://sonar.ti.howest.be/sonar/dashboard?id=2020.project-ii%3Amars-client-03
+   - localhost:8080/api/
