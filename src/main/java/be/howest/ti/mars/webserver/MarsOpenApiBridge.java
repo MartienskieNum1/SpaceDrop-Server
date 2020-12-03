@@ -98,10 +98,8 @@ class MarsOpenApiBridge {
     }
 
     public Object getOrdersForUser(RoutingContext ctx) {
-        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
-        String email = TokenAES.decrypt(token);
         Map<Integer, String> statuses = controller.getIdsForStatuses();
-        List<Order> orders = controller.getOrdersForUser(email);
+        List<Order> orders = controller.getOrdersForUser(decryptTokenToEmail(ctx));
         List<JsonObject> jsonList = new ArrayList<>();
 
         for (Order order: orders) {
@@ -126,5 +124,9 @@ class MarsOpenApiBridge {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
         return controller.getUserId(email);
+    }
+
+    private String decryptTokenToEmail(RoutingContext ctx) {
+        return TokenAES.decrypt(ctx.request().getHeader(HttpHeaders.AUTHORIZATION));
     }
 }
