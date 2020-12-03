@@ -148,13 +148,15 @@ paths:
             schema:
               $ref: '#/components/schemas/user'
       responses:
-        '200':
+        '201':
           description: User created
           content:
             application/json:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '409':
+          description: Email is already used
 
   /api/login:
     post:
@@ -174,13 +176,15 @@ paths:
                 password:
                   type: string
       responses:
-        '200':
+        '201':
           description: User logged in
           content:
             application/json:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '403':
+          description: Unknown email or wrong password
 
   /api/details/user:
     get:
@@ -241,6 +245,8 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
+        '403':
+          description: Wrong password
 
 
   /api/details/orders:
@@ -315,8 +321,8 @@ paths:
             schema:
               $ref: '#/components/schemas/order'
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Order created
           content:
             application/json:
               schema:

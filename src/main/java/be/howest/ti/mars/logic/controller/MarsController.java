@@ -8,8 +8,6 @@ import be.howest.ti.mars.logic.data.MarsRepository;
 import be.howest.ti.mars.logic.data.OrderRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
@@ -27,8 +25,12 @@ public class MarsController {
     }
 
     public String createUser(User user) {
-        marsRepository.createUser(user);
-        return TokenAES.encrypt(user.getEmail());
+        try {
+            marsRepository.createUser(user);
+            return TokenAES.encrypt(user.getEmail());
+        } catch (MarsException ex) {
+            return null;
+        }
     }
 
     public String login(String email, String password) {
@@ -43,15 +45,11 @@ public class MarsController {
     }
 
     public String setUser(String email, String oldPassword, User moddedUser) {
-        try {
-            User ogUser = marsRepository.getUserViaEmail(email);
-            if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
-                marsRepository.setUser(ogUser, moddedUser);
-                return TokenAES.encrypt(moddedUser.getEmail());
-            } else {
-                return null;
-            }
-        } catch (MarsException ex) {
+        User ogUser = marsRepository.getUserViaEmail(email);
+        if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
+            marsRepository.setUser(ogUser, moddedUser);
+            return TokenAES.encrypt(moddedUser.getEmail());
+        } else {
             return null;
         }
     }

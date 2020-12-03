@@ -154,11 +154,23 @@ public class WebServer extends AbstractVerticle {
     private void addRouteWithCtxFunction(OpenAPI3RouterFactory factory, String operationId,
                                             Function<RoutingContext, Object> bridgeFunction) {
         factory.addHandlerByOperationId(operationId,
-                ctx -> handleResult(bridgeFunction.apply(ctx), ctx));
+                ctx -> {
+                    setHttpStatusCode(ctx);
+                    handleResult(bridgeFunction.apply(ctx), ctx);
+                });
+    }
+
+    private void setHttpStatusCode(RoutingContext ctx) {
+        if (ctx.request().method().equals(HttpMethod.POST)) {
+            ctx.response().setStatusCode(201);
+        } else {
+            ctx.response().setStatusCode(200);
+        }
     }
 
     private void handleResult(Object result, RoutingContext ctx) {
-        ctx.response().setStatusCode(200).end(Json.encodePrettily(result));
+        if (!ctx.failed()) //no more response if already failed
+            ctx.response().end(Json.encodePrettily(result));
     }
 
     private void verifyUserToken(RoutingContext ctx) {
@@ -186,6 +198,7 @@ public class WebServer extends AbstractVerticle {
             .errorHandler(401, this::onUnAuthorised)
             .errorHandler(403, this::onForbidden)
             .errorHandler(404, this::onNotFound)
+            .errorHandler(409, this::onConflict)
             .errorHandler(500, this::onInternalServerError);
 
         router.route().handler(ctx -> ctx.fail(404, new RuntimeException()));
@@ -225,6 +238,10 @@ public class WebServer extends AbstractVerticle {
 
     private void onForbidden(RoutingContext ctx) {
         replyWithFailure(ctx, 403, "Forbidden", null);
+    }
+
+    private void onConflict(RoutingContext ctx) {
+        replyWithFailure(ctx, 409, "Conflict", null);
     }
 
     private void onInternalServerError(RoutingContext ctx) {

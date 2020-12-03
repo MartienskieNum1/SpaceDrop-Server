@@ -38,7 +38,10 @@ class MarsOpenApiBridge {
     public Object createUser(RoutingContext ctx) {
         String body = ctx.getBodyAsString();
         User newUser = Json.decodeValue(body, User.class);
-        return controller.createUser(newUser);
+        String token = controller.createUser(newUser);
+        if (token == null)
+            ctx.fail(409);
+        return token;
     }
 
     public Object getUsers(RoutingContext ctx) {
@@ -61,7 +64,6 @@ class MarsOpenApiBridge {
         return token;
     }
 
-    // todo create error codes for wrong password, wrong header, email already exists
     public Object setUser(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
