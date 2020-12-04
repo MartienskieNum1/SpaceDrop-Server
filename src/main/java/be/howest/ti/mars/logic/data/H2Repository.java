@@ -23,20 +23,20 @@ To make this class useful, please complete it with the topics seen in the module
   - Mocking this repository is not needed. Create database creating and population script in plain SQL.
     Use the @Before or @Before each (depending on the type of test) to quickly setup a fully populated db.
  */
-public class MarsRepository implements MarsRepositories {
-    private static final MarsRepository INSTANCE = new MarsRepository();
-    private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
+public class H2Repository implements MarsRepositories {
+    private static final H2Repository INSTANCE = new H2Repository();
+    private final Logger LOGGER = Logger.getLogger(H2Repository.class.getName());
 
     private Server dbWebConsole;
     private String username;
     private String password;
     private String url;
 
-    public MarsRepository() {
+    public H2Repository() {
         // Should not be called
     }
 
-    public static MarsRepository getInstance() {
+    public static H2Repository getInstance() {
         return INSTANCE;
     }
 
