@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 public class MarsRepositoryTest {
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
     private final MarsRepository marsRepository = new MarsRepository();
-    private final OrderRepository orderRepository = new H2OrderRepository();
     private static final String URL = "jdbc:h2:~/test";
 
     @BeforeAll
@@ -81,16 +80,16 @@ public class MarsRepositoryTest {
 
     @Test
     void getOrders() {
-        List<Order> orders = orderRepository.getOrders();
+        List<Order> orders = marsRepository.getOrders();
         assertEquals(2, orders.size());
     }
 
     @Test
     void createOrder() {
         Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
-        orderRepository.createOrder(newOrder);
+        marsRepository.createOrder(newOrder);
 
-        assertEquals(3, orderRepository.getOrders().size());
+        assertEquals(3, marsRepository.getOrders().size());
     }
 
     @Test
@@ -106,7 +105,7 @@ public class MarsRepositoryTest {
 
     private void executeScript(String fileName) throws IOException {
         String createDbSql = readFile(fileName);
-        try (Connection con = MarsRepository.getConnection();
+        try (Connection con = marsRepository.getConnection();
              PreparedStatement stmt = con.prepareStatement(createDbSql)) {
 
             stmt.executeUpdate();
