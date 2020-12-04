@@ -5,8 +5,6 @@ import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
 import be.howest.ti.mars.logic.data.MarsRepository;
-import be.howest.ti.mars.logic.data.OrderRepository;
-import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -17,7 +15,6 @@ import java.util.logging.Logger;
 
 public class MarsController {
     private final MarsRepository marsRepository = new MarsRepository();
-    OrderRepository orderRepo = Repositories.getOrderRepo();
     private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
 
     public String getMessage() {
@@ -76,15 +73,15 @@ public class MarsController {
     }
 
     public List<Order> getOrders() {
-        return new ArrayList<>(orderRepo.getOrders());
+        return new ArrayList<>(marsRepository.getOrders());
     }
 
     public Order createOrder(Order newOrder) {
-        return orderRepo.createOrder(newOrder);
+        return marsRepository.createOrder(newOrder);
     }
 
     public Order getOrderById(int orderId) {
-        return orderRepo.getOrderById(orderId);
+        return marsRepository.getOrderById(orderId);
     }
 
     public Object getRockets() {
@@ -96,10 +93,10 @@ public class MarsController {
     }
 
     public List<Order> getOrdersForUser(String email) {
-        return orderRepo.getOrdersForUser(email);
+        return marsRepository.getOrdersForUser(email);
     }
 
     public Map<Integer, String> getIdsForStatuses() {
-        return orderRepo.getIdsForStatuses();
+        return marsRepository.getIdsForStatuses();
     }
 }
