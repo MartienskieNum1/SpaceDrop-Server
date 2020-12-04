@@ -32,7 +32,7 @@ public class H2Repository implements MarsRepository {
     private String password;
     private String url;
 
-    public H2Repository() {
+    private H2Repository() {
         // Should not be called
     }
 
@@ -400,7 +400,7 @@ public class H2Repository implements MarsRepository {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
     }
 }
