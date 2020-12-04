@@ -8,7 +8,7 @@ import be.howest.ti.mars.logic.domain.User;
 import java.util.List;
 import java.util.Map;
 
-public interface MarsRepositories {
+public interface MarsRepository {
 
     // User methods:
     void createUser(User user);

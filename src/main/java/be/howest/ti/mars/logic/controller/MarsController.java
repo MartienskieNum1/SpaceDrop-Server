@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.controller;
 
+import be.howest.ti.mars.logic.data.MarsRepository;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class MarsController {
-    private final H2Repository h2Repository = new H2Repository();
+    private final MarsRepository h2Repository = new H2Repository();
     private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
 
     public String getMessage() {
