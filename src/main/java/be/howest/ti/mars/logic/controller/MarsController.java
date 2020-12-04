@@ -5,7 +5,6 @@ import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
-import be.howest.ti.mars.logic.data.H2Repository;
 import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -15,8 +14,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class MarsController {
-    private final MarsRepository h2Repository = new H2Repository();
+    private final MarsRepository repo;
     private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
+
+    public MarsController(MarsRepository repo) {
+        this.repo = repo;
+    }
 
     public String getMessage() {
         return "Hello, Mars!";
@@ -24,7 +27,7 @@ public class MarsController {
 
     public String createUser(User user) {
         try {
-            h2Repository.createUser(user);
+            repo.createUser(user);
             return TokenAES.encrypt(user.getEmail());
         } catch (MarsException ex) {
             return null;
@@ -33,7 +36,7 @@ public class MarsController {
 
     public String login(String email, String password) {
         try {
-            User user = h2Repository.getUserViaEmail(email);
+            User user = repo.getUserViaEmail(email);
             if (BCrypt.checkpw(password, user.getPassword()))
                 return TokenAES.encrypt(email);
             return null;
@@ -43,9 +46,9 @@ public class MarsController {
     }
 
     public String setUser(String email, String oldPassword, User moddedUser) {
-        User ogUser = h2Repository.getUserViaEmail(email);
+        User ogUser = repo.getUserViaEmail(email);
         if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
-            h2Repository.setUser(ogUser, moddedUser);
+            repo.setUser(ogUser, moddedUser);
             return TokenAES.encrypt(moddedUser.getEmail());
         } else {
             return null;
@@ -54,7 +57,7 @@ public class MarsController {
 
     public boolean userExists(String email) {
         try {
-            h2Repository.getUserViaEmail(email);
+            repo.getUserViaEmail(email);
             return true;
         } catch (MarsException ex) {
             return false;
@@ -62,42 +65,42 @@ public class MarsController {
     }
 
     public Role getRoleViaEmail(String email) {
-        return h2Repository.getRoleViaEmail(email);
+        return repo.getRoleViaEmail(email);
     }
 
     public List<User> getUsers() {
-        return new ArrayList<>(h2Repository.getUsers());
+        return new ArrayList<>(repo.getUsers());
     }
 
     public User getUser(String email) {
-        return h2Repository.getUserViaEmail(email);
+        return repo.getUserViaEmail(email);
     }
 
     public List<Order> getOrders() {
-        return new ArrayList<>(h2Repository.getOrders());
+        return new ArrayList<>(repo.getOrders());
     }
 
     public Order createOrder(Order newOrder) {
-        return h2Repository.createOrder(newOrder);
+        return repo.createOrder(newOrder);
     }
 
     public Order getOrderById(int orderId) {
-        return h2Repository.getOrderById(orderId);
+        return repo.getOrderById(orderId);
     }
 
     public Object getRockets() {
-        return h2Repository.getRockets();
+        return repo.getRockets();
     }
 
     public int getUserId(String email) {
-        return h2Repository.getIdViaEmail(email);
+        return repo.getIdViaEmail(email);
     }
 
     public List<Order> getOrdersForUser(String email) {
-        return h2Repository.getOrdersForUser(email);
+        return repo.getOrdersForUser(email);
     }
 
     public Map<Integer, String> getIdsForStatuses() {
-        return h2Repository.getIdsForStatuses();
+        return repo.getIdsForStatuses();
     }
 }

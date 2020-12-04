@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class H2RepositoryTest {
     private final Logger LOGGER = Logger.getLogger(H2Repository.class.getName());
-    private final H2Repository h2Repository = new H2Repository();
+    private final MarsRepository h2Repository = H2Repository.getInstance();
     private static final String URL = "jdbc:h2:~/test";
 
     @BeforeAll
@@ -105,7 +105,7 @@ public class H2RepositoryTest {
 
     private void executeScript(String fileName) throws IOException {
         String createDbSql = readFile(fileName);
-        try (Connection con = h2Repository.getConnection();
+        try (Connection con = H2Repository.getConnection();
              PreparedStatement stmt = con.prepareStatement(createDbSql)) {
 
             stmt.executeUpdate();

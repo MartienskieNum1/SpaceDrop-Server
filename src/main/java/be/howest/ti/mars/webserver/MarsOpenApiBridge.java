@@ -1,6 +1,7 @@
 package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.controller.MarsController;
+import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
@@ -18,7 +19,7 @@ class MarsOpenApiBridge {
     private final MarsController controller;
 
     MarsOpenApiBridge() {
-        this.controller = new MarsController();
+        this.controller = new MarsController(Repositories.H2REPO);
     }
 
     public boolean verifyUserToken(String token) {
