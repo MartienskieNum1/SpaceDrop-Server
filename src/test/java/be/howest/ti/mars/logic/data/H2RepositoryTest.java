@@ -21,15 +21,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class MarsRepositoryTest {
-    private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
-    private final MarsRepository marsRepository = new MarsRepository();
-    private final OrderRepository orderRepository = new H2OrderRepository();
+public class H2RepositoryTest {
+    private final Logger LOGGER = Logger.getLogger(H2Repository.class.getName());
+    private final MarsRepository h2Repository = H2Repository.getInstance();
     private static final String URL = "jdbc:h2:~/test";
 
     @BeforeAll
     void setupTestSuite() throws SQLException {
-        MarsRepository.configure(URL, "sa", "", 9000);
+        H2Repository.configure(URL, "sa", "", 9000);
     }
 
     @BeforeEach
@@ -39,25 +38,25 @@ public class MarsRepositoryTest {
 
     @Test
     void getUsers() {
-        List<User> users = marsRepository.getUsers();
+        List<User> users = h2Repository.getUsers();
         assertEquals(2, users.size());
     }
 
     @Test
     void getRole() {
         Role role = new Role("Admin", 1);
-        assertEquals(role, marsRepository.getRoleViaEmail("maarten.demeyere@hotmail.com"));
+        assertEquals(role, h2Repository.getRoleViaEmail("maarten.demeyere@hotmail.com"));
     }
 
     @Test
     void createUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
         User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
-        marsRepository.createUser(newUser);
-        assertEquals(3, marsRepository.getUsers().size());
+        h2Repository.createUser(newUser);
+        assertEquals(3, h2Repository.getUsers().size());
 
         Role userRole = new Role("User", 2);
-        assertEquals(userRole, marsRepository.getRoleViaEmail("jos@lol.be"));
+        assertEquals(userRole, h2Repository.getRoleViaEmail("jos@lol.be"));
     }
 
     @Test
@@ -68,34 +67,34 @@ public class MarsRepositoryTest {
         Address moddedAddress = new Address("Mars", "France", "Stad", "Straat", 500);
         User moddedUser = new User("Janneke", "Jan", "123456", "jos@lol.be", "lol", moddedAddress);
 
-        marsRepository.createUser(ogUser);
-        marsRepository.setUser(ogUser, moddedUser);
+        h2Repository.createUser(ogUser);
+        h2Repository.setUser(ogUser, moddedUser);
 
-        assertEquals(moddedUser, marsRepository.getUserViaEmail("jos@lol.be"));
+        assertEquals(moddedUser, h2Repository.getUserViaEmail("jos@lol.be"));
     }
 
     @Test
     void getUserViaMail() {
-        assertNotNull(marsRepository.getUserViaEmail("maarten.demeyere@hotmail.com"));
+        assertNotNull(h2Repository.getUserViaEmail("maarten.demeyere@hotmail.com"));
     }
 
     @Test
     void getOrders() {
-        List<Order> orders = orderRepository.getOrders();
+        List<Order> orders = h2Repository.getOrders();
         assertEquals(2, orders.size());
     }
 
     @Test
     void createOrder() {
         Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
-        orderRepository.createOrder(newOrder);
+        h2Repository.createOrder(newOrder);
 
-        assertEquals(3, orderRepository.getOrders().size());
+        assertEquals(3, h2Repository.getOrders().size());
     }
 
     @Test
     void getRockets() {
-        List<Rocket> rockets = marsRepository.getRockets();
+        List<Rocket> rockets = h2Repository.getRockets();
         assertEquals(2, rockets.size());
     }
 
@@ -106,7 +105,7 @@ public class MarsRepositoryTest {
 
     private void executeScript(String fileName) throws IOException {
         String createDbSql = readFile(fileName);
-        try (Connection con = MarsRepository.getConnection();
+        try (Connection con = H2Repository.getConnection();
              PreparedStatement stmt = con.prepareStatement(createDbSql)) {
 
             stmt.executeUpdate();

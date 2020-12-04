@@ -1,11 +1,9 @@
 package be.howest.ti.mars.logic.data;
 
 public class Repositories {
-    private static final OrderRepository ORDER_REPO = new H2OrderRepository();
 
-    private Repositories() {}
+    public static final MarsRepository H2REPO = H2Repository.getInstance();
 
-    public static OrderRepository getOrderRepo() {
-        return ORDER_REPO;
+    private Repositories() {
     }
 }

@@ -1,6 +1,6 @@
 package be.howest.ti.mars.webserver;
 
-import be.howest.ti.mars.logic.data.MarsRepository;
+import be.howest.ti.mars.logic.data.H2Repository;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -60,12 +60,12 @@ public class WebServer extends AbstractVerticle {
 
     @Override
     public void stop() {
-        MarsRepository.getInstance().cleanUp();
+        H2Repository.getInstance().cleanUp();
     }
 
     private void configureDatabase(JsonObject dbProps) {
         try {
-            MarsRepository.configure(dbProps.getString("url"),
+            H2Repository.configure(dbProps.getString("url"),
                     dbProps.getString("username"),
                     dbProps.getString("password"),
                     dbProps.getInteger("webconsole.port", DB_WEB_CONSOLE_FALLBACK));
