@@ -23,7 +23,7 @@ To make this class useful, please complete it with the topics seen in the module
   - Mocking this repository is not needed. Create database creating and population script in plain SQL.
     Use the @Before or @Before each (depending on the type of test) to quickly setup a fully populated db.
  */
-public class MarsRepository {
+public class MarsRepository implements MarsRepositories {
     private static final MarsRepository INSTANCE = new MarsRepository();
     private final Logger LOGGER = Logger.getLogger(MarsRepository.class.getName());
 
@@ -74,6 +74,7 @@ public class MarsRepository {
     private final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     // User methods:
+    @Override
     public void createUser(User user) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
@@ -110,6 +111,7 @@ public class MarsRepository {
 
     }
 
+    @Override
     public void setUser(User ogUser, User moddedUser) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_USER)) {
@@ -126,6 +128,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public List<User> getUsers() {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_USERS);
@@ -145,6 +148,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public User getUserViaEmail(String email) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
@@ -162,6 +166,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public int getIdViaEmail(String email) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
@@ -182,6 +187,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public Role getRoleViaEmail(String email) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_ROLE_VIA_EMAIL)) {
@@ -238,6 +244,7 @@ public class MarsRepository {
     }
 
     // Rocket methods:
+    @Override
     public List<Rocket> getRockets() {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ROCKETS);
@@ -268,6 +275,7 @@ public class MarsRepository {
     }
 
     // Order methods:
+    @Override
     public List<Order> getOrders() {
         List<Order> orders = new ArrayList<>();
 
@@ -285,6 +293,7 @@ public class MarsRepository {
         return orders;
     }
 
+    @Override
     public Order createOrder(Order order) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
@@ -313,6 +322,7 @@ public class MarsRepository {
         return order;
     }
 
+    @Override
     public Order getOrderById(int orderId) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
@@ -330,6 +340,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public List<Order> getOrdersForUser(String email) {
         List<Order> orders = new ArrayList<>();
 
@@ -352,6 +363,7 @@ public class MarsRepository {
         }
     }
 
+    @Override
     public Map<Integer, String> getIdsForStatuses() {
         Map<Integer, String> statuses = new HashMap<>();
 
