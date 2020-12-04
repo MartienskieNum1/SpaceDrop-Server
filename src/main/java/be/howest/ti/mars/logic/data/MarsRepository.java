@@ -1,16 +1,15 @@
 package be.howest.ti.mars.logic.data;
 
-import be.howest.ti.mars.logic.domain.Address;
-import be.howest.ti.mars.logic.domain.Rocket;
-import be.howest.ti.mars.logic.domain.Role;
-import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.domain.*;
 import be.howest.ti.mars.logic.util.MarsException;
 import org.h2.tools.Server;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,15 +56,24 @@ public class MarsRepository {
 
     private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_UPDATE_USER = "update users set first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
             "password = ?, planet = ?, country_or_colony = ?, city_or_district = ?, street = ?, number = ? where email = ?";
-    private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
     private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
     private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
+
     private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
 
+    private final String SQL_SELECT_ALL_ORDERS = "select * from orders";
+    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
+    private final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
+
+    // User methods:
     public void createUser(User user) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
@@ -154,6 +162,26 @@ public class MarsRepository {
         }
     }
 
+    public int getIdViaEmail(String email) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
+
+            stmt.setString(1, email);
+            int id = -1;
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                id = rs.getInt("id");
+            }
+
+            return id;
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
+    }
+
     public Role getRoleViaEmail(String email) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_ROLE_VIA_EMAIL)) {
@@ -174,35 +202,6 @@ public class MarsRepository {
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get the role!");
-        }
-    }
-
-    public List<Rocket> getRockets() {
-        try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ROCKETS);
-             ResultSet rs = stmt.executeQuery()) {
-
-            List<Rocket> rockets = new ArrayList<>();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String departLocation = rs.getString("depart_location");
-                String departure = rs.getString("departure");
-                String arrival = rs.getString("arrival");
-                int pricePerKilo = rs.getInt("price_per_kilo");
-                int maxMass = rs.getInt("max_mass");
-                int maxVolume = rs.getInt("max_volume");
-                int availableMass = rs.getInt("available_mass");
-                int availableVolume = rs.getInt("available_volume");
-                rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
-            }
-
-            return rockets;
-
-        } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not get rockets!");
         }
     }
 
@@ -238,27 +237,158 @@ public class MarsRepository {
         return new User(id, firstName, lastName, phoneNumber, email, userPassword, address);
     }
 
-    protected static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
-    }
-
-    public int getIdViaEmail(String email) {
+    // Rocket methods:
+    public List<Rocket> getRockets() {
         try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ROCKETS);
+             ResultSet rs = stmt.executeQuery()) {
 
-            stmt.setString(1, email);
-            int id = -1;
+            List<Rocket> rockets = new ArrayList<>();
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                rs.next();
-                id = rs.getInt("id");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String departLocation = rs.getString("depart_location");
+                String departure = rs.getString("departure");
+                String arrival = rs.getString("arrival");
+                int pricePerKilo = rs.getInt("price_per_kilo");
+                int maxMass = rs.getInt("max_mass");
+                int maxVolume = rs.getInt("max_volume");
+                int availableMass = rs.getInt("available_mass");
+                int availableVolume = rs.getInt("available_volume");
+                rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
             }
 
-            return id;
+            return rockets;
 
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not find the user!");
+            throw new MarsException("Could not get rockets!");
         }
+    }
+
+    // Order methods:
+    public List<Order> getOrders() {
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ALL_ORDERS);
+             ResultSet results = stmt.executeQuery()) {
+            while (results.next()) {
+                orders.add(createOrderFromDatabase(results));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+
+        return orders;
+    }
+
+    public Order createOrder(Order order) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, order.getUserId());
+            stmt.setInt(2, order.getRocketId());
+            stmt.setInt(3, order.getStatusId());
+            stmt.setDouble(4, order.getMass());
+            stmt.setDouble(5, order.getWidth());
+            stmt.setDouble(6, order.getHeight());
+            stmt.setDouble(7, order.getDepth());
+            stmt.setDouble(8, order.getCost());
+
+            stmt.executeUpdate();
+
+            try (ResultSet rsKey = stmt.getGeneratedKeys()) {
+                rsKey.next();
+
+                order.setOrderId(rsKey.getInt(1));
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Creating new order failed");
+        }
+
+        return order;
+    }
+
+    public Order getOrderById(int orderId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
+
+            stmt.setInt(1, orderId);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                return createOrderFromDatabase(results);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    public List<Order> getOrdersForUser(String email) {
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDERS_FOR_USER)) {
+
+            stmt.setString(1, email);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                while(results.next()) {
+                    orders.add(createOrderFromDatabase(results));
+                    System.out.println(results);
+                }
+
+                return orders;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    public Map<Integer, String> getIdsForStatuses() {
+        Map<Integer, String> statuses = new HashMap<>();
+
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_STATUS_ID_AND_NAME);
+             ResultSet results = stmt.executeQuery()) {
+            while (results.next()) {
+                statuses.put(results.getInt("Id"), results.getString("Status"));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to get all statuses");
+        }
+
+        return statuses;
+    }
+
+    private Order createOrderFromDatabase(ResultSet results) {
+        try {
+            int orderId = results.getInt("id");
+            int userId = results.getInt("user_id");
+            int rocketId = results.getInt("rocket_id");
+            int statusId = results.getInt("status_id");
+            double mass = results.getDouble("mass");
+            double width = results.getDouble("width");
+            double height = results.getDouble("height");
+            double depth = results.getDouble("depth");
+            double cost = results.getDouble("cost");
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("Failed to create order from database results");
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(INSTANCE.url, INSTANCE.username, INSTANCE.password);
     }
 }
