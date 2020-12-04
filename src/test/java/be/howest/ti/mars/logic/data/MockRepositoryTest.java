@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MockRepositoryTest {
-    private MarsRepository repo = Repositories.MOCK_REPO;
+    private MarsRepository repo = new MockRepository();
 
     @Test
     void createUser() {
