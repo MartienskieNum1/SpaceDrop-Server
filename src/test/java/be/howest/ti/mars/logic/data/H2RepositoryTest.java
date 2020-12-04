@@ -52,7 +52,9 @@ public class H2RepositoryTest {
     void createUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
         User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
+
         h2Repository.createUser(newUser);
+
         assertEquals(3, h2Repository.getUsers().size());
     }
 
@@ -60,10 +62,10 @@ public class H2RepositoryTest {
     void userGetsRoleWhenCreated() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
         User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
-        h2Repository.createUser(newUser);
-        assertEquals(3, h2Repository.getUsers().size());
 
+        h2Repository.createUser(newUser);
         Role userRole = new Role("User", 2);
+
         assertEquals(userRole, h2Repository.getRoleViaEmail("jos@lol.be"));
     }
 
