@@ -85,7 +85,16 @@ class MarsControllerTest {
     }
 
     @Test
-    void userExists() {
+    void userDoesExist() {
+        assertTrue(controller.userExists(generalUser.getEmail()));
+    }
+
+    @Test
+    void userDoesNotExist() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User("Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+
+        assertFalse(controller.userExists(user.getEmail()));
     }
 
     @Test
