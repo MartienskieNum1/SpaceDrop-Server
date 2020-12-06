@@ -69,7 +69,19 @@ class MarsControllerTest {
     }
 
     @Test
-    void setUser() {
+    void successfulSetUser() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User("Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+
+        assertEquals(TokenAES.encrypt(user.getEmail()), controller.setUser(generalUser.getEmail(), generalUser.getPassword(), user));
+    }
+
+    @Test
+    void wrongPassSetUser() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User("Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+
+        assertNull(controller.setUser(generalUser.getEmail(), BCrypt.hashpw("rand", BCrypt.gensalt()), user));
     }
 
     @Test
