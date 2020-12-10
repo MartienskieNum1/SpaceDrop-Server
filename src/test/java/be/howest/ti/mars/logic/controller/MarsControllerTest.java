@@ -189,8 +189,4 @@ class MarsControllerTest {
     void wrongEmailGetOrdersForUser() {
         assertNull(controller.getOrdersForUser("random@random"));
     }
-
-    @Test
-    void getIdsForStatuses() {
-    }
 }
