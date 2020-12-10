@@ -97,7 +97,7 @@ public class H2RepositoryTest {
     @Test
     void createOrder() {
         Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
-        h2Repository.createOrder(newOrder, userId);
+        h2Repository.createOrder(newOrder, 1);
 
         assertEquals(3, h2Repository.getOrders().size());
     }
