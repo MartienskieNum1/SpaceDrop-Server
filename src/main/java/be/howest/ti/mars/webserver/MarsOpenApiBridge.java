@@ -83,9 +83,10 @@ class MarsOpenApiBridge {
     }
 
     public Order createOrder(RoutingContext ctx) {
+        int userId = getUserId(ctx);
         String body = ctx.getBodyAsString();
         Order newOrder = Json.decodeValue(body, Order.class);
-        return controller.createOrder(newOrder);
+        return controller.createOrder(newOrder, userId);
     }
 
     public Object getOrderById(RoutingContext ctx) {
@@ -121,9 +122,7 @@ class MarsOpenApiBridge {
     }
 
     public int getUserId(RoutingContext ctx) {
-        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
-        String email = TokenAES.decrypt(token);
-        return controller.getUserId(email);
+        return controller.getUserId(decryptTokenToEmail(ctx));
     }
 
     private String decryptTokenToEmail(RoutingContext ctx) {

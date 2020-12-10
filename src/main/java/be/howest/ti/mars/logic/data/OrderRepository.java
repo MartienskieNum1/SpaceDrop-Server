@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface OrderRepository {
     List<Order> getOrders();
-    Order createOrder(Order order);
+    Order createOrder(Order order, int userId);
     Order getOrderById(int orderId);
     List<Order> getOrdersForUser(String email);
     Map<Integer, String> getIdsForStatuses();

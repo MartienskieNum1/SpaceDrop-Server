@@ -88,7 +88,7 @@ public class MarsRepositoryTest {
     @Test
     void createOrder() {
         Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
-        orderRepository.createOrder(newOrder);
+        orderRepository.createOrder(newOrder, 2);
 
         assertEquals(3, orderRepository.getOrders().size());
     }
