@@ -67,8 +67,8 @@ public class H2Repository implements MarsRepository {
     private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
 
     private final String SQL_SELECT_ALL_ORDERS = "select * from orders";
-    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
-            "values(?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
     private final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
     private final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
