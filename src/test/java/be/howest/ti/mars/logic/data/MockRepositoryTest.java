@@ -76,14 +76,16 @@ class MockRepositoryTest {
 
     @Test
     void createOrder() {
-        repo.createOrder(new Order(1, 1, 1, 1, 500, 500, 500, 500, 500), 1);
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        repo.createOrder(new Order(1, 1, 1, 1, 500, 500, 500, 500, 500, address), 1);
         assertEquals(1, repo.getOrders().size());
     }
 
     @Test
     void getOrderById() {
-        Order order1 = new Order(1, 1, 1, 1, 500, 500, 500, 500, 500);
-        Order order2 = new Order(5, 1, 1, 1, 500, 500, 500, 500, 500);
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order1 = new Order(1, 1, 1, 1, 500, 500, 500, 500, 500, address);
+        Order order2 = new Order(5, 1, 1, 1, 500, 500, 500, 500, 500, address);
         repo.createOrder(order1, 1);
         repo.createOrder(order2, 1);
 
@@ -94,9 +96,9 @@ class MockRepositoryTest {
     void getOrdersForUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         User user1 = new User(1, "Maarten", "De Meyere", "0412345678", "maarten@maarten", "pass", address);
-        Order order1 = new Order(1, 1, 1, 1, 500, 500, 500, 500, 500);
-        Order order2 = new Order(5, 1, 1, 1, 500, 500, 500, 500, 500);
-        Order order3 = new Order(2, 2, 1, 1, 500, 500, 500, 500, 500);
+        Order order1 = new Order(1, 1, 1, 1, 500, 500, 500, 500, 500, address);
+        Order order2 = new Order(5, 1, 1, 1, 500, 500, 500, 500, 500, address);
+        Order order3 = new Order(2, 2, 1, 1, 500, 500, 500, 500, 500, address);
 
         repo.createUser(user1);
         repo.createOrder(order1, 1);
