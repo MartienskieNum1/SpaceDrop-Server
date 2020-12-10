@@ -9,20 +9,20 @@ import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class MarsController {
     private final MarsRepository repo;
-    private static final Logger LOGGER = Logger.getLogger(MarsController.class.getName());
 
     public MarsController(MarsRepository repo) {
         this.repo = repo;
     }
 
+    private static final String MESSAGE = "Hello, Mars!";
     public String getMessage() {
-        return "Hello, Mars!";
+        return MESSAGE;
     }
 
     public String createUser(User user) {
@@ -116,7 +116,7 @@ public class MarsController {
         try {
             return repo.getOrdersForUser(email);
         } catch (IllegalStateException ex) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
