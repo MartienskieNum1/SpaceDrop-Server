@@ -25,7 +25,7 @@ To make this class useful, please complete it with the topics seen in the module
  */
 public class H2Repository implements MarsRepository {
     private static final H2Repository INSTANCE = new H2Repository();
-    private final Logger LOGGER = Logger.getLogger(H2Repository.class.getName());
+    private final Logger logger = Logger.getLogger(H2Repository.class.getName());
 
     private Server dbWebConsole;
     private String username;
@@ -54,26 +54,26 @@ public class H2Repository implements MarsRepository {
                 "-webPort", String.valueOf(console)).start();
     }
 
-    private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
+    private static final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
-    private final String SQL_REMOVE_USER = "delete from users where email = ?";
-    private final String SQL_SELECT_USER_VIA_ID = "select * from users where id = ?";
-    private final String SQL_UPDATE_USER = "update users set first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
+    private static final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
+    private static final String SQL_REMOVE_USER = "delete from users where email = ?";
+    private static final String SQL_SELECT_USER_VIA_ID = "select * from users where id = ?";
+    private static final String SQL_UPDATE_USER = "update users set first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
             "password = ?, planet = ?, country_or_colony = ?, city_or_district = ?, street = ?, number = ? where email = ?";
-    private final String SQL_SELECT_ALL_USERS = "select * from Users";
-    private final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
-    private final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
+    private static final String SQL_SELECT_ALL_USERS = "select * from Users";
+    private static final String SQL_SELECT_USER_VIA_EMAIL = "select * from Users where email = ?";
+    private static final String SQL_GET_ROLE_VIA_EMAIL = "select * from roles join userroles on roles.id = userroles.role_id " +
             "join users on userroles.user_id = users.id where email = ?";
 
-    private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
+    private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
 
-    private final String SQL_SELECT_ALL_ORDERS = "select * from orders";
-    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
+    private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
+    private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
-    private final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
-    private final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
+    private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
+    private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     // User methods:
     @Override
@@ -92,7 +92,7 @@ public class H2Repository implements MarsRepository {
             }
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Could not create new user!");
         }
     }
@@ -107,7 +107,7 @@ public class H2Repository implements MarsRepository {
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
             removeUser(getUserViaId(userId));
             throw new MarsException("Could not bind user to role!");
         }
@@ -122,7 +122,7 @@ public class H2Repository implements MarsRepository {
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Could not remove the user!");
         }
     }
@@ -139,8 +139,7 @@ public class H2Repository implements MarsRepository {
             }
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
-            throw new MarsException("Could not find the user!");
+            throw handleCouldNotFindUser(ex);
         }
     }
 
@@ -156,7 +155,7 @@ public class H2Repository implements MarsRepository {
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
+            logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not update the user!");
         }
     }
@@ -176,7 +175,7 @@ public class H2Repository implements MarsRepository {
             return users;
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
+            logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get all users!");
         }
     }
@@ -194,8 +193,7 @@ public class H2Repository implements MarsRepository {
             }
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not find the user!");
+            throw handleCouldNotFindUser(ex);
         }
     }
 
@@ -205,7 +203,7 @@ public class H2Repository implements MarsRepository {
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_EMAIL)) {
 
             stmt.setString(1, email);
-            int id = -1;
+            int id;
 
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
@@ -215,8 +213,7 @@ public class H2Repository implements MarsRepository {
             return id;
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not find the user!");
+            throw handleCouldNotFindUser(ex);
         }
     }
 
@@ -239,7 +236,7 @@ public class H2Repository implements MarsRepository {
             return new Role(roleName, rank);
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
+            logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get the role!");
         }
     }
@@ -265,15 +262,14 @@ public class H2Repository implements MarsRepository {
         String phoneNumber = rs.getString("phone_number");
         String userPassword = rs.getString("password");
 
-        String planet = rs.getString("planet");
-        String countryOrColony = rs.getString("country_or_colony");
-        String cityOrDistrict = rs.getString("city_or_district");
-        String street = rs.getString("street");
-        int number = rs.getInt("number");
-
-        Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+        Address address = createAddressFromDatabase(rs);
 
         return new User(id, firstName, lastName, phoneNumber, email, userPassword, address);
+    }
+
+    private MarsException handleCouldNotFindUser(Exception ex) {
+        logger.log(Level.SEVERE, ex.getMessage());
+        return new MarsException("Could not find the user!");
     }
 
     // Rocket methods:
@@ -302,7 +298,7 @@ public class H2Repository implements MarsRepository {
             return rockets;
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
+            logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get rockets!");
         }
     }
@@ -318,9 +314,8 @@ public class H2Repository implements MarsRepository {
             while (results.next()) {
                 orders.add(createOrderFromDatabase(results));
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("Failed to get all orders");
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
         }
 
         return orders;
@@ -353,7 +348,7 @@ public class H2Repository implements MarsRepository {
                 order.setOrderId(rsKey.getInt(1));
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Creating new order failed");
         }
 
@@ -374,9 +369,8 @@ public class H2Repository implements MarsRepository {
 
                 return createOrderFromDatabase(results);
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("Failed to get all orders");
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
         }
     }
 
@@ -392,13 +386,12 @@ public class H2Repository implements MarsRepository {
             try (ResultSet results = stmt.executeQuery()) {
                 while(results.next()) {
                     orders.add(createOrderFromDatabase(results));
-                    System.out.println(results);
                 }
 
                 return orders;
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to get all orders");
         }
     }
@@ -414,7 +407,7 @@ public class H2Repository implements MarsRepository {
                 statuses.put(results.getInt("Id"), results.getString("Status"));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to get all statuses");
         }
 
@@ -432,20 +425,35 @@ public class H2Repository implements MarsRepository {
             double height = results.getDouble("height");
             double depth = results.getDouble("depth");
             double cost = results.getDouble("cost");
+
+            Address address = createAddressFromDatabase(results);
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create order from database results");
+        }
+    }
+
+    private Address createAddressFromDatabase(ResultSet results) {
+        try {
             String planet = results.getString("planet");
             String countryOrColony = results.getString("country_or_colony");
             String cityOrDistrict = results.getString("city_or_district");
             String street = results.getString("street");
             int number = results.getInt("number");
 
-            // TODO create helper function to get address from resultset
-            Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+            return new Address(planet, countryOrColony, cityOrDistrict, street, number);
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("Failed to create order from database results");
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create address from database results");
         }
+    }
+
+    private MarsException handleFailedToGetAllOrders(Exception ex) {
+        logger.log(Level.SEVERE, ex.getMessage());
+        return new MarsException("Failed to get all orders");
     }
 
     public static Connection getConnection() throws SQLException {

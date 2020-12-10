@@ -12,7 +12,7 @@ public class TokenAES {
     private static final Logger LOGGER = Logger.getLogger(TokenAES.class.getName());
     private static final Cipher cipher;
 
-    public TokenAES() {
+    private TokenAES() {
         throw new IllegalStateException("Utility class");
     }
 
