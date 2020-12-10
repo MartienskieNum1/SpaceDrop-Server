@@ -19,12 +19,14 @@ public class Order {
     private double depth;
     private double cost;
 
+    private Address address;
+
     @JsonCreator
     public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
                  @JsonProperty("mass") double mass, @JsonProperty("width") double width,
                  @JsonProperty("height") double height, @JsonProperty("depth") double depth,
-                 @JsonProperty("cost") double cost) {
+                 @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
         this.orderId = orderId;
         this.userId = userId;
         this.rocketId = rocketId;
@@ -34,6 +36,7 @@ public class Order {
         this.height = height;
         this.depth = depth;
         this.cost = cost;
+        this.address = address;
     }
 
     /*@JsonCreator
@@ -83,6 +86,10 @@ public class Order {
 
     public double getCost() {
         return cost;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     @Override
