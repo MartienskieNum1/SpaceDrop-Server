@@ -1,5 +1,6 @@
 package be.howest.ti.mars.logic.controller;
 
+import be.howest.ti.mars.logic.data.MockRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Address;
 import be.howest.ti.mars.logic.domain.User;
@@ -25,7 +26,7 @@ class MarsControllerTest {
         assertTrue(StringUtils.isNoneBlank(message));
     }
 
-    MarsController controller = new MarsController(Repositories.MOCK_REPO);
+    MarsController controller = new MarsController(new MockRepository());
     User generalUser;
 
     @BeforeEach
@@ -80,6 +81,14 @@ class MarsControllerTest {
     void wrongPassSetUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         User user = new User("Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+
+        assertNull(controller.setUser(generalUser.getEmail(), BCrypt.hashpw("rand", BCrypt.gensalt()), user));
+    }
+
+    @Test
+    void emailInUseSetUser() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User("Mira", "Vogelsang", "0412345678", "maarten@maarten", "pass", address);
 
         assertNull(controller.setUser(generalUser.getEmail(), BCrypt.hashpw("rand", BCrypt.gensalt()), user));
     }
