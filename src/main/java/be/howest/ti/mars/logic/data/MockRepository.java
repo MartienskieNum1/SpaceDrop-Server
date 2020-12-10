@@ -5,6 +5,7 @@ import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.util.*;
@@ -24,14 +25,30 @@ public class MockRepository implements MarsRepository {
     @Override
     public void createUser(User user) {
         Role role = new Role("User", 2);
-        userRoleMap.put(user, role);
+        User hashedUser;
+        if (user.getId() == -1) {
+            hashedUser = new User(user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+                    BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getAddress());
+        } else {
+            hashedUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+                    BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getAddress());
+        }
+        if (!userExists(user)) {
+            userRoleMap.put(hashedUser, role);
+        } else {
+            throw new MarsException("Could not create new user!");
+        }
     }
 
     @Override
     public void setUser(User ogUser, User moddedUser) {
         Role role = new Role("User", 2);
-        userRoleMap.remove(ogUser);
-        userRoleMap.put(moddedUser, role);
+        if (!userExists(moddedUser)) {
+            userRoleMap.remove(ogUser);
+            userRoleMap.put(moddedUser, role);
+        } else {
+            throw new MarsException("Could not update the user!");
+        }
     }
 
     @Override
@@ -66,6 +83,10 @@ public class MockRepository implements MarsRepository {
         throw new MarsException("Could not find the user!");
     }
 
+    private boolean userExists(User user) {
+        return userRoleMap.containsKey(user);
+    }
+
     @Override
     public List<Rocket> getRockets() {
         return new ArrayList<>(rockets);
@@ -97,16 +118,20 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public List<Order> getOrdersForUser(String email) {
-        int userId = getUserViaEmail(email).getId();
+        try {
+            int userId = getUserViaEmail(email).getId();
 
-        List<Order> userOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.getUserId() == userId) {
-                userOrders.add(order);
+            List<Order> userOrders = new ArrayList<>();
+            for (Order order : orders) {
+                if (order.getUserId() == userId) {
+                    userOrders.add(order);
+                }
             }
-        }
 
-        return userOrders;
+            return userOrders;
+        } catch (MarsException ex) {
+            throw new IllegalStateException("Failed to get all orders");
+        }
     }
 
     @Override
