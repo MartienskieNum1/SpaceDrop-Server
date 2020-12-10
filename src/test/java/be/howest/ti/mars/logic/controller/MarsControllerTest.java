@@ -3,6 +3,7 @@ package be.howest.ti.mars.logic.controller;
 import be.howest.ti.mars.logic.data.MockRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Address;
+import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
@@ -125,6 +126,8 @@ class MarsControllerTest {
 
     @Test
     void createOrder() {
+        Order order = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assertEquals(order, controller.createOrder(order));
     }
 
     @Test
