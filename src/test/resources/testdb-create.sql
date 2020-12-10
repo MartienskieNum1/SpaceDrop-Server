@@ -39,7 +39,12 @@ CREATE TABLE `Orders` (
                           `width` float NOT NULL,
                           `height` float NOT NULL,
                           `depth` float NOT NULL,
-                          `cost` float NOT NULL
+                          `cost` float NOT NULL,
+                          `planet` nvarchar NOT NULL,
+                          `country_or_colony` nvarchar NOT NULL,
+                          `city_or_district` nvarchar NOT NULL,
+                          `street` nvarchar NOT NULL,
+                          `number` int NOT NULL
 );
 
 CREATE TABLE `Statuses` (

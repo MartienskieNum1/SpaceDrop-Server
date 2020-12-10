@@ -69,8 +69,8 @@ public class H2Repository implements MarsRepository {
     private final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
 
     private final String SQL_SELECT_ALL_ORDERS = "select * from orders";
-    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost) " +
-            "values(?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
     private final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
     private final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
@@ -327,11 +327,11 @@ public class H2Repository implements MarsRepository {
     }
 
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order, int userId) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, order.getUserId());
+            stmt.setInt(1, userId);
             stmt.setInt(2, order.getRocketId());
             stmt.setInt(3, order.getStatusId());
             stmt.setDouble(4, order.getMass());
@@ -339,6 +339,11 @@ public class H2Repository implements MarsRepository {
             stmt.setDouble(6, order.getHeight());
             stmt.setDouble(7, order.getDepth());
             stmt.setDouble(8, order.getCost());
+            stmt.setString(9, order.getAddress().getPlanet());
+            stmt.setString(10, order.getAddress().getCountryOrColony());
+            stmt.setString(11, order.getAddress().getCityOrDistrict());
+            stmt.setString(12, order.getAddress().getStreet());
+            stmt.setInt(13, order.getAddress().getNumber());
 
             stmt.executeUpdate();
 
@@ -351,6 +356,8 @@ public class H2Repository implements MarsRepository {
             LOGGER.log(Level.SEVERE, ex.getMessage());
             throw new MarsException("Creating new order failed");
         }
+
+        order.setUserId(userId);
 
         return order;
     }
@@ -425,8 +432,16 @@ public class H2Repository implements MarsRepository {
             double height = results.getDouble("height");
             double depth = results.getDouble("depth");
             double cost = results.getDouble("cost");
+            String planet = results.getString("planet");
+            String countryOrColony = results.getString("country_or_colony");
+            String cityOrDistrict = results.getString("city_or_district");
+            String street = results.getString("street");
+            int number = results.getInt("number");
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
+            // TODO create helper function to get address from resultset
+            Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to create order from database results");

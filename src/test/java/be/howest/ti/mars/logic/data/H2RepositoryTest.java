@@ -126,16 +126,18 @@ public class H2RepositoryTest {
 
     @Test
     void createOrder() {
-        Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250);
-        h2Repository.createOrder(newOrder);
+        Address ogAddress = new Address("Earth", "Belgium", "City", "Street", 1);
+        Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250, ogAddress);
+        h2Repository.createOrder(newOrder, 1);
 
         assertEquals(3, h2Repository.getOrders().size());
     }
 
     @Test
     void getOrderById() {
-        Order newOrder = new Order(15, 1, 1, 3, 220, 50, 50, 50, 250);
-        h2Repository.createOrder(newOrder);
+        Address address = new Address("Earth", "Belgium", "City", "Street", 1);
+        Order newOrder = new Order(15, 1, 1, 3, 220, 50, 50, 50, 250, address);
+        h2Repository.createOrder(newOrder, 1);
 
         assertEquals(newOrder, h2Repository.getOrderById(newOrder.getOrderId()));
     }

@@ -89,9 +89,10 @@ class MarsOpenApiBridge {
     }
 
     public Order createOrder(RoutingContext ctx) {
-        String body = ctx.getBodyAsString();
-        Order newOrder = Json.decodeValue(body, Order.class);
-        return controller.createOrder(newOrder);
+        int userId = getUserId(ctx);
+        Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
+
+        return controller.createOrder(newOrder, userId);
     }
 
     public Object getOrderById(RoutingContext ctx) {
@@ -107,38 +108,41 @@ class MarsOpenApiBridge {
     }
 
     public Object getOrdersForUser(RoutingContext ctx) {
-        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
-        String email = TokenAES.decrypt(token);
         Map<Integer, String> statuses = controller.getIdsForStatuses();
-        List<Order> orders = controller.getOrdersForUser(email);
-        if (orders == null)
-            ctx.fail(500);
+        List<Order> orders = controller.getOrdersForUser(decryptTokenToEmail(ctx));
         List<JsonObject> jsonList = new ArrayList<>();
 
-        for (Order order: orders) {
-            JsonObject json = new JsonObject();
-            json.put("orderId", order.getOrderId());
-            json.put("userId", order.getUserId());
-            json.put("rocketId", order.getRocketId());
-            json.put("status", statuses.get(order.getStatusId()));
-            json.put("mass", order.getMass());
-            json.put("width", order.getWidth());
-            json.put("height", order.getHeight());
-            json.put("depth", order.getDepth());
-            json.put("cost", order.getCost());
+        if (orders != null) {
+            for (Order order: orders) {
+                JsonObject json = new JsonObject();
+                json.put("orderId", order.getOrderId());
+                json.put("userId", order.getUserId());
+                json.put("rocketId", order.getRocketId());
+                json.put("status", statuses.get(order.getStatusId()));
+                json.put("mass", order.getMass());
+                json.put("width", order.getWidth());
+                json.put("height", order.getHeight());
+                json.put("depth", order.getDepth());
+                json.put("cost", order.getCost());
 
-            jsonList.add(json);
+                jsonList.add(json);
+            }
+        } else {
+            ctx.fail(500);
         }
 
         return jsonList;
     }
 
     public int getUserId(RoutingContext ctx) {
-        String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
-        String email = TokenAES.decrypt(token);
-        int id = controller.getUserId(email);
+        int id = controller.getUserId(decryptTokenToEmail(ctx));
+
         if (id == -1)
             ctx.fail(500);
         return id;
+    }
+
+    private String decryptTokenToEmail(RoutingContext ctx) {
+        return TokenAES.decrypt(ctx.request().getHeader(HttpHeaders.AUTHORIZATION));
     }
 }

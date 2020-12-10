@@ -21,12 +21,14 @@ public class Order {
     private double depth;
     private double cost;
 
+    private Address address;
+
     @JsonCreator
     public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
                  @JsonProperty("mass") double mass, @JsonProperty("width") double width,
                  @JsonProperty("height") double height, @JsonProperty("depth") double depth,
-                 @JsonProperty("cost") double cost) {
+                 @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
         this.orderId = orderId;
         this.userId = userId;
         this.rocketId = rocketId;
@@ -36,6 +38,20 @@ public class Order {
         this.height = height;
         this.depth = depth;
         this.cost = cost;
+        this.address = address;
+    }
+
+    /*@JsonCreator
+    public Order(@JsonProperty("userId") int userId,
+                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
+                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
+                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
+                 @JsonProperty("cost") double cost) {
+        this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
+    }*/
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getOrderId() {
@@ -74,6 +90,10 @@ public class Order {
         return cost;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -86,6 +106,7 @@ public class Order {
                 ", height=" + height +
                 ", depth=" + depth +
                 ", cost=" + cost +
+                ", address=" + address +
                 '}';
     }
 

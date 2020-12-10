@@ -61,6 +61,19 @@ components:
           type: number
         cost:
           type: number
+        address:
+          type: object
+          properties:
+            planet:
+              type: string
+            countryOrColony:
+              type: string
+            cityOrDistrict:
+              type: string
+            street:
+              type: string
+            number:
+              type: number
 
     rocket:
       type: object
