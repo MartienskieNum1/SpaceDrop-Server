@@ -89,6 +89,11 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void getIdViaEmail() {
+        assertEquals(2, h2Repository.getIdViaEmail("mira.vogelsang@telenet.com"));
+    }
+
+    @Test
     void getOrders() {
         List<Order> orders = h2Repository.getOrders();
         assertEquals(2, orders.size());
