@@ -3,6 +3,8 @@ package be.howest.ti.mars.logic.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 public class Order {
     public void setOrderId(int orderId) {
         this.orderId = orderId;
@@ -35,15 +37,6 @@ public class Order {
         this.depth = depth;
         this.cost = cost;
     }
-
-    /*@JsonCreator
-    public Order(@JsonProperty("userId") int userId,
-                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
-                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
-                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
-                 @JsonProperty("cost") double cost) {
-        this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
-    }*/
 
     public int getOrderId() {
         return orderId;
@@ -94,5 +87,18 @@ public class Order {
                 ", depth=" + depth +
                 ", cost=" + cost +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return orderId == order.orderId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
     }
 }

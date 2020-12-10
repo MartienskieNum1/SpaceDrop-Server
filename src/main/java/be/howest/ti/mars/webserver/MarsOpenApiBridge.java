@@ -52,7 +52,10 @@ class MarsOpenApiBridge {
     public Object getUser(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
-        return controller.getUser(email);
+        User user = controller.getUser(email);
+        if (user == null)
+            ctx.fail(500);
+        return user;
     }
 
     public Object login(RoutingContext ctx) {
@@ -93,7 +96,10 @@ class MarsOpenApiBridge {
 
     public Object getOrderById(RoutingContext ctx) {
         int orderId = Integer.parseInt(ctx.request().getParam("id"));
-        return controller.getOrderById(orderId);
+        Order order = controller.getOrderById(orderId);
+        if (order == null)
+            ctx.fail(404);
+        return order;
     }
 
     public Object getRockets(RoutingContext ctx) {
@@ -105,6 +111,8 @@ class MarsOpenApiBridge {
         String email = TokenAES.decrypt(token);
         Map<Integer, String> statuses = controller.getIdsForStatuses();
         List<Order> orders = controller.getOrdersForUser(email);
+        if (orders == null)
+            ctx.fail(500);
         List<JsonObject> jsonList = new ArrayList<>();
 
         for (Order order: orders) {
@@ -128,6 +136,9 @@ class MarsOpenApiBridge {
     public int getUserId(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
-        return controller.getUserId(email);
+        int id = controller.getUserId(email);
+        if (id == -1)
+            ctx.fail(500);
+        return id;
     }
 }

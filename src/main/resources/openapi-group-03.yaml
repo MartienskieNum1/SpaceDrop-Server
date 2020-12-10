@@ -246,7 +246,7 @@ paths:
               schema:
                 type: string
         '403':
-          description: Wrong password
+          description: Wrong password or email already in use
 
 
   /api/details/orders:
@@ -307,6 +307,8 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/order'
+        '404':
+          description: Order not found
 
   /api/order:
     post:

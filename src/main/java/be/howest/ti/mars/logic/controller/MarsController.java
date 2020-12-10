@@ -46,11 +46,15 @@ public class MarsController {
     }
 
     public String setUser(String email, String oldPassword, User moddedUser) {
-        User ogUser = repo.getUserViaEmail(email);
-        if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
-            repo.setUser(ogUser, moddedUser);
-            return TokenAES.encrypt(moddedUser.getEmail());
-        } else {
+        try {
+            User ogUser = repo.getUserViaEmail(email);
+            if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
+                repo.setUser(ogUser, moddedUser);
+                return TokenAES.encrypt(moddedUser.getEmail());
+            } else {
+                return null;
+            }
+        } catch (MarsException ex) {
             return null;
         }
     }
@@ -73,7 +77,11 @@ public class MarsController {
     }
 
     public User getUser(String email) {
-        return repo.getUserViaEmail(email);
+        try {
+            return repo.getUserViaEmail(email);
+        } catch (MarsException ex) {
+            return null;
+        }
     }
 
     public List<Order> getOrders() {
@@ -85,7 +93,11 @@ public class MarsController {
     }
 
     public Order getOrderById(int orderId) {
-        return repo.getOrderById(orderId);
+        try {
+            return repo.getOrderById(orderId);
+        } catch (IllegalStateException ex) {
+            return null;
+        }
     }
 
     public Object getRockets() {
@@ -93,11 +105,19 @@ public class MarsController {
     }
 
     public int getUserId(String email) {
-        return repo.getIdViaEmail(email);
+        try {
+            return repo.getIdViaEmail(email);
+        } catch (MarsException ex) {
+            return -1;
+        }
     }
 
     public List<Order> getOrdersForUser(String email) {
-        return repo.getOrdersForUser(email);
+        try {
+            return repo.getOrdersForUser(email);
+        } catch (IllegalStateException ex) {
+            return null;
+        }
     }
 
     public Map<Integer, String> getIdsForStatuses() {
