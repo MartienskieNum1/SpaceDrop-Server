@@ -246,7 +246,7 @@ paths:
               schema:
                 type: string
         '403':
-          description: Wrong password
+          description: Wrong password or email already in use
 
 
   /api/details/orders:

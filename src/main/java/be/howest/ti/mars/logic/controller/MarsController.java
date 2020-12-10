@@ -46,11 +46,15 @@ public class MarsController {
     }
 
     public String setUser(String email, String oldPassword, User moddedUser) {
-        User ogUser = repo.getUserViaEmail(email);
-        if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
-            repo.setUser(ogUser, moddedUser);
-            return TokenAES.encrypt(moddedUser.getEmail());
-        } else {
+        try {
+            User ogUser = repo.getUserViaEmail(email);
+            if (BCrypt.checkpw(oldPassword, ogUser.getPassword())) {
+                repo.setUser(ogUser, moddedUser);
+                return TokenAES.encrypt(moddedUser.getEmail());
+            } else {
+                return null;
+            }
+        } catch (MarsException ex) {
             return null;
         }
     }
