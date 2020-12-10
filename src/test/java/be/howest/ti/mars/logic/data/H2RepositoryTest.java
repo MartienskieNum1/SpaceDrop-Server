@@ -16,7 +16,9 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,6 +91,11 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void getIdViaEmail() {
+        assertEquals(2, h2Repository.getIdViaEmail("mira.vogelsang@telenet.com"));
+    }
+
+    @Test
     void getOrders() {
         List<Order> orders = h2Repository.getOrders();
         assertEquals(2, orders.size());
@@ -100,6 +107,29 @@ public class H2RepositoryTest {
         h2Repository.createOrder(newOrder);
 
         assertEquals(3, h2Repository.getOrders().size());
+    }
+
+    @Test
+    void getOrderById() {
+        Order newOrder = new Order(15, 1, 1, 3, 220, 50, 50, 50, 250);
+        h2Repository.createOrder(newOrder);
+
+        assertEquals(newOrder, h2Repository.getOrderById(newOrder.getOrderId()));
+    }
+
+    @Test
+    void getOrdersForUser() {
+        assertEquals(2, h2Repository.getOrdersForUser("maarten.demeyere@hotmail.com").size());
+    }
+
+    @Test
+    void getIdsForStatuses() {
+        Map<Integer, String> statuses = new HashMap<>();
+        statuses.put(1, "Travelling");
+        statuses.put(2, "Returning");
+        statuses.put(3, "Finished");
+
+        assertEquals(statuses, h2Repository.getIdsForStatuses());
     }
 
     @Test
