@@ -118,16 +118,20 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public List<Order> getOrdersForUser(String email) {
-        int userId = getUserViaEmail(email).getId();
+        try {
+            int userId = getUserViaEmail(email).getId();
 
-        List<Order> userOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.getUserId() == userId) {
-                userOrders.add(order);
+            List<Order> userOrders = new ArrayList<>();
+            for (Order order : orders) {
+                if (order.getUserId() == userId) {
+                    userOrders.add(order);
+                }
             }
-        }
 
-        return userOrders;
+            return userOrders;
+        } catch (MarsException ex) {
+            throw new IllegalStateException("Failed to get all orders");
+        }
     }
 
     @Override
