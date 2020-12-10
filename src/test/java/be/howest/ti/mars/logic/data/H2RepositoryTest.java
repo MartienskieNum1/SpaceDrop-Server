@@ -108,6 +108,14 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void getOrderById() {
+        Order newOrder = new Order(15, 1, 1, 3, 220, 50, 50, 50, 250);
+        h2Repository.createOrder(newOrder);
+
+        assertEquals(newOrder, h2Repository.getOrderById(newOrder.getOrderId()));
+    }
+
+    @Test
     void getRockets() {
         List<Rocket> rockets = h2Repository.getRockets();
         assertEquals(2, rockets.size());
