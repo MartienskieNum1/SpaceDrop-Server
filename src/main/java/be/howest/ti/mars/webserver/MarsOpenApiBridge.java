@@ -112,22 +112,23 @@ class MarsOpenApiBridge {
         List<Order> orders = controller.getOrdersForUser(decryptTokenToEmail(ctx));
         List<JsonObject> jsonList = new ArrayList<>();
 
-        if (orders == null)
+        if (orders != null) {
+            for (Order order: orders) {
+                JsonObject json = new JsonObject();
+                json.put("orderId", order.getOrderId());
+                json.put("userId", order.getUserId());
+                json.put("rocketId", order.getRocketId());
+                json.put("status", statuses.get(order.getStatusId()));
+                json.put("mass", order.getMass());
+                json.put("width", order.getWidth());
+                json.put("height", order.getHeight());
+                json.put("depth", order.getDepth());
+                json.put("cost", order.getCost());
+
+                jsonList.add(json);
+            }
+        } else {
             ctx.fail(500);
-
-        for (Order order: orders) {
-            JsonObject json = new JsonObject();
-            json.put("orderId", order.getOrderId());
-            json.put("userId", order.getUserId());
-            json.put("rocketId", order.getRocketId());
-            json.put("status", statuses.get(order.getStatusId()));
-            json.put("mass", order.getMass());
-            json.put("width", order.getWidth());
-            json.put("height", order.getHeight());
-            json.put("depth", order.getDepth());
-            json.put("cost", order.getCost());
-
-            jsonList.add(json);
         }
 
         return jsonList;
