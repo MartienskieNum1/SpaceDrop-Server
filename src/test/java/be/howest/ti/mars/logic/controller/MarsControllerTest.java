@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -187,6 +188,6 @@ class MarsControllerTest {
 
     @Test
     void wrongEmailGetOrdersForUser() {
-        assertNull(controller.getOrdersForUser("random@random"));
+        assertEquals(Collections.emptyList(), controller.getOrdersForUser("random@random"));
     }
 }
