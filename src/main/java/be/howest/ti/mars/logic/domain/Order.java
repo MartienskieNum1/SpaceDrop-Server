@@ -104,6 +104,7 @@ public class Order {
                 ", height=" + height +
                 ", depth=" + depth +
                 ", cost=" + cost +
+                ", address=" + address +
                 '}';
     }
 }
