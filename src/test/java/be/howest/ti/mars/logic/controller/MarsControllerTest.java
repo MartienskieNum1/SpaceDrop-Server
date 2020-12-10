@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MarsControllerTest {
@@ -168,7 +171,23 @@ class MarsControllerTest {
     }
 
     @Test
-    void getOrdersForUser() {
+    void successfulGetOrdersForUser() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User(15, "Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+        Order order1 = new Order(1, 15, 1, 1, 1, 1, 1, 1, 1);
+        Order order2 = new Order(2, 15, 1, 1, 1, 1, 1, 1, 1);
+        List<Order> orders = Arrays.asList(order1, order2);
+
+        controller.createUser(user);
+        controller.createOrder(order1);
+        controller.createOrder(order2);
+
+        assertEquals(orders, controller.getOrdersForUser(user.getEmail()));
+    }
+
+    @Test
+    void wrongEmailGetOrdersForUser() {
+        assertNull(controller.getOrdersForUser("random@random"));
     }
 
     @Test
