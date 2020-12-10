@@ -16,7 +16,9 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,6 +120,16 @@ public class H2RepositoryTest {
     @Test
     void getOrdersForUser() {
         assertEquals(2, h2Repository.getOrdersForUser("maarten.demeyere@hotmail.com").size());
+    }
+
+    @Test
+    void getIdsForStatuses() {
+        Map<Integer, String> statuses = new HashMap<>();
+        statuses.put(1, "Travelling");
+        statuses.put(2, "Returning");
+        statuses.put(3, "Finished");
+
+        assertEquals(statuses, h2Repository.getIdsForStatuses());
     }
 
     @Test
