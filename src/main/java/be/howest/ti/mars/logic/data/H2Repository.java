@@ -306,6 +306,11 @@ public class H2Repository implements MarsRepository {
             stmt.setDouble(6, order.getHeight());
             stmt.setDouble(7, order.getDepth());
             stmt.setDouble(8, order.getCost());
+            stmt.setString(9, order.getAddress().getPlanet());
+            stmt.setString(10, order.getAddress().getCountryOrColony());
+            stmt.setString(11, order.getAddress().getCityOrDistrict());
+            stmt.setString(12, order.getAddress().getStreet());
+            stmt.setInt(12, order.getAddress().getNumber());
 
             stmt.executeUpdate();
 
@@ -394,8 +399,16 @@ public class H2Repository implements MarsRepository {
             double height = results.getDouble("height");
             double depth = results.getDouble("depth");
             double cost = results.getDouble("cost");
+            String planet = results.getString("planet");
+            String countryOrColony = results.getString("country_or_colony");
+            String cityOrDistrict = results.getString("city_or_district");
+            String street = results.getString("street");
+            int number = results.getInt("number");
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost);
+            // TODO create helper function to get address from resultset
+            Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to create order from database results");
