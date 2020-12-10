@@ -111,6 +111,8 @@ class MarsOpenApiBridge {
         String email = TokenAES.decrypt(token);
         Map<Integer, String> statuses = controller.getIdsForStatuses();
         List<Order> orders = controller.getOrdersForUser(email);
+        if (orders == null)
+            ctx.fail(500);
         List<JsonObject> jsonList = new ArrayList<>();
 
         for (Order order: orders) {

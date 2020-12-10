@@ -113,7 +113,11 @@ public class MarsController {
     }
 
     public List<Order> getOrdersForUser(String email) {
-        return repo.getOrdersForUser(email);
+        try {
+            return repo.getOrdersForUser(email);
+        } catch (IllegalStateException ex) {
+            return null;
+        }
     }
 
     public Map<Integer, String> getIdsForStatuses() {
