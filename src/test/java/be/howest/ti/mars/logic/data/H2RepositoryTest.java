@@ -72,6 +72,29 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void userIsRemovedOnFailure() {
+        try (Connection con = H2Repository.getConnection();
+             PreparedStatement stmt = con.prepareStatement("delete from orders; delete from userroles;" +
+                     "delete from users; delete from roles where rank = 2")) {
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Could not delete role!");
+        }
+
+        assertEquals(0, h2Repository.getUsers().size());
+
+        try {
+            Address address = new Address("Earth", "Belgium", "City", "Street", 1);
+            User newUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", address);
+
+            h2Repository.createUser(newUser);
+        } catch (MarsException ex) {
+            assertEquals(0, h2Repository.getUsers().size());
+        }
+    }
+
+    @Test
     void setUser() {
         Address ogAddress = new Address("Earth", "Belgium", "City", "Street", 1);
         User ogUser = new User("Jos", "Vermeulen", "0412345678", "jos@lol.be", "pass", ogAddress);
