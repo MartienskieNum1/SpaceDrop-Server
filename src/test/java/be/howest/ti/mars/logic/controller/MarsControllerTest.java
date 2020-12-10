@@ -131,7 +131,25 @@ class MarsControllerTest {
     }
 
     @Test
-    void getOrderById() {
+    void successfulGetOrderById() {
+        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
+        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1);
+
+        controller.createOrder(order1);
+        controller.createOrder(order2);
+
+        assertEquals(order2, controller.getOrderById(2));
+    }
+
+    @Test
+    void wrongIdGetOrderById() {
+        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
+        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1);
+
+        controller.createOrder(order1);
+        controller.createOrder(order2);
+
+        assertNull(controller.getOrderById(99));
     }
 
     @Test
