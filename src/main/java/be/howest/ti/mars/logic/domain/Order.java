@@ -45,6 +45,10 @@ public class Order {
         this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
     }*/
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public int getOrderId() {
         return orderId;
     }

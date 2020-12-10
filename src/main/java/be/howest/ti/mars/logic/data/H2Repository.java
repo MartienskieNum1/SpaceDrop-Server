@@ -319,6 +319,8 @@ public class H2Repository implements MarsRepository {
             throw new MarsException("Creating new order failed");
         }
 
+        order.setUserId(userId);
+
         return order;
     }
 

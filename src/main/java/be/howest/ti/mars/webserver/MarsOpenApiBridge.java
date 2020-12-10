@@ -87,8 +87,8 @@ class MarsOpenApiBridge {
 
     public Order createOrder(RoutingContext ctx) {
         int userId = getUserId(ctx);
-        String body = ctx.getBodyAsString();
-        Order newOrder = Json.decodeValue(body, Order.class);
+        Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
+
         return controller.createOrder(newOrder, userId);
     }
 
