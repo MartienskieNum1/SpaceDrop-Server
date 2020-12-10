@@ -294,11 +294,11 @@ public class H2Repository implements MarsRepository {
     }
 
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order, int userId) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, order.getUserId());
+            stmt.setInt(1, userId);
             stmt.setInt(2, order.getRocketId());
             stmt.setInt(3, order.getStatusId());
             stmt.setDouble(4, order.getMass());

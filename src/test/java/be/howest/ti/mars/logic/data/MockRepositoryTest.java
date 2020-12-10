@@ -76,7 +76,7 @@ class MockRepositoryTest {
 
     @Test
     void createOrder() {
-        repo.createOrder(new Order(1, 1, 1, 1, 500, 500, 500, 500, 500));
+        repo.createOrder(new Order(1, 1, 1, 1, 500, 500, 500, 500, 500), userId);
         assertEquals(1, repo.getOrders().size());
     }
 
@@ -84,8 +84,8 @@ class MockRepositoryTest {
     void getOrderById() {
         Order order1 = new Order(1, 1, 1, 1, 500, 500, 500, 500, 500);
         Order order2 = new Order(5, 1, 1, 1, 500, 500, 500, 500, 500);
-        repo.createOrder(order1);
-        repo.createOrder(order2);
+        repo.createOrder(order1, userId);
+        repo.createOrder(order2, userId);
 
         assertEquals(order2, repo.getOrderById(5));
     }
@@ -99,9 +99,9 @@ class MockRepositoryTest {
         Order order3 = new Order(2, 2, 1, 1, 500, 500, 500, 500, 500);
 
         repo.createUser(user1);
-        repo.createOrder(order1);
-        repo.createOrder(order2);
-        repo.createOrder(order3);
+        repo.createOrder(order1, userId);
+        repo.createOrder(order2, userId);
+        repo.createOrder(order3, userId);
 
         assertEquals(2, repo.getOrdersForUser("maarten@maarten").size());
     }

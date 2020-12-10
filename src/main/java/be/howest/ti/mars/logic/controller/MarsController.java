@@ -80,8 +80,8 @@ public class MarsController {
         return new ArrayList<>(repo.getOrders());
     }
 
-    public Order createOrder(Order newOrder) {
-        return repo.createOrder(newOrder);
+    public Order createOrder(Order newOrder, int userId) {
+        return repo.createOrder(newOrder, userId);
     }
 
     public Order getOrderById(int orderId) {
