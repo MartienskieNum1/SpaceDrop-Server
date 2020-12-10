@@ -262,13 +262,7 @@ public class H2Repository implements MarsRepository {
         String phoneNumber = rs.getString("phone_number");
         String userPassword = rs.getString("password");
 
-        String planet = rs.getString("planet");
-        String countryOrColony = rs.getString("country_or_colony");
-        String cityOrDistrict = rs.getString("city_or_district");
-        String street = rs.getString("street");
-        int number = rs.getInt("number");
-
-        Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+        Address address = createAddressFromDatabase(rs);
 
         return new User(id, firstName, lastName, phoneNumber, email, userPassword, address);
     }
@@ -431,19 +425,29 @@ public class H2Repository implements MarsRepository {
             double height = results.getDouble("height");
             double depth = results.getDouble("depth");
             double cost = results.getDouble("cost");
+
+            Address address = createAddressFromDatabase(results);
+
+            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create order from database results");
+        }
+    }
+
+    private Address createAddressFromDatabase(ResultSet results) {
+        try {
             String planet = results.getString("planet");
             String countryOrColony = results.getString("country_or_colony");
             String cityOrDistrict = results.getString("city_or_district");
             String street = results.getString("street");
             int number = results.getInt("number");
 
-            // TODO create helper function to get address from resultset
-            Address address = new Address(planet, countryOrColony, cityOrDistrict, street, number);
+            return new Address(planet, countryOrColony, cityOrDistrict, street, number);
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("Failed to create order from database results");
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create address from database results");
         }
     }
 
