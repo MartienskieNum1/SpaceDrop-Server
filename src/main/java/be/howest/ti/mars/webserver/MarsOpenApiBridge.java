@@ -96,7 +96,10 @@ class MarsOpenApiBridge {
 
     public Object getOrderById(RoutingContext ctx) {
         int orderId = Integer.parseInt(ctx.request().getParam("id"));
-        return controller.getOrderById(orderId);
+        Order order = controller.getOrderById(orderId);
+        if (order == null)
+            ctx.fail(404);
+        return order;
     }
 
     public Object getRockets(RoutingContext ctx) {

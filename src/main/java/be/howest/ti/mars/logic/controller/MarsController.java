@@ -93,7 +93,11 @@ public class MarsController {
     }
 
     public Order getOrderById(int orderId) {
-        return repo.getOrderById(orderId);
+        try {
+            return repo.getOrderById(orderId);
+        } catch (IllegalStateException ex) {
+            return null;
+        }
     }
 
     public Object getRockets() {
