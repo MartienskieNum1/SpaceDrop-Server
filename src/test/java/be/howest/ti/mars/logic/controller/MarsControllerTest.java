@@ -153,7 +153,18 @@ class MarsControllerTest {
     }
 
     @Test
-    void getUserId() {
+    void successfulGetUserId() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User(15, "Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
+
+        controller.createUser(user);
+
+        assertEquals(15, controller.getUserId(user.getEmail()));
+    }
+
+    @Test
+    void wrongIdGetUserId() {
+        assertEquals(-1, controller.getUserId("random@random"));
     }
 
     @Test
