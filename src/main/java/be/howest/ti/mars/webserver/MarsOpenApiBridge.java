@@ -52,7 +52,10 @@ class MarsOpenApiBridge {
     public Object getUser(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
-        return controller.getUser(email);
+        User user = controller.getUser(email);
+        if (user == null)
+            ctx.fail(500);
+        return user;
     }
 
     public Object login(RoutingContext ctx) {

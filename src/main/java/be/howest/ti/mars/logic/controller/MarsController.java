@@ -77,7 +77,11 @@ public class MarsController {
     }
 
     public User getUser(String email) {
-        return repo.getUserViaEmail(email);
+        try {
+            return repo.getUserViaEmail(email);
+        } catch (MarsException ex) {
+            return null;
+        }
     }
 
     public List<Order> getOrders() {
