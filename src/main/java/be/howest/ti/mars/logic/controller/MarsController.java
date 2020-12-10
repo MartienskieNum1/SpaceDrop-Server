@@ -105,7 +105,11 @@ public class MarsController {
     }
 
     public int getUserId(String email) {
-        return repo.getIdViaEmail(email);
+        try {
+            return repo.getIdViaEmail(email);
+        } catch (MarsException ex) {
+            return -1;
+        }
     }
 
     public List<Order> getOrdersForUser(String email) {

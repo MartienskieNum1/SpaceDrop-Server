@@ -134,6 +134,9 @@ class MarsOpenApiBridge {
     public int getUserId(RoutingContext ctx) {
         String token = ctx.request().getHeader(HttpHeaders.AUTHORIZATION);
         String email = TokenAES.decrypt(token);
-        return controller.getUserId(email);
+        int id = controller.getUserId(email);
+        if (id == -1)
+            ctx.fail(500);
+        return id;
     }
 }
