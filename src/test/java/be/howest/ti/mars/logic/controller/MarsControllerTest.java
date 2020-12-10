@@ -114,7 +114,13 @@ class MarsControllerTest {
     }
 
     @Test
-    void getUser() {
+    void successfulGetUser() {
+        assertEquals(generalUser, controller.getUser(generalUser.getEmail()));
+    }
+
+    @Test
+    void wrongEmailGetUSer() {
+        assertNull(controller.getUser("random@random"));
     }
 
     @Test
