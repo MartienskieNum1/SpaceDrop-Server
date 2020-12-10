@@ -57,6 +57,8 @@ public class H2Repository implements MarsRepository {
     private final String SQL_INSERT_USER = "insert into Users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_BIND_ROLE_TO_USER = "insert into userroles(user_id, role_id) values(?, ?)";
+    private final String SQL_REMOVE_USER = "delete from users where email = ?";
+    private final String SQL_SELECT_USER_VIA_ID = "select * from users where id = ?";
     private final String SQL_UPDATE_USER = "update users set first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
             "password = ?, planet = ?, country_or_colony = ?, city_or_district = ?, street = ?, number = ? where email = ?";
     private final String SQL_SELECT_ALL_USERS = "select * from Users";
@@ -106,9 +108,40 @@ public class H2Repository implements MarsRepository {
 
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
+            removeUser(getUserViaId(userId));
             throw new MarsException("Could not bind user to role!");
         }
+    }
 
+    private void removeUser(User user) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_REMOVE_USER)) {
+
+            stmt.setString(1, user.getEmail());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Could not remove the user!");
+        }
+    }
+
+    private User getUserViaId(int id) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_USER_VIA_ID)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return getUserFromResultSet(rs);
+            }
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Could not find the user!");
+        }
     }
 
     @Override
