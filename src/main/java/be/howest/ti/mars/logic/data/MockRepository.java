@@ -13,14 +13,15 @@ import java.util.*;
 public class MockRepository implements MarsRepository {
     private static final MockRepository INSTANCE = new MockRepository();
 
-    private Map<User, Role> userRoleMap = new HashMap<>();
-    private Set<Order> orders = new HashSet<>();
-    private Set<Rocket> rockets = new HashSet<>();
-    private Set<Role> roles = new HashSet<>();
+    private final Map<User, Role> userRoleMap = new HashMap<>();
+    private final Set<Order> orders = new HashSet<>();
+    private final Set<Rocket> rockets = new HashSet<>();
 
     public static MockRepository getInstance() {
         return INSTANCE;
     }
+
+    private static final String COULD_NOT_FIND_THE_USER = "Could not find the user!";
 
     @Override
     public void createUser(User user) {
@@ -62,7 +63,7 @@ public class MockRepository implements MarsRepository {
             if (entry.getKey().getEmail().equals(email))
                 return entry.getKey();
         }
-        throw new MarsException("Could not find the user!");
+        throw new MarsException(COULD_NOT_FIND_THE_USER);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class MockRepository implements MarsRepository {
             if (entry.getKey().getEmail().equals(email))
                 return entry.getKey().getId();
         }
-        throw new MarsException("Could not find the user!");
+        throw new MarsException(COULD_NOT_FIND_THE_USER);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class MockRepository implements MarsRepository {
             if (entry.getKey().getEmail().equals(email))
                 return entry.getValue();
         }
-        throw new MarsException("Could not find the user!");
+        throw new MarsException(COULD_NOT_FIND_THE_USER);
     }
 
     private boolean userExists(User user) {
@@ -90,10 +91,6 @@ public class MockRepository implements MarsRepository {
     @Override
     public List<Rocket> getRockets() {
         return new ArrayList<>(rockets);
-    }
-
-    public void addRocket(Rocket rocket) {
-        rockets.add(rocket);
     }
 
     @Override
