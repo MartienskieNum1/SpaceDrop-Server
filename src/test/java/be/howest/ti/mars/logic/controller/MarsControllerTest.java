@@ -3,6 +3,7 @@ package be.howest.ti.mars.logic.controller;
 import be.howest.ti.mars.logic.data.MockRepository;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Address;
+import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.TokenAES;
 import org.apache.commons.lang3.StringUtils;
@@ -108,18 +109,12 @@ class MarsControllerTest {
 
     @Test
     void getRoleViaEmail() {
-    }
-
-    @Test
-    void getUsers() {
+        Role role = new Role("User", 2);
+        assertEquals(role, controller.getRoleViaEmail(generalUser.getEmail()));
     }
 
     @Test
     void getUser() {
-    }
-
-    @Test
-    void getOrders() {
     }
 
     @Test
@@ -128,10 +123,6 @@ class MarsControllerTest {
 
     @Test
     void getOrderById() {
-    }
-
-    @Test
-    void getRockets() {
     }
 
     @Test
