@@ -310,7 +310,7 @@ public class H2Repository implements MarsRepository {
             stmt.setString(10, order.getAddress().getCountryOrColony());
             stmt.setString(11, order.getAddress().getCityOrDistrict());
             stmt.setString(12, order.getAddress().getStreet());
-            stmt.setInt(12, order.getAddress().getNumber());
+            stmt.setInt(13, order.getAddress().getNumber());
 
             stmt.executeUpdate();
 
