@@ -130,28 +130,31 @@ class MarsControllerTest {
 
     @Test
     void createOrder() {
-        Order order = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
-        assertEquals(order, controller.createOrder(order));
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1, address);
+        assertEquals(order, controller.createOrder(order, 1));
     }
 
     @Test
     void successfulGetOrderById() {
-        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
-        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1);
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1, address);
+        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1, address);
 
-        controller.createOrder(order1);
-        controller.createOrder(order2);
+        controller.createOrder(order1, 1);
+        controller.createOrder(order2, 1);
 
         assertEquals(order2, controller.getOrderById(2));
     }
 
     @Test
     void wrongIdGetOrderById() {
-        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1);
-        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1);
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1, address);
+        Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1, address);
 
-        controller.createOrder(order1);
-        controller.createOrder(order2);
+        controller.createOrder(order1, 1);
+        controller.createOrder(order2, 1);
 
         assertNull(controller.getOrderById(99));
     }
@@ -175,13 +178,13 @@ class MarsControllerTest {
     void successfulGetOrdersForUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         User user = new User(15, "Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
-        Order order1 = new Order(1, 15, 1, 1, 1, 1, 1, 1, 1);
-        Order order2 = new Order(2, 15, 1, 1, 1, 1, 1, 1, 1);
+        Order order1 = new Order(1, 15, 1, 1, 1, 1, 1, 1, 1, address);
+        Order order2 = new Order(2, 15, 1, 1, 1, 1, 1, 1, 1, address);
         List<Order> orders = Arrays.asList(order1, order2);
 
         controller.createUser(user);
-        controller.createOrder(order1);
-        controller.createOrder(order2);
+        controller.createOrder(order1, user.getId());
+        controller.createOrder(order2, user.getId());
 
         assertEquals(orders, controller.getOrdersForUser(user.getEmail()));
     }

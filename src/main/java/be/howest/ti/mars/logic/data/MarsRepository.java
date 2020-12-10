@@ -23,7 +23,7 @@ public interface MarsRepository {
 
     // Order methods:
     List<Order> getOrders();
-    Order createOrder(Order order);
+    Order createOrder(Order order, int userId);
     Order getOrderById(int orderId);
     List<Order> getOrdersForUser(String email);
     Map<Integer, String> getIdsForStatuses();
