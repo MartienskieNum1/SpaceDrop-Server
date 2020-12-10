@@ -25,8 +25,14 @@ public class MockRepository implements MarsRepository {
     @Override
     public void createUser(User user) {
         Role role = new Role("User", 2);
-        User hashedUser = new User(user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
-                BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getAddress());
+        User hashedUser;
+        if (user.getId() == -1) {
+            hashedUser = new User(user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+                    BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getAddress());
+        } else {
+            hashedUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+                    BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()), user.getAddress());
+        }
         if (!userExists(user)) {
             userRoleMap.put(hashedUser, role);
         } else {
