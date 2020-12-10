@@ -116,6 +116,11 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void getOrdersForUser() {
+        assertEquals(2, h2Repository.getOrdersForUser("maarten.demeyere@hotmail.com").size());
+    }
+
+    @Test
     void getRockets() {
         List<Rocket> rockets = h2Repository.getRockets();
         assertEquals(2, rockets.size());
