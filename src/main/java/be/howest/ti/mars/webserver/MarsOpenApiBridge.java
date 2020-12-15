@@ -91,15 +91,19 @@ class MarsOpenApiBridge {
     }
 
     public Order createOrder(RoutingContext ctx) {
-        int userId = getUserId(ctx);
-        Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
-        Order createdOrder = controller.createOrder(newOrder, userId);
+        if (ctx.request().getHeader("Authorization") == null) {
+            return null;
+        } else {
+            int userId = getUserId(ctx);
+            Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
+            Order createdOrder = controller.createOrder(newOrder, userId);
 
-        if (createdOrder == null) {
-            ctx.fail(400, new ValidationException("Package to big or too heavy"));
+            if (createdOrder == null) {
+                ctx.fail(400, new ValidationException("Package to big or too heavy"));
+            }
+
+            return createdOrder;
         }
-
-        return createdOrder;
     }
 
     public Object getOrderById(RoutingContext ctx) {
