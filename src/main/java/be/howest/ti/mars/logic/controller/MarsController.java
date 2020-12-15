@@ -1,6 +1,7 @@
 package be.howest.ti.mars.logic.controller;
 
 import be.howest.ti.mars.logic.data.MarsRepository;
+import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
@@ -124,7 +125,13 @@ public class MarsController {
         return repo.getIdsForStatuses();
     }
 
-    private boolean isSpaceOnRocket(int rocketId) {
-        return true;
+    private boolean isSpaceOnRocket(Order order) {
+        Rocket rocket = repo.getRocketById(order.getRocketId());
+
+        if (rocket.getAvailableVolume() - order.calculateVolume() >= 0) {
+            return rocket.getAvailableMass() - order.getMass() >= 0;
+        }
+
+        return false;
     }
 }

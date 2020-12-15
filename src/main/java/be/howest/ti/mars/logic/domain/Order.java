@@ -94,6 +94,10 @@ public class Order {
         return address;
     }
 
+    public double calculateVolume() {
+        return width * height * depth;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
