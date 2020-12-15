@@ -70,6 +70,7 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
+    private static final String SQL_SELECT_ORDER_VIA_UUID = "select * from orders where uuid = ?";
     private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
     private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
@@ -395,6 +396,24 @@ public class H2Repository implements MarsRepository {
 
                 return createOrderFromDatabase(results);
             }
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
+        }
+    }
+
+    @Override
+    public Order getOrderByUuid(UUID uuid) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_UUID)) {
+
+            stmt.setObject(1, uuid);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                return createOrderFromDatabase(results);
+            }
+
         } catch (SQLException ex) {
             throw handleFailedToGetAllOrders(ex);
         }

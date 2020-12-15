@@ -7,6 +7,7 @@ import be.howest.ti.mars.logic.domain.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface MarsRepository {
 
@@ -26,6 +27,7 @@ public interface MarsRepository {
     List<Order> getOrders();
     Order createOrder(Order order, int userId);
     Order getOrderById(int orderId);
+    Order getOrderByUuid(UUID uuid);
     List<Order> getOrdersForUser(String email);
     Map<Integer, String> getIdsForStatuses();
 

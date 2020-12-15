@@ -22,6 +22,7 @@ public class MockRepository implements MarsRepository {
     }
 
     private static final String COULD_NOT_FIND_THE_USER = "Could not find the user!";
+    private static final String COULD_NOT_FIND_THE_ORDERS = "Failed to get all orders";
 
     @Override
     public void createUser(User user) {
@@ -121,7 +122,16 @@ public class MockRepository implements MarsRepository {
             if (order.getOrderId() == orderId)
                 return order;
         }
-        throw new IllegalStateException("Failed to get all orders");
+        throw new IllegalStateException(COULD_NOT_FIND_THE_ORDERS);
+    }
+
+    @Override
+    public Order getOrderByUuid(UUID uuid) {
+        for (Order order : orders) {
+            if (order.getUuid() == uuid)
+                return order;
+        }
+        throw new IllegalStateException(COULD_NOT_FIND_THE_ORDERS);
     }
 
     @Override
@@ -138,7 +148,7 @@ public class MockRepository implements MarsRepository {
 
             return userOrders;
         } catch (MarsException ex) {
-            throw new IllegalStateException("Failed to get all orders");
+            throw new IllegalStateException(COULD_NOT_FIND_THE_ORDERS);
         }
     }
 
