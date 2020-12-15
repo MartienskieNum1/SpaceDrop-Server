@@ -88,10 +88,19 @@ public class MarsController {
 
     public Order createOrder(Order newOrder, int userId) {
         if (isSpaceOnRocket(newOrder)) {
+            updateRocketAvailableMassAndVolume(newOrder);
             return repo.createOrder(newOrder, userId);
         } else {
             return null;
         }
+    }
+
+    private void updateRocketAvailableMassAndVolume(Order order) {
+        Rocket rocket = repo.getRocketById(order.getRocketId());
+        float newMass = rocket.getAvailableMass() - order.getMass();
+        float newVolume = rocket.getAvailableVolume() - order.calculateVolume();
+
+        repo.updateRocketAvailableMassAndVolume(rocket.getId(), newMass, newVolume);
     }
 
     public Order getOrderById(int orderId) {
