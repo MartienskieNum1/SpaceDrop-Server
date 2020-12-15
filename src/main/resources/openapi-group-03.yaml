@@ -336,6 +336,8 @@ paths:
             schema:
               $ref: '#/components/schemas/order'
       responses:
+        '400':
+          description: Package too heavy or too big.
         '201':
           description: Order created
           content:
