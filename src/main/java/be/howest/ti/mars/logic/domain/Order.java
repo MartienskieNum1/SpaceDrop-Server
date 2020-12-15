@@ -15,10 +15,10 @@ public class Order {
     private int rocketId;
     private int statusId;
 
-    private double mass;
-    private double width;
-    private double height;
-    private double depth;
+    private float mass;
+    private float width;
+    private float height;
+    private float depth;
     private double cost;
 
     private Address address;
@@ -26,8 +26,8 @@ public class Order {
     @JsonCreator
     public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
-                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
-                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
+                 @JsonProperty("mass") float mass, @JsonProperty("width") float width,
+                 @JsonProperty("height") float height, @JsonProperty("depth") float depth,
                  @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
         this.orderId = orderId;
         this.userId = userId;
@@ -70,19 +70,19 @@ public class Order {
         return statusId;
     }
 
-    public double getMass() {
+    public float getMass() {
         return mass;
     }
 
-    public double getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public double getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public double getDepth() {
+    public float getDepth() {
         return depth;
     }
 
@@ -94,7 +94,7 @@ public class Order {
         return address;
     }
 
-    public double calculateVolume() {
+    public float calculateVolume() {
         return width * height * depth;
     }
 

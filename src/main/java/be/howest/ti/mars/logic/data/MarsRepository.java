@@ -21,7 +21,7 @@ public interface MarsRepository {
     // Rocket methods:
     List<Rocket> getRockets();
     Rocket getRocketById(int rocketId);
-    void updateRocketAvailableMassAndVolume(int rocketId, double weight, double volume);
+    void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume);
     Rocket createRocket(Rocket rocket);
 
     // Order methods:

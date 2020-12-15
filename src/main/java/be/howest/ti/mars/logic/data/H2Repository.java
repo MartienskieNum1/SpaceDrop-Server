@@ -335,12 +335,12 @@ public class H2Repository implements MarsRepository {
     }
 
     @Override
-    public void updateRocketAvailableMassAndVolume(int rocketId, double weight, double volume) {
+    public void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ROCKET)) {
 
-            stmt.setDouble(1, weight);
-            stmt.setDouble(2, volume);
+            stmt.setFloat(1, weight);
+            stmt.setFloat(2, volume);
             stmt.setDouble(3, rocketId);
 
             stmt.executeUpdate();
@@ -473,10 +473,10 @@ public class H2Repository implements MarsRepository {
             int userId = results.getInt("user_id");
             int rocketId = results.getInt("rocket_id");
             int statusId = results.getInt("status_id");
-            double mass = results.getDouble("mass");
-            double width = results.getDouble("width");
-            double height = results.getDouble("height");
-            double depth = results.getDouble("depth");
+            float mass = results.getFloat("mass");
+            float width = results.getFloat("width");
+            float height = results.getFloat("height");
+            float depth = results.getFloat("depth");
             double cost = results.getDouble("cost");
 
             Address address = createAddressFromDatabase(results);

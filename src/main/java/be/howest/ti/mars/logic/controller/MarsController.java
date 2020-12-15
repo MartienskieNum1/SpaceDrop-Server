@@ -100,8 +100,8 @@ public class MarsController {
 
     private void updateRocketAvailableMassAndVolume(Order order) {
         Rocket rocket = repo.getRocketById(order.getRocketId());
-        double newMass = rocket.getAvailableMass() - order.getMass();
-        double newVolume = rocket.getAvailableVolume() - order.calculateVolume();
+        float newMass = rocket.getAvailableMass() - order.getMass();
+        float newVolume = rocket.getAvailableVolume() - order.calculateVolume();
 
         repo.updateRocketAvailableMassAndVolume(rocket.getId(), newMass, newVolume);
     }

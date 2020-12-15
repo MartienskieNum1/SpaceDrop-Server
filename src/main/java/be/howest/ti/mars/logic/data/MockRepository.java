@@ -109,8 +109,18 @@ public class MockRepository implements MarsRepository {
     }
 
     @Override
-    public void updateRocketAvailableMassAndVolume(int rocketId, double weight, double volume) {
+    public void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume) {
+        Rocket targetRocket = null;
 
+        for (Rocket rocket : rockets) {
+            if (rocket.getId() == rocketId)
+                targetRocket = rocket;
+        }
+
+        if (targetRocket != null) {
+            targetRocket.setAvailableMass(targetRocket.getAvailableMass() - weight);
+            targetRocket.setAvailableVolume(targetRocket.getAvailableVolume() - volume);
+        }
     }
 
     @Override
