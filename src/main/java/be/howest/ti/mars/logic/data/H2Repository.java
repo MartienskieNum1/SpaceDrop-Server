@@ -6,10 +6,7 @@ import org.h2.tools.Server;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -446,6 +443,7 @@ public class H2Repository implements MarsRepository {
     private Order createOrderFromDatabase(ResultSet results) {
         try {
             int orderId = results.getInt("id");
+            UUID uuid = results.getObject("uuid", UUID.class);
             int userId = results.getInt("user_id");
             int rocketId = results.getInt("rocket_id");
             int statusId = results.getInt("status_id");
@@ -457,7 +455,7 @@ public class H2Repository implements MarsRepository {
 
             Address address = createAddressFromDatabase(results);
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
+            return new Order(orderId, uuid, userId, rocketId, statusId, mass, width, height, depth, cost, address);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             throw new IllegalStateException("Failed to create order from database results");
