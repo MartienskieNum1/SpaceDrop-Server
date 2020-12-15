@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Order {
     public void setOrderId(int orderId) {
@@ -11,17 +12,18 @@ public class Order {
     }
 
     private int orderId;
+    private final UUID uuid = UUID.randomUUID();
     private int userId;
-    private int rocketId;
-    private int statusId;
+    private final int rocketId;
+    private final int statusId;
 
-    private double mass;
-    private double width;
-    private double height;
-    private double depth;
-    private double cost;
+    private final double mass;
+    private final double width;
+    private final double height;
+    private final double depth;
+    private final double cost;
 
-    private Address address;
+    private final Address address;
 
     @JsonCreator
     public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
@@ -41,25 +43,20 @@ public class Order {
         this.address = address;
     }
 
-    /*@JsonCreator
-    public Order(@JsonProperty("userId") int userId,
-                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
-                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
-                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
-                 @JsonProperty("cost") double cost) {
-        this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
-    }*/
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getOrderId() {
         return orderId;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getRocketId() {
