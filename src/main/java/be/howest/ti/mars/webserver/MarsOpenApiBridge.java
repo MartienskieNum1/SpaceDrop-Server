@@ -131,6 +131,7 @@ class MarsOpenApiBridge {
                 json.put("orderId", order.getOrderId());
                 json.put("userId", order.getUserId());
                 json.put("rocketId", order.getRocketId());
+                json.put("statusId", order.getStatusId());
                 json.put("status", statuses.get(order.getStatusId()));
                 json.put("mass", order.getMass());
                 json.put("width", order.getWidth());
