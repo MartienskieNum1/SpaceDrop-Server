@@ -12,7 +12,7 @@ public class Order {
     }
 
     private int orderId;
-    private final UUID uuid;
+    private UUID uuid;
     private int userId;
     private final int rocketId;
     private final int statusId;
@@ -50,6 +50,10 @@ public class Order {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public int getUserId() {

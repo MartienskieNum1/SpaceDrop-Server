@@ -373,6 +373,7 @@ public class H2Repository implements MarsRepository {
                 rsKey.next();
 
                 order.setOrderId(rsKey.getInt(1));
+                order.setUuid(UUID.fromString(rsKey.getString("uuid")));
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
@@ -406,7 +407,7 @@ public class H2Repository implements MarsRepository {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_UUID)) {
 
-            stmt.setObject(1, uuid);
+            stmt.setString(1, uuid.toString());
 
             try (ResultSet results = stmt.executeQuery()) {
                 results.next();
@@ -462,7 +463,7 @@ public class H2Repository implements MarsRepository {
     private Order createOrderFromDatabase(ResultSet results) {
         try {
             int orderId = results.getInt("id");
-            UUID uuid = results.getObject("uuid", UUID.class);
+            String uuid = results.getString("uuid");
             int userId = results.getInt("user_id");
             int rocketId = results.getInt("rocket_id");
             int statusId = results.getInt("status_id");
@@ -474,7 +475,7 @@ public class H2Repository implements MarsRepository {
 
             Address address = createAddressFromDatabase(results);
 
-            return new Order(orderId, uuid, userId, rocketId, statusId, mass, width, height, depth, cost, address);
+            return new Order(orderId, UUID.fromString(uuid), userId, rocketId, statusId, mass, width, height, depth, cost, address);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             throw new IllegalStateException("Failed to create order from database results");
