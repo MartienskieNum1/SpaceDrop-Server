@@ -5,6 +5,7 @@ import be.howest.ti.mars.logic.util.MarsException;
 import org.h2.tools.Server;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.nio.channels.NotYetBoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -348,6 +349,11 @@ public class H2Repository implements MarsRepository {
             logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not update the rocket!");
         }
+    }
+
+    @Override
+    public Rocket createRocket(Rocket rocket) {
+        throw new NotYetBoundException();
     }
 
     // Order methods:

@@ -22,6 +22,7 @@ public interface MarsRepository {
     List<Rocket> getRockets();
     Rocket getRocketById(int rocketId);
     void updateRocketAvailableMassAndVolume(int rocketId, double weight, double volume);
+    Rocket createRocket(Rocket rocket);
 
     // Order methods:
     List<Order> getOrders();
@@ -29,5 +30,4 @@ public interface MarsRepository {
     Order getOrderById(int orderId);
     List<Order> getOrdersForUser(String email);
     Map<Integer, String> getIdsForStatuses();
-
 }
