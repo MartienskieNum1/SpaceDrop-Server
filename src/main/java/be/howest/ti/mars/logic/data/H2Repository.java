@@ -68,6 +68,7 @@ public class H2Repository implements MarsRepository {
 
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
+    private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ?";
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
@@ -329,6 +330,22 @@ public class H2Repository implements MarsRepository {
             }
         } catch (SQLException ex) {
             throw handleFailedToGetAllOrders(ex);
+        }
+    }
+
+    @Override
+    public void updateRocketAvailableMassAndVolume(double weight, double volume) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ROCKET)) {
+
+            stmt.setDouble(1, weight);
+            stmt.setDouble(2, volume);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not update the rocket!");
         }
     }
 
