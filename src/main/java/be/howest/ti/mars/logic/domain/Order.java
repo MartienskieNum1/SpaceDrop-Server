@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Order {
     public void setOrderId(int orderId) {
@@ -11,25 +12,27 @@ public class Order {
     }
 
     private int orderId;
+    private UUID uuid;
     private int userId;
-    private int rocketId;
-    private int statusId;
+    private final int rocketId;
+    private final int statusId;
 
-    private float mass;
-    private float width;
-    private float height;
-    private float depth;
-    private double cost;
+    private final float mass;
+    private final float width;
+    private final float height;
+    private final float depth;
+    private final double cost;
 
-    private Address address;
+    private final Address address;
 
     @JsonCreator
-    public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
+    public Order(@JsonProperty("orderId") int orderId, @JsonProperty("uuid") UUID uuid, @JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
                  @JsonProperty("mass") float mass, @JsonProperty("width") float width,
                  @JsonProperty("height") float height, @JsonProperty("depth") float depth,
                  @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
         this.orderId = orderId;
+        this.uuid = uuid;
         this.userId = userId;
         this.rocketId = rocketId;
         this.statusId = statusId;
@@ -41,25 +44,24 @@ public class Order {
         this.address = address;
     }
 
-    /*@JsonCreator
-    public Order(@JsonProperty("userId") int userId,
-                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
-                 @JsonProperty("mass") double mass, @JsonProperty("width") double width,
-                 @JsonProperty("height") double height, @JsonProperty("depth") double depth,
-                 @JsonProperty("cost") double cost) {
-        this(-1, userId, rocketId, statusId, mass, width, height, depth, cost);
-    }*/
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getOrderId() {
         return orderId;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getRocketId() {

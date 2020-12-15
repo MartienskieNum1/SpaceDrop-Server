@@ -45,6 +45,8 @@ components:
       properties:
         orderId:
           type: integer
+        uuid:
+          type: string
         userId:
           type: integer
         rocketId:
@@ -314,6 +316,31 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/order'
+        '404':
+          description: Order not found
+
+  /api/orders/qr/{uuid}:
+    get:
+      tags:
+        - Orders
+      description: Get specific order details by its uuid (qr code)
+      operationId: getOrderByUuid
+      parameters:
+        - name: uuid
+          in: path
+          description: order UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order found
           content:
             application/json:
               schema:

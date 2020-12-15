@@ -9,10 +9,7 @@ import be.howest.ti.mars.logic.util.TokenAES;
 import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MarsController {
     private final MarsRepository repo;
@@ -110,6 +107,14 @@ public class MarsController {
         try {
             return repo.getOrderById(orderId);
         } catch (IllegalStateException ex) {
+            return null;
+        }
+    }
+
+    public Order getOrderByUuid(UUID uuid) {
+        try {
+            return repo.getOrderByUuid(uuid);
+        } catch (MarsException ex) {
             return null;
         }
     }

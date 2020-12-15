@@ -7,10 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,6 +72,7 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
+    private static final String SQL_SELECT_ORDER_VIA_UUID = "select * from orders where uuid = ?";
     private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
     private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
@@ -399,6 +397,7 @@ public class H2Repository implements MarsRepository {
                 rsKey.next();
 
                 order.setOrderId(rsKey.getInt(1));
+                order.setUuid(UUID.fromString(rsKey.getString("uuid")));
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
@@ -422,6 +421,24 @@ public class H2Repository implements MarsRepository {
 
                 return createOrderFromDatabase(results);
             }
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
+        }
+    }
+
+    @Override
+    public Order getOrderByUuid(UUID uuid) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_UUID)) {
+
+            stmt.setString(1, uuid.toString());
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                return createOrderFromDatabase(results);
+            }
+
         } catch (SQLException ex) {
             throw handleFailedToGetAllOrders(ex);
         }
@@ -470,6 +487,7 @@ public class H2Repository implements MarsRepository {
     private Order createOrderFromDatabase(ResultSet results) {
         try {
             int orderId = results.getInt("id");
+            String uuid = results.getString("uuid");
             int userId = results.getInt("user_id");
             int rocketId = results.getInt("rocket_id");
             int statusId = results.getInt("status_id");
@@ -481,7 +499,7 @@ public class H2Repository implements MarsRepository {
 
             Address address = createAddressFromDatabase(results);
 
-            return new Order(orderId, userId, rocketId, statusId, mass, width, height, depth, cost, address);
+            return new Order(orderId, UUID.fromString(uuid), userId, rocketId, statusId, mass, width, height, depth, cost, address);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             throw new IllegalStateException("Failed to create order from database results");

@@ -32,6 +32,7 @@ CREATE TABLE `Roles` (
 
 CREATE TABLE `Orders` (
                           `id` int PRIMARY KEY AUTO_INCREMENT,
+                          `uuid` uuid default random_uuid(),
                           `user_id` int,
                           `rocket_id` int,
                           `status_id` int,
