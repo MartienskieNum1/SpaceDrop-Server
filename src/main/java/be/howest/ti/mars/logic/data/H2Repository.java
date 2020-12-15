@@ -303,6 +303,34 @@ public class H2Repository implements MarsRepository {
         }
     }
 
+    @Override
+    public Rocket getRocketById(int rocketId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
+
+            stmt.setInt(1, rocketId);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                int id = results.getInt("id");
+                String name = results.getString("user_id");
+                String departLocation = results.getString("rocket_id");
+                String departure = results.getString("status_id");
+                String arrival = results.getString("mass");
+                float pricePerKilo = results.getFloat("width");
+                float maxMass = results.getFloat("height");
+                float maxVolume = results.getFloat("depth");
+                float availableMass = results.getFloat("cost");
+                float availableVolume = results.getFloat("cost");
+
+                return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+            }
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
+        }
+    }
+
     // Order methods:
     @Override
     public List<Order> getOrders() {

@@ -20,6 +20,7 @@ public interface MarsRepository {
 
     // Rocket methods:
     List<Rocket> getRockets();
+    Rocket getRocketById(int rocketId);
 
     // Order methods:
     List<Order> getOrders();
