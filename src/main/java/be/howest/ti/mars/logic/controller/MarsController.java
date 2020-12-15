@@ -90,7 +90,11 @@ public class MarsController {
     }
 
     public Order createOrder(Order newOrder, int userId) {
-        return repo.createOrder(newOrder, userId);
+        if (isSpaceOnRocket(newOrder)) {
+            return repo.createOrder(newOrder, userId);
+        } else {
+            throw new MarsException("Package is too big or too heavy");
+        }
     }
 
     public Order getOrderById(int orderId) {
