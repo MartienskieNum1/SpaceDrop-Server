@@ -117,4 +117,17 @@ class MockRepositoryTest {
         assertEquals(100000.0f, repo.getRocketById(1).getMaxMass());
         assertEquals(1000.0f, repo.getRocketById(2).getMaxMass());
     }
+
+    @Test
+    void updateRocketAvailableMassAndVolume() {
+        createRocket();
+        repo.updateRocketAvailableMassAndVolume(1, 150.0f, 200.0f);
+
+        assertEquals(99850.0f, repo.getRocketById(1).getAvailableMass());
+        assertEquals(70.0f, repo.getRocketById(1).getAvailableVolume());
+
+        repo.updateRocketAvailableMassAndVolume(1, 15000000.0f, 200.0f);
+        assertEquals(99850.0f, repo.getRocketById(1).getAvailableMass());
+        assertEquals(70.0f, repo.getRocketById(1).getAvailableVolume());
+    }
 }

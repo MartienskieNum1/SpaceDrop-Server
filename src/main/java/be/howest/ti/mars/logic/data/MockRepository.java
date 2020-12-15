@@ -118,8 +118,10 @@ public class MockRepository implements MarsRepository {
         }
 
         if (targetRocket != null) {
-            targetRocket.setAvailableMass(targetRocket.getAvailableMass() - weight);
-            targetRocket.setAvailableVolume(targetRocket.getAvailableVolume() - volume);
+            if (targetRocket.getAvailableMass() - weight > 0 && targetRocket.getAvailableVolume() - volume > 0) {
+                targetRocket.setAvailableMass(targetRocket.getAvailableMass() - weight);
+                targetRocket.setAvailableVolume(targetRocket.getAvailableVolume() - volume);
+            }
         }
     }
 
