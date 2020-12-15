@@ -315,15 +315,15 @@ public class H2Repository implements MarsRepository {
                 results.next();
 
                 int id = results.getInt("id");
-                String name = results.getString("user_id");
-                String departLocation = results.getString("rocket_id");
-                String departure = results.getString("status_id");
-                String arrival = results.getString("mass");
-                float pricePerKilo = results.getFloat("width");
-                float maxMass = results.getFloat("height");
-                float maxVolume = results.getFloat("depth");
-                float availableMass = results.getFloat("cost");
-                float availableVolume = results.getFloat("cost");
+                String name = results.getString("name");
+                String departLocation = results.getString("depart_location");
+                String departure = results.getString("departure");
+                String arrival = results.getString("arrival");
+                float pricePerKilo = results.getFloat("price_per_kilo");
+                float maxMass = results.getFloat("max_mass");
+                float maxVolume = results.getFloat("max_volume");
+                float availableMass = results.getFloat("available_mass");
+                float availableVolume = results.getFloat("available_volume");
 
                 return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
             }
