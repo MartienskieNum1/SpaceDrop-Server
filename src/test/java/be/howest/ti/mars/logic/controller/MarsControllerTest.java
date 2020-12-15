@@ -2,10 +2,7 @@ package be.howest.ti.mars.logic.controller;
 
 import be.howest.ti.mars.logic.data.MockRepository;
 import be.howest.ti.mars.logic.data.Repositories;
-import be.howest.ti.mars.logic.domain.Address;
-import be.howest.ti.mars.logic.domain.Order;
-import be.howest.ti.mars.logic.domain.Role;
-import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.domain.*;
 import be.howest.ti.mars.logic.util.TokenAES;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +39,9 @@ class MarsControllerTest {
         generalUser = user1;
 
         controller.createUser(user1);
+
+        new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f);
+        new Rocket(2,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 1000.0f, 1000.0f, 2700.0f, 1000.0f, 2700.0f);
     }
 
     @Test

@@ -107,4 +107,27 @@ class MockRepositoryTest {
 
         assertEquals(2, repo.getOrdersForUser("maarten@maarten").size());
     }
+
+    @Test
+    void createRocket() {
+        repo.createRocket(new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f));
+        repo.createRocket(new Rocket(2,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 1000.0f, 1000.0f, 2700.0f, 1000.0f, 2700.0f));
+
+        assertEquals(2, repo.getRockets().size());
+        assertEquals(100000.0f, repo.getRocketById(1).getMaxMass());
+        assertEquals(1000.0f, repo.getRocketById(2).getMaxMass());
+    }
+
+    @Test
+    void updateRocketAvailableMassAndVolume() {
+        createRocket();
+        repo.updateRocketAvailableMassAndVolume(1, 150.0f, 200.0f);
+
+        assertEquals(99850.0f, repo.getRocketById(1).getAvailableMass());
+        assertEquals(70.0f, repo.getRocketById(1).getAvailableVolume());
+
+        repo.updateRocketAvailableMassAndVolume(1, 15000000.0f, 200.0f);
+        assertEquals(99850.0f, repo.getRocketById(1).getAvailableMass());
+        assertEquals(70.0f, repo.getRocketById(1).getAvailableVolume());
+    }
 }

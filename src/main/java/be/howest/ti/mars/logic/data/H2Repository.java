@@ -5,6 +5,7 @@ import be.howest.ti.mars.logic.util.MarsException;
 import org.h2.tools.Server;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.nio.channels.NotYetBoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +69,7 @@ public class H2Repository implements MarsRepository {
 
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
+    private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
@@ -332,6 +334,28 @@ public class H2Repository implements MarsRepository {
         }
     }
 
+    @Override
+    public void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ROCKET)) {
+
+            stmt.setFloat(1, weight);
+            stmt.setFloat(2, volume);
+            stmt.setDouble(3, rocketId);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+            throw new MarsException("Could not update the rocket!");
+        }
+    }
+
+    @Override
+    public Rocket createRocket(Rocket rocket) {
+        throw new NotYetBoundException();
+    }
+
     // Order methods:
     @Override
     public List<Order> getOrders() {
@@ -449,10 +473,10 @@ public class H2Repository implements MarsRepository {
             int userId = results.getInt("user_id");
             int rocketId = results.getInt("rocket_id");
             int statusId = results.getInt("status_id");
-            double mass = results.getDouble("mass");
-            double width = results.getDouble("width");
-            double height = results.getDouble("height");
-            double depth = results.getDouble("depth");
+            float mass = results.getFloat("mass");
+            float width = results.getFloat("width");
+            float height = results.getFloat("height");
+            float depth = results.getFloat("depth");
             double cost = results.getDouble("cost");
 
             Address address = createAddressFromDatabase(results);
