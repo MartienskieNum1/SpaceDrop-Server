@@ -94,6 +94,17 @@ public class MockRepository implements MarsRepository {
     }
 
     @Override
+    public Rocket getRocketById(int rocketId) {
+        rockets.add(new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f));
+        rockets.add(new Rocket(2,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 1000.0f, 1000.0f, 2700.0f, 1000.0f, 2700.0f));
+        for (Rocket rocket : rockets) {
+            if (rocket.getId() == rocketId)
+                return rocket;
+        }
+        throw new IllegalStateException("Failed to find rocket");
+    }
+
+    @Override
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
     }

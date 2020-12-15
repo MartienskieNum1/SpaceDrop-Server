@@ -4,12 +4,14 @@ import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.User;
+import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.api.validation.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +93,13 @@ class MarsOpenApiBridge {
     public Order createOrder(RoutingContext ctx) {
         int userId = getUserId(ctx);
         Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
+        Order createdOrder = controller.createOrder(newOrder, userId);
 
-        return controller.createOrder(newOrder, userId);
+        if (createdOrder == null) {
+            ctx.fail(400, new ValidationException("Package to big or too heavy"));
+        }
+
+        return createdOrder;
     }
 
     public Object getOrderById(RoutingContext ctx) {

@@ -141,6 +141,8 @@ class MarsControllerTest {
         Order order1 = new Order(1, 1, 1, 1, 1, 1, 1, 1, 1, address);
         Order order2 = new Order(2, 1, 1, 1, 1, 1, 1, 1, 1, address);
 
+        System.out.println(controller.getRockets());
+
         controller.createOrder(order1, 1);
         controller.createOrder(order2, 1);
 

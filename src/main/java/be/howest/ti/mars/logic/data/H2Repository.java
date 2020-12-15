@@ -67,6 +67,7 @@ public class H2Repository implements MarsRepository {
             "join users on userroles.user_id = users.id where email = ?";
 
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
+    private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
@@ -300,6 +301,34 @@ public class H2Repository implements MarsRepository {
         } catch (SQLException ex) {
             logger.log(Level.WARNING, ex.getMessage());
             throw new MarsException("Could not get rockets!");
+        }
+    }
+
+    @Override
+    public Rocket getRocketById(int rocketId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ROCKET_VIA_ID)) {
+
+            stmt.setInt(1, rocketId);
+
+            try (ResultSet results = stmt.executeQuery()) {
+                results.next();
+
+                int id = results.getInt("id");
+                String name = results.getString("name");
+                String departLocation = results.getString("depart_location");
+                String departure = results.getString("departure");
+                String arrival = results.getString("arrival");
+                float pricePerKilo = results.getFloat("price_per_kilo");
+                float maxMass = results.getFloat("max_mass");
+                float maxVolume = results.getFloat("max_volume");
+                float availableMass = results.getFloat("available_mass");
+                float availableVolume = results.getFloat("available_volume");
+
+                return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+            }
+        } catch (SQLException ex) {
+            throw handleFailedToGetAllOrders(ex);
         }
     }
 
