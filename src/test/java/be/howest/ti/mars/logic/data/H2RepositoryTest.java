@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -127,7 +128,7 @@ public class H2RepositoryTest {
     @Test
     void createOrder() {
         Address ogAddress = new Address("Earth", "Belgium", "City", "Street", 1);
-        Order newOrder = new Order(0, 1, 1, 3, 220, 50, 50, 50, 250, ogAddress);
+        Order newOrder = new Order(0, UUID.randomUUID(), 1, 1, 3, 220, 50, 50, 50, 250, ogAddress);
         h2Repository.createOrder(newOrder, 1);
 
         assertEquals(3, h2Repository.getOrders().size());
@@ -136,7 +137,7 @@ public class H2RepositoryTest {
     @Test
     void getOrderById() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
-        Order newOrder = new Order(15, 1, 1, 3, 220, 50, 50, 50, 250, address);
+        Order newOrder = new Order(15, UUID.randomUUID(), 1, 1, 3, 220, 50, 50, 50, 250, address);
         h2Repository.createOrder(newOrder, 1);
 
         assertEquals(newOrder, h2Repository.getOrderById(newOrder.getOrderId()));
