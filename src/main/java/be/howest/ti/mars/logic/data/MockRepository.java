@@ -94,6 +94,11 @@ public class MockRepository implements MarsRepository {
     }
 
     @Override
+    public Rocket getRocketById(int rocketId) {
+        return null;
+    }
+
+    @Override
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
     }

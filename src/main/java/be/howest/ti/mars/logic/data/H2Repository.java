@@ -67,6 +67,7 @@ public class H2Repository implements MarsRepository {
             "join users on userroles.user_id = users.id where email = ?";
 
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
+    private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
@@ -306,7 +307,7 @@ public class H2Repository implements MarsRepository {
     @Override
     public Rocket getRocketById(int rocketId) {
         try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ORDER_VIA_ID)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_SELECT_ROCKET_VIA_ID)) {
 
             stmt.setInt(1, rocketId);
 
