@@ -123,4 +123,8 @@ public class MarsController {
     public Map<Integer, String> getIdsForStatuses() {
         return repo.getIdsForStatuses();
     }
+
+    private boolean isSpaceOnRocket(int rocketId) {
+        return true;
+    }
 }
