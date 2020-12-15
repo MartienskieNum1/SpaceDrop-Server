@@ -16,6 +16,7 @@ import io.vertx.ext.web.api.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 class MarsOpenApiBridge {
     private final MarsController controller;
@@ -111,6 +112,14 @@ class MarsOpenApiBridge {
     public Object getOrderById(RoutingContext ctx) {
         int orderId = Integer.parseInt(ctx.request().getParam("id"));
         Order order = controller.getOrderById(orderId);
+        if (order == null)
+            ctx.fail(404);
+        return order;
+    }
+
+    public Object getOrderByUuid(RoutingContext ctx) {
+        String uuid = ctx.request().getParam("uuid");
+        Order order = controller.getOrderByUuid(UUID.fromString(uuid));
         if (order == null)
             ctx.fail(404);
         return order;
