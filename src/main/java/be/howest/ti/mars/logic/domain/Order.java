@@ -12,7 +12,7 @@ public class Order {
     }
 
     private int orderId;
-    private final UUID uuid = UUID.randomUUID();
+    private final UUID uuid;
     private int userId;
     private final int rocketId;
     private final int statusId;
@@ -26,12 +26,13 @@ public class Order {
     private final Address address;
 
     @JsonCreator
-    public Order(@JsonProperty("orderId") int orderId, @JsonProperty("userId") int userId,
+    public Order(@JsonProperty("orderId") int orderId, @JsonProperty("uuid") UUID uuid, @JsonProperty("userId") int userId,
                  @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
                  @JsonProperty("mass") double mass, @JsonProperty("width") double width,
                  @JsonProperty("height") double height, @JsonProperty("depth") double depth,
                  @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
         this.orderId = orderId;
+        this.uuid = uuid;
         this.userId = userId;
         this.rocketId = rocketId;
         this.statusId = statusId;
