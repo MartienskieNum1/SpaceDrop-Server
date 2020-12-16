@@ -152,4 +152,8 @@ public class MarsController {
 
         return false;
     }
+
+    public Object getFilteredFlights(float weight, float volume, String urgency) {
+        return null;
+    }
 }

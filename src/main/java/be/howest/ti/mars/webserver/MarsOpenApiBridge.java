@@ -172,8 +172,11 @@ class MarsOpenApiBridge {
 
     public Object getFilteredFlights(RoutingContext ctx) {
         JsonObject body = ctx.getBodyAsJson();
-        System.out.println(body);
 
-        return body;
+        float weight = body.getFloat("weight");
+        float volume = body.getFloat("volume");
+        String urgency = body.getString("urgency");
+
+        return controller.getFilteredFlights(weight, volume, urgency);
     }
 }
