@@ -403,10 +403,8 @@ paths:
               properties:
                 weight:
                   type: number
-                  format: float
                 volume:
                   type: number
-                  format: float
                 urgency:
                   type: string
       responses:
