@@ -132,31 +132,12 @@ class MarsOpenApiBridge {
     }
 
     public Object getOrdersForUser(RoutingContext ctx) {
-        Map<Integer, String> statuses = controller.getIdsForStatuses();
         List<Order> orders = controller.getOrdersForUser(decryptTokenToEmail(ctx));
-        List<JsonObject> jsonList = new ArrayList<>();
 
-        if (orders != null) {
-            for (Order order: orders) {
-                JsonObject json = new JsonObject();
-                json.put("orderId", order.getOrderId());
-                json.put("userId", order.getUserId());
-                json.put("rocketId", order.getRocketId());
-                json.put("statusId", order.getStatusId());
-                json.put("status", statuses.get(order.getStatusId()));
-                json.put("mass", order.getMass());
-                json.put("width", order.getWidth());
-                json.put("height", order.getHeight());
-                json.put("depth", order.getDepth());
-                json.put("cost", order.getCost());
-
-                jsonList.add(json);
-            }
-        } else {
+        if (orders == null) {
             ctx.fail(500);
         }
-
-        return jsonList;
+        return orders;
     }
 
     public int getUserId(RoutingContext ctx) {

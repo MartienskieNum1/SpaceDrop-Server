@@ -53,6 +53,8 @@ components:
           type: integer
         statusId:
           type: integer
+        status:
+          type: string
         mass:
           type: number
         width:

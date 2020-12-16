@@ -524,6 +524,7 @@ public class H2Repository implements MarsRepository {
     }
 
     private Order createOrderFromDatabase(ResultSet results) {
+        Map<Integer, String> statuses = getIdsForStatuses();
         try {
             int orderId = results.getInt("id");
             String uuid = results.getString("uuid");
@@ -538,7 +539,7 @@ public class H2Repository implements MarsRepository {
 
             Address address = createAddressFromDatabase(results);
 
-            return new Order(orderId, UUID.fromString(uuid), userId, rocketId, statusId, mass, width, height, depth, cost, address);
+            return new Order(orderId, UUID.fromString(uuid), userId, rocketId, statusId, statuses.get(statusId), mass, width, height, depth, cost, address);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             throw new IllegalStateException("Failed to create order from database results");
