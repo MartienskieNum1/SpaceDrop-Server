@@ -9,6 +9,7 @@ import be.howest.ti.mars.logic.util.TokenAES;
 import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class MarsController {
@@ -154,6 +155,10 @@ public class MarsController {
     }
 
     public Object getFilteredFlights(float weight, float volume, String urgency) {
+        LocalDateTime[] dates = calculateDates(urgency);
         return null;
+    }
+
+    private LocalDateTime[] calculateDates(String urgency) {
     }
 }
