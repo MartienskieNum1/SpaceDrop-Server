@@ -128,7 +128,7 @@ public class H2RepositoryTest {
     @Test
     void createOrder() {
         Address ogAddress = new Address("Earth", "Belgium", "City", "Street", 1);
-        Order newOrder = new Order(0, UUID.randomUUID(), 1, 1, 3, 220, 50, 50, 50, 250, ogAddress);
+        Order newOrder = new Order(0, UUID.randomUUID(), 1, 1, 3, "status", 220, 50, 50, 50, 250, ogAddress);
         h2Repository.createOrder(newOrder, 1);
 
         assertEquals(3, h2Repository.getOrders().size());
@@ -137,7 +137,7 @@ public class H2RepositoryTest {
     @Test
     void getOrderById() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
-        Order newOrder = new Order(15, UUID.randomUUID(), 1, 1, 3, 220, 50, 50, 50, 250, address);
+        Order newOrder = new Order(15, UUID.randomUUID(), 1, 1, 3, "status", 220, 50, 50, 50, 250, address);
         h2Repository.createOrder(newOrder, 1);
 
         assertEquals(newOrder, h2Repository.getOrderById(newOrder.getOrderId()));
@@ -146,7 +146,7 @@ public class H2RepositoryTest {
     @Test
     void getOrderByUuid() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
-        Order newOrder = new Order(20, UUID.randomUUID(), 1, 1, 3, 220, 50, 50, 50, 250, address);
+        Order newOrder = new Order(20, UUID.randomUUID(), 1, 1, 3, "status", 220, 50, 50, 50, 250, address);
         h2Repository.createOrder(newOrder, 1);
 
         assertEquals(newOrder, h2Repository.getOrderByUuid(newOrder.getUuid()));

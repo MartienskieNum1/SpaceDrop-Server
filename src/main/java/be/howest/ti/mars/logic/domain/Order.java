@@ -16,6 +16,7 @@ public class Order {
     private int userId;
     private final int rocketId;
     private final int statusId;
+    private final String status;
 
     private final float mass;
     private final float width;
@@ -27,7 +28,7 @@ public class Order {
 
     @JsonCreator
     public Order(@JsonProperty("orderId") int orderId, @JsonProperty("uuid") UUID uuid, @JsonProperty("userId") int userId,
-                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId,
+                 @JsonProperty("rocketId") int rocketId, @JsonProperty("statusId") int statusId, @JsonProperty("status") String status,
                  @JsonProperty("mass") float mass, @JsonProperty("width") float width,
                  @JsonProperty("height") float height, @JsonProperty("depth") float depth,
                  @JsonProperty("cost") double cost, @JsonProperty("address") Address address) {
@@ -36,6 +37,7 @@ public class Order {
         this.userId = userId;
         this.rocketId = rocketId;
         this.statusId = statusId;
+        this.status = status;
         this.mass = mass;
         this.width = width;
         this.height = height;
@@ -70,6 +72,10 @@ public class Order {
 
     public int getStatusId() {
         return statusId;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public float getMass() {
