@@ -388,7 +388,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/rocket'
 
-  /api/rockets/{:
+  /api/rockets/{weight}{volume}{urgency}:
     get:
       tags:
         - Rockets
