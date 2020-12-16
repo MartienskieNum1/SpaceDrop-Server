@@ -162,7 +162,6 @@ public class MarsController {
 
     private LocalDateTime[] calculateDates(String urgency) {
         LocalDateTime[] dates = new LocalDateTime[2];
-        String[] formattedDates = new String[2];
         dates[0] = LocalDateTime.now().plusYears(35);
 
         switch (urgency) {
@@ -177,9 +176,6 @@ public class MarsController {
                 dates[0] = dates[0].plusDays(7);
                 dates[1] = dates[0].plusMonths(3);
         }
-
-        formattedDates[0] = dates[0].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
-        formattedDates[1] = dates[1].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
 
         return dates;
     }
