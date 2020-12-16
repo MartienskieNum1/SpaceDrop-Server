@@ -10,6 +10,7 @@ import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MarsController {
@@ -155,13 +156,14 @@ public class MarsController {
     }
 
     public Object getFilteredFlights(float weight, float volume, String urgency) {
-        LocalDateTime[] dates = calculateDates(urgency);
+        String[] dates = calculateDates(urgency);
         return dates;
     }
 
-    private LocalDateTime[] calculateDates(String urgency) {
+    private String[] calculateDates(String urgency) {
         LocalDateTime[] dates = new LocalDateTime[2];
-        dates[0] = LocalDateTime.now();
+        String[] formattedDates = new String[2];
+        dates[0] = LocalDateTime.now().plusYears(35);
 
         switch (urgency) {
             case "fast":
@@ -176,6 +178,9 @@ public class MarsController {
                 dates[1] = dates[0].plusMonths(3);
         }
 
-        return dates;
+        formattedDates[0] = dates[0].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
+        formattedDates[1] = dates[1].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
+
+        return formattedDates;
     }
 }
