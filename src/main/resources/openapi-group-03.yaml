@@ -388,25 +388,28 @@ paths:
                 items:
                   $ref: '#/components/schemas/rocket'
 
-  /api/rockets/filtered:
+  /api/rockets/{:
     get:
       tags:
         - Rockets
       description: Get info of all rockets based on user filters
       operationId: getFilteredFlights
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                weight:
-                  type: number
-                volume:
-                  type: number
-                urgency:
-                  type: string
+      parameters:
+        - in: query
+          name: weight
+          schema:
+            type: number
+          required: true
+        - in: query
+          name: volume
+          schema:
+            type: number
+          required: true
+        - in: query
+          name: urgency
+          schema:
+            type: string
+          required: true
       responses:
         '200':
           description: OK
