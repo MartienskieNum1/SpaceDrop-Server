@@ -173,7 +173,7 @@ public class MarsController {
                 break;
             case "slow":
                 dates[0] = dates[0].plusDays(7);
-                dates[1] = dates[1].plusMonths(3);
+                dates[1] = dates[0].plusMonths(3);
         }
 
         return dates;
