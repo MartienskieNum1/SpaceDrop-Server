@@ -45,8 +45,6 @@ components:
       properties:
         orderId:
           type: integer
-        uuid:
-          type: string
         userId:
           type: integer
         rocketId:
@@ -63,19 +61,6 @@ components:
           type: number
         cost:
           type: number
-        address:
-          type: object
-          properties:
-            planet:
-              type: string
-            countryOrColony:
-              type: string
-            cityOrDistrict:
-              type: string
-            street:
-              type: string
-            number:
-              type: number
 
     rocket:
       type: object
@@ -163,15 +148,13 @@ paths:
             schema:
               $ref: '#/components/schemas/user'
       responses:
-        '201':
+        '200':
           description: User created
           content:
             application/json:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
-        '409':
-          description: Email is already used
 
   /api/login:
     post:
@@ -191,15 +174,13 @@ paths:
                 password:
                   type: string
       responses:
-        '201':
+        '200':
           description: User logged in
           content:
             application/json:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
-        '403':
-          description: Unknown email or wrong password
 
   /api/details/user:
     get:
@@ -260,8 +241,6 @@ paths:
               example: ka0b4UvW+sABEITA7rvLAmGppKXYrWVaVL5PP9TCyFg=
               schema:
                 type: string
-        '403':
-          description: Wrong password or email already in use
 
 
   /api/details/orders:
@@ -322,33 +301,6 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/order'
-        '404':
-          description: Order not found
-
-  /api/orders/qr/{uuid}:
-    get:
-      tags:
-        - Orders
-      description: Get specific order details by its uuid (qr code)
-      operationId: getOrderByUuid
-      parameters:
-        - name: uuid
-          in: path
-          description: order UUID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Order found
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/order'
-        '404':
-          description: Order not found
 
   /api/order:
     post:
@@ -363,10 +315,8 @@ paths:
             schema:
               $ref: '#/components/schemas/order'
       responses:
-        '400':
-          description: Package too heavy or too big.
-        '201':
-          description: Order created
+        '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -378,38 +328,6 @@ paths:
         - Rockets
       description: Get info of all rockets
       operationId: getRockets
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/rocket'
-
-  /api/filteredRockets:
-    get:
-      tags:
-        - Rockets
-      description: Get info of all rockets based on user filters
-      operationId: getFilteredFlights
-      parameters:
-        - in: query
-          name: weight
-          schema:
-            type: number
-          required: true
-        - in: query
-          name: volume
-          schema:
-            type: number
-          required: true
-        - in: query
-          name: urgency
-          schema:
-            type: string
-          required: true
       responses:
         '200':
           description: OK
