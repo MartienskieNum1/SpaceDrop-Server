@@ -155,9 +155,9 @@ public class MarsController {
         return false;
     }
 
-    public Object getFilteredFlights(float weight, float volume, String urgency) {
+    public List<Rocket> getFilteredFlights(float weight, float volume, String urgency) {
         String[] dates = calculateDates(urgency);
-        return dates;
+        return repo.getFilteredRockets(weight, volume, dates);
     }
 
     private String[] calculateDates(String urgency) {

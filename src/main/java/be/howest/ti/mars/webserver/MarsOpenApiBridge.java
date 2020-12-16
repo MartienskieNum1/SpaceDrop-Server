@@ -3,6 +3,7 @@ package be.howest.ti.mars.webserver;
 import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
+import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
@@ -170,7 +171,7 @@ class MarsOpenApiBridge {
         return TokenAES.decrypt(ctx.request().getHeader(HttpHeaders.AUTHORIZATION));
     }
 
-    public Object getFilteredFlights(RoutingContext ctx) {
+    public List<Rocket> getFilteredFlights(RoutingContext ctx) {
         JsonObject body = ctx.getBodyAsJson();
 
         float weight = body.getFloat("weight");

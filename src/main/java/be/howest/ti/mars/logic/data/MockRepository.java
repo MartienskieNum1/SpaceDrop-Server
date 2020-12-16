@@ -128,6 +128,11 @@ public class MockRepository implements MarsRepository {
     }
 
     @Override
+    public List<Rocket> getFilteredRockets(float weight, float volume, String[] dates) {
+        return null;
+    }
+
+    @Override
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
     }
