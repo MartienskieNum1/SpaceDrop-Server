@@ -8,6 +8,7 @@ import be.howest.ti.mars.logic.util.MarsException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class MockRepository implements MarsRepository {
@@ -125,6 +126,11 @@ public class MockRepository implements MarsRepository {
                 targetRocket.setAvailableVolume(targetRocket.getAvailableVolume() - volume);
             }
         }
+    }
+
+    @Override
+    public List<Rocket> getFilteredRockets(float weight, float volume, LocalDateTime[] dates) {
+        return null;
     }
 
     @Override

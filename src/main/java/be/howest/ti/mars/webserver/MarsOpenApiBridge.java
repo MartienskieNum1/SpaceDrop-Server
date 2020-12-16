@@ -3,9 +3,11 @@ package be.howest.ti.mars.webserver;
 import be.howest.ti.mars.logic.controller.MarsController;
 import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
+import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
@@ -95,7 +97,7 @@ class MarsOpenApiBridge {
         Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
         Order createdOrder;
 
-        if (ctx.request().getHeader("Authorization") == null) {
+        if (ctx.request().getHeader("Authorization").equals("")) {
             createdOrder = controller.createOrder(newOrder, -10);
         } else {
             int userId = getUserId(ctx);
@@ -148,5 +150,13 @@ class MarsOpenApiBridge {
 
     private String decryptTokenToEmail(RoutingContext ctx) {
         return TokenAES.decrypt(ctx.request().getHeader(HttpHeaders.AUTHORIZATION));
+    }
+
+    public List<Rocket> getFilteredFlights(RoutingContext ctx) {
+        float weight = Float.parseFloat(ctx.request().getParam("weight"));
+        float volume = Float.parseFloat(ctx.request().getParam("volume"));
+        String urgency = ctx.request().getParam("urgency");
+
+        return controller.getFilteredFlights(weight, volume, urgency);
     }
 }

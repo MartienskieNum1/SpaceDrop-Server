@@ -5,6 +5,7 @@ import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.Role;
 import be.howest.ti.mars.logic.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public interface MarsRepository {
     List<Rocket> getRockets();
     Rocket getRocketById(int rocketId);
     void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume);
+    List<Rocket> getFilteredRockets(float weight, float volume, LocalDateTime[] dates);
     Rocket createRocket(Rocket rocket);
 
     // Order methods:

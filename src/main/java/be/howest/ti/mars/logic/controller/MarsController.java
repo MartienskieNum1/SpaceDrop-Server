@@ -9,6 +9,8 @@ import be.howest.ti.mars.logic.util.TokenAES;
 import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MarsController {
@@ -151,5 +153,30 @@ public class MarsController {
         }
 
         return false;
+    }
+
+    public List<Rocket> getFilteredFlights(float weight, float volume, String urgency) {
+        LocalDateTime[] dates = calculateDates(urgency);
+        return repo.getFilteredRockets(weight, volume, dates);
+    }
+
+    private LocalDateTime[] calculateDates(String urgency) {
+        LocalDateTime[] dates = new LocalDateTime[2];
+        dates[0] = LocalDateTime.now().plusYears(35);
+
+        switch (urgency) {
+            case "fast":
+                dates[1] = dates[0].plusDays(2);
+                break;
+            case "normal":
+                dates[0] = dates[0].plusDays(2);
+                dates[1] = dates[0].plusDays(5);
+                break;
+            case "slow":
+                dates[0] = dates[0].plusDays(7);
+                dates[1] = dates[0].plusMonths(3);
+        }
+
+        return dates;
     }
 }
