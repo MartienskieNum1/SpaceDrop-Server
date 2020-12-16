@@ -23,6 +23,7 @@ public interface MarsRepository {
     List<Rocket> getRockets();
     Rocket getRocketById(int rocketId);
     void updateRocketAvailableMassAndVolume(int rocketId, float weight, float volume);
+    List<Rocket> getFilteredRockets(float weight, float volume, String[] dates);
     Rocket createRocket(Rocket rocket);
 
     // Order methods:
