@@ -156,9 +156,26 @@ public class MarsController {
 
     public Object getFilteredFlights(float weight, float volume, String urgency) {
         LocalDateTime[] dates = calculateDates(urgency);
-        return null;
+        return dates;
     }
 
     private LocalDateTime[] calculateDates(String urgency) {
+        LocalDateTime[] dates = new LocalDateTime[2];
+        dates[0] = LocalDateTime.now();
+
+        switch (urgency) {
+            case "fast":
+                dates[1] = dates[0].plusDays(2);
+                break;
+            case "normal":
+                dates[0] = dates[0].plusDays(2);
+                dates[1] = dates[0].plusDays(5);
+                break;
+            case "slow":
+                dates[0] = dates[0].plusDays(7);
+                dates[1] = dates[1].plusMonths(3);
+        }
+
+        return dates;
     }
 }
