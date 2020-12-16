@@ -67,7 +67,7 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
     private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
-    private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ?";
+    private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
 
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
@@ -359,6 +359,8 @@ public class H2Repository implements MarsRepository {
 
             stmt.setFloat(1, weight);
             stmt.setFloat(2, volume);
+            stmt.setString(3, dates[0]);
+            stmt.setString(4, dates[1]);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

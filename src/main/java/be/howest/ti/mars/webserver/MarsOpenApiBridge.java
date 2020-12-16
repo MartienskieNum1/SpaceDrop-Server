@@ -172,11 +172,9 @@ class MarsOpenApiBridge {
     }
 
     public List<Rocket> getFilteredFlights(RoutingContext ctx) {
-        JsonObject body = ctx.getBodyAsJson();
-
-        float weight = body.getFloat("weight");
-        float volume = body.getFloat("volume");
-        String urgency = body.getString("urgency");
+        float weight = Float.parseFloat(ctx.request().getParam("weight"));
+        float volume = Float.parseFloat(ctx.request().getParam("volume"));
+        String urgency = ctx.request().getParam("urgency");
 
         return controller.getFilteredFlights(weight, volume, urgency);
     }
