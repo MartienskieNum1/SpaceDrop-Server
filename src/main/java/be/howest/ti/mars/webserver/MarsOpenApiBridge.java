@@ -6,6 +6,7 @@ import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.User;
 import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
@@ -167,5 +168,11 @@ class MarsOpenApiBridge {
 
     private String decryptTokenToEmail(RoutingContext ctx) {
         return TokenAES.decrypt(ctx.request().getHeader(HttpHeaders.AUTHORIZATION));
+    }
+
+    public Object getFilteredFlights(RoutingContext ctx) {
+        JsonObject body = ctx.getBodyAsJson();
+
+        return body;
     }
 }
