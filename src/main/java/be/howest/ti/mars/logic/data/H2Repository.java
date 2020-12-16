@@ -7,6 +7,8 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,8 +69,8 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_SELECT_ALL_ROCKETS = "select * from rockets";
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
     private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
-//    private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
-    private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ?";
+    private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
+    //private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ?";
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -351,7 +353,7 @@ public class H2Repository implements MarsRepository {
     }
 
     @Override
-    public List<Rocket> getFilteredRockets(float weight, float volume, String[] dates) {
+    public List<Rocket> getFilteredRockets(float weight, float volume, LocalDateTime[] dates) {
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_SELECT_FILTERED_ROCKETS)) {
 
@@ -359,8 +361,8 @@ public class H2Repository implements MarsRepository {
 
             stmt.setFloat(1, weight);
             stmt.setFloat(2, volume);
-//            stmt.setString(3, dates[0]);
-//            stmt.setString(4, dates[1]);
+            stmt.setString(3, dates[0].toString());
+            stmt.setString(4, dates[1].toString());
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

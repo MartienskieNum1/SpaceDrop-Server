@@ -156,11 +156,11 @@ public class MarsController {
     }
 
     public List<Rocket> getFilteredFlights(float weight, float volume, String urgency) {
-        String[] dates = calculateDates(urgency);
+        LocalDateTime[] dates = calculateDates(urgency);
         return repo.getFilteredRockets(weight, volume, dates);
     }
 
-    private String[] calculateDates(String urgency) {
+    private LocalDateTime[] calculateDates(String urgency) {
         LocalDateTime[] dates = new LocalDateTime[2];
         String[] formattedDates = new String[2];
         dates[0] = LocalDateTime.now().plusYears(35);
@@ -181,6 +181,6 @@ public class MarsController {
         formattedDates[0] = dates[0].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
         formattedDates[1] = dates[1].format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
 
-        return formattedDates;
+        return dates;
     }
 }

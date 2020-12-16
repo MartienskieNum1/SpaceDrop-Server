@@ -97,7 +97,7 @@ class MarsOpenApiBridge {
         Order newOrder = Json.decodeValue(ctx.getBodyAsString(), Order.class);
         Order createdOrder;
 
-        if (ctx.request().getHeader("Authorization") == null) {
+        if (ctx.request().getHeader("Authorization").equals("")) {
             createdOrder = controller.createOrder(newOrder, -10);
         } else {
             int userId = getUserId(ctx);
