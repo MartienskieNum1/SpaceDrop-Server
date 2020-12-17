@@ -185,6 +185,11 @@ public class MockRepository implements MarsRepository {
     }
 
     @Override
+    public void updateOrderStatus(int orderId, int statusId) {
+        throw new NotYetBoundException();
+    }
+
+    @Override
     public Map<Integer, String> getIdsForStatuses() {
         throw new NotYetBoundException();
     }
