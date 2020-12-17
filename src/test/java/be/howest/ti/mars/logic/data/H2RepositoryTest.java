@@ -42,7 +42,7 @@ public class H2RepositoryTest {
     @Test
     void getUsers() {
         List<User> users = h2Repository.getUsers();
-        assertEquals(2, users.size());
+        assertEquals(4, users.size());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class H2RepositoryTest {
 
         h2Repository.createUser(newUser);
 
-        assertEquals(3, h2Repository.getUsers().size());
+        assertEquals(5, h2Repository.getUsers().size());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class H2RepositoryTest {
 
     @Test
     void getIdViaEmail() {
-        assertEquals(2, h2Repository.getIdViaEmail("mira.vogelsang@telenet.com"));
+        assertEquals(4, h2Repository.getIdViaEmail("mira.vogelsang@telenet.com"));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class H2RepositoryTest {
     @Test
     void getRockets() {
         List<Rocket> rockets = h2Repository.getRockets();
-        assertEquals(2, rockets.size());
+        assertEquals(66, rockets.size());
     }
 
     private void createDatabase() throws IOException {
