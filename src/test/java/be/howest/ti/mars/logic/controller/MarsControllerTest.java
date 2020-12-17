@@ -130,10 +130,18 @@ class MarsControllerTest {
     }
 
     @Test
-    void createOrder() {
+    void successfulCreateOrder() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         Order order = new Order(1, UUID.randomUUID(), 1, 1, 1, "status", 1, 1, 1, 1, 1, address);
         assertEquals(order, controller.createOrder(order, 1));
+    }
+
+    @Test
+    void departedCreateOrder() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order = new Order(1, UUID.randomUUID(), 1, 2, 1, "status", 1, 1, 1, 1, 1, address);
+
+        assertNull(controller.createOrder(order, 1));
     }
 
     @Test

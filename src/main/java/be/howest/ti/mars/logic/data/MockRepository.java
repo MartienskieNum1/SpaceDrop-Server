@@ -25,6 +25,11 @@ public class MockRepository implements MarsRepository {
     private static final String COULD_NOT_FIND_THE_USER = "Could not find the user!";
     private static final String COULD_NOT_FIND_THE_ORDERS = "Failed to get all orders";
 
+    {
+        createRocket(new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f));
+        createRocket(new Rocket(2, "departed rocket", "Mars", "2000-01-01 12:00:00", "2000-04-01 12:00:00", 100, 100000, 270, 100000, 270));
+    }
+
     @Override
     public void createUser(User user) {
         Role role = new Role("User", 2);
@@ -97,7 +102,6 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public Rocket getRocketById(int rocketId) {
-        createRocket(new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f));
         for (Rocket rocket : rockets) {
             if (rocket.getId() == rocketId)
                 return rocket;
