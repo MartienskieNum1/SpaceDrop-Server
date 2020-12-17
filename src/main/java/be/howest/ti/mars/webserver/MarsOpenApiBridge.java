@@ -105,7 +105,7 @@ class MarsOpenApiBridge {
         }
 
         if (createdOrder == null) {
-            ctx.fail(400, new ValidationException("Package to big or too heavy"));
+            ctx.fail(400, new ValidationException("Package too big or too heavy or rocket departed"));
         }
 
         return createdOrder;
