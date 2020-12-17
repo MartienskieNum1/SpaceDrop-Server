@@ -286,17 +286,7 @@ public class H2Repository implements MarsRepository {
             List<Rocket> rockets = new ArrayList<>();
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String departLocation = rs.getString("depart_location");
-                String departure = rs.getString("departure");
-                String arrival = rs.getString("arrival");
-                int pricePerKilo = rs.getInt("price_per_kilo");
-                int maxMass = rs.getInt("max_mass");
-                int maxVolume = rs.getInt("max_volume");
-                int availableMass = rs.getInt("available_mass");
-                int availableVolume = rs.getInt("available_volume");
-                rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+                rockets.add(createRocketFromDatabase(rs));
             }
 
             return rockets;
@@ -366,17 +356,7 @@ public class H2Repository implements MarsRepository {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String name = rs.getString("name");
-                    String departLocation = rs.getString("depart_location");
-                    String departure = rs.getString("departure");
-                    String arrival = rs.getString("arrival");
-                    int pricePerKilo = rs.getInt("price_per_kilo");
-                    int maxMass = rs.getInt("max_mass");
-                    int maxVolume = rs.getInt("max_volume");
-                    int availableMass = rs.getInt("available_mass");
-                    int availableVolume = rs.getInt("available_volume");
-                    rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+                    rockets.add(createRocketFromDatabase(rs));
                 }
             }
 
@@ -543,6 +523,26 @@ public class H2Repository implements MarsRepository {
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             throw new IllegalStateException("Failed to create order from database results");
+        }
+    }
+
+    private Rocket createRocketFromDatabase(ResultSet results) {
+        try {
+            int id = results.getInt("id");
+            String name = results.getString("name");
+            String departLocation = results.getString("depart_location");
+            String departure = results.getString("departure");
+            String arrival = results.getString("arrival");
+            int pricePerKilo = results.getInt("price_per_kilo");
+            int maxMass = results.getInt("max_mass");
+            int maxVolume = results.getInt("max_volume");
+            int availableMass = results.getInt("available_mass");
+            int availableVolume = results.getInt("available_volume");
+
+            return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create rocket from database results");
         }
     }
 
