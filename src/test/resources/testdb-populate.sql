@@ -1,5 +1,7 @@
 insert into users(first_name, last_name, email, phone_number, password, planet, country_or_colony, city_or_district, street, number)
-values('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
+values('Mock', 'User', 'user@space.drop', '04586541', '$2a$10$y4ZEbUKH1NBMOneHg.JwrecL8VIyNFfoZcQPsBw2tbriXyIdRzQKW', 'Earth', 'Belgium', 'Bruges', 'SomeStreet', 15),
+      ('no-user', 0, 'motloggedin@space.drop', 0, 0, 0, 0, 0, 0, 0),
+       ('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
        ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1);
 
 insert into roles(name, rank)
