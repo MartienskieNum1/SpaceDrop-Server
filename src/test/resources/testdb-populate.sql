@@ -8,7 +8,7 @@ insert into roles(name, rank)
 values('Admin', 1), ('User', 2);
 
 insert into userroles(user_id, role_id)
-values(1, 1), (2, 2);
+values(3, 1), (4, 2);
 
 insert into statuses(status)
 values ('Travelling'), ('Returning'), ('Finished');
