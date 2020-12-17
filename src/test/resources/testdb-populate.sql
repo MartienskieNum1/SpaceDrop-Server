@@ -79,9 +79,9 @@ values('Falcon Heavy', 'Mars', '2055-12-18 13:30:00', '2055-01-18 08:20:30', 100
       ('Untouchable', 'Mars', '2055-02-17 12:15:20', '2055-03-20 22:30:00', 112.0, 4589.0, 2678.0, 4589.0, 2678.0),
       ('Xerxes', 'Earth', '2055-02-18 12:15:20', '2055-03-21 22:30:00', 120.0, 687.0, 524.0, 687.0, 524.0),
       ('Thylacine', 'Earth', '2055-02-19 12:15:20', '2055-03-23 22:30:00', 119.0, 5682.0, 4925.0, 5682.0, 4925.0),
-      ('Titan', 'Earth', '2055-02-20 12:15:20', '2055-03-24 22:30:00', 106.0, 3659.0, 4265.0, 3659.0, 4265.0),
+      ('Titan', 'Earth', '2055-02-20 12:15:20', '2055-03-24 22:30:00', 106.0, 3659.0, 4265.0, 3659.0, 4265.0);
 
 
 insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number)
-values (1, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
-       (1, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1);
+values (3, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
+       (3, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1);
