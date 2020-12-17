@@ -11,7 +11,7 @@ insert into userroles(user_id, role_id)
 values(3, 1), (4, 2);
 
 insert into statuses(status)
-values ('Travelling'), ('Returning'), ('Finished');
+values ('Processing'), ('Travelling'), ('Arrived');
 
 insert into rockets(name, depart_location, departure, arrival, price_per_kilo, max_mass, max_volume, available_mass, available_volume)
 values('Falcon Heavy', 'Mars', '2055-12-18 13:30:00', '2055-01-18 08:20:30', 100.0, 10000.0, 2700.0, 10000.0, 2700.0),
@@ -80,7 +80,6 @@ values('Falcon Heavy', 'Mars', '2055-12-18 13:30:00', '2055-01-18 08:20:30', 100
       ('Xerxes', 'Earth', '2056-02-18 12:15:20', '2056-03-21 22:30:00', 120.0, 687.0, 524.0, 687.0, 524.0),
       ('Thylacine', 'Earth', '2056-02-19 12:15:20', '2056-03-23 22:30:00', 119.0, 5682.0, 4925.0, 5682.0, 4925.0),
       ('Titan', 'Earth', '2056-02-20 12:15:20', '2056-03-24 22:30:00', 106.0, 3659.0, 4265.0, 3659.0, 4265.0);
-
 
 insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number)
 values (3, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),

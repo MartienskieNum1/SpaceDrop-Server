@@ -7,7 +7,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
@@ -70,12 +69,15 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
     private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
     private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
+
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
     private static final String SQL_SELECT_ORDER_VIA_UUID = "select * from orders where uuid = ?";
     private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private static final String SQL_UPDATE_ORDER_STATUS = "update orders set status_id = ? where id = ?";
+
     private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     // User methods:
@@ -469,6 +471,22 @@ public class H2Repository implements MarsRepository {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("Failed to get all orders");
+        }
+    }
+
+    @Override
+    public void updateOrderStatus(int orderId, int statusId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
+
+            stmt.setInt(1, statusId);
+            stmt.setInt(2, orderId);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Failed to update order");
         }
     }
 

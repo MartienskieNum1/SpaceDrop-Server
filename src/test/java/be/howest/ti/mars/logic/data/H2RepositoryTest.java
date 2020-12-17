@@ -158,11 +158,22 @@ public class H2RepositoryTest {
     }
 
     @Test
+    void updateOrderStatus() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 1);
+        Order newOrder = new Order(20, UUID.randomUUID(), 1, 1, 1, "status", 220, 50, 50, 50, 250, address);
+        h2Repository.createOrder(newOrder, 1);
+
+        h2Repository.updateOrderStatus(newOrder.getOrderId(), 2);
+
+        assertEquals(2, h2Repository.getOrderById(newOrder.getOrderId()).getStatusId());
+    }
+
+    @Test
     void getIdsForStatuses() {
         Map<Integer, String> statuses = new HashMap<>();
-        statuses.put(1, "Travelling");
-        statuses.put(2, "Returning");
-        statuses.put(3, "Finished");
+        statuses.put(1, "Processing");
+        statuses.put(2, "Travelling");
+        statuses.put(3, "Arrived");
 
         assertEquals(statuses, h2Repository.getIdsForStatuses());
     }
