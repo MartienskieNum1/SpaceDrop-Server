@@ -10,6 +10,7 @@ import be.howest.ti.mars.logic.domain.Order;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MarsController {
@@ -88,7 +89,8 @@ public class MarsController {
     }
 
     public Order createOrder(Order newOrder, int userId) {
-        if (isSpaceOnRocket(newOrder)) {
+        Rocket rocket  = repo.getRocketById(newOrder.getRocketId());
+        if (isSpaceOnRocket(rocket, newOrder) && !isRocketDeparted(rocket)) {
             updateRocketAvailableMassAndVolume(newOrder);
             return repo.createOrder(newOrder, userId);
         } else {
@@ -102,6 +104,15 @@ public class MarsController {
         float newVolume = rocket.getAvailableVolume() - order.calculateVolume();
 
         repo.updateRocketAvailableMassAndVolume(rocket.getId(), newMass, newVolume);
+    }
+
+    private boolean isRocketDeparted(Rocket rocket) {
+        LocalDateTime now = LocalDateTime.now().plusYears(35);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime departure = LocalDateTime.parse(rocket.getDeparture(), formatter);
+
+        return now.isAfter(departure);
     }
 
     public Order getOrderById(int orderId) {
@@ -144,9 +155,7 @@ public class MarsController {
         return repo.getIdsForStatuses();
     }
 
-    private boolean isSpaceOnRocket(Order order) {
-        Rocket rocket = repo.getRocketById(order.getRocketId());
-
+    private boolean isSpaceOnRocket(Rocket rocket, Order order) {
         if (rocket.getAvailableVolume() - order.calculateVolume() >= 0) {
             return rocket.getAvailableMass() - order.getMass() >= 0;
         }
