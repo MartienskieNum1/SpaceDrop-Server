@@ -171,9 +171,9 @@ public class H2RepositoryTest {
     @Test
     void getIdsForStatuses() {
         Map<Integer, String> statuses = new HashMap<>();
-        statuses.put(1, "Travelling");
-        statuses.put(2, "Returning");
-        statuses.put(3, "Finished");
+        statuses.put(1, "Processing");
+        statuses.put(2, "Travelling");
+        statuses.put(3, "Arrived");
 
         assertEquals(statuses, h2Repository.getIdsForStatuses());
     }
