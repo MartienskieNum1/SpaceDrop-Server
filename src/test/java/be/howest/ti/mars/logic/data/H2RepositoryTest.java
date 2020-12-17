@@ -7,9 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +19,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class H2RepositoryTest {
@@ -178,6 +177,9 @@ public class H2RepositoryTest {
         Rocket rocket = new Rocket(1,"Falcon Heavy", "Mars","2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f);
 
         assertEquals(rocket, h2Repository.getRocketById(1));
+        assertThrows(MarsException.class, () -> {
+            h2Repository.getRocketById(5000);
+        });
     }
 
     private void createDatabase() throws IOException {
