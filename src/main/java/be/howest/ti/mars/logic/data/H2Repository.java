@@ -70,7 +70,6 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
     private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
     private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
-    //private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ?";
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -307,21 +306,10 @@ public class H2Repository implements MarsRepository {
             try (ResultSet results = stmt.executeQuery()) {
                 results.next();
 
-                int id = results.getInt("id");
-                String name = results.getString("name");
-                String departLocation = results.getString("depart_location");
-                String departure = results.getString("departure");
-                String arrival = results.getString("arrival");
-                float pricePerKilo = results.getFloat("price_per_kilo");
-                float maxMass = results.getFloat("max_mass");
-                float maxVolume = results.getFloat("max_volume");
-                float availableMass = results.getFloat("available_mass");
-                float availableVolume = results.getFloat("available_volume");
-
-                return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+                return createRocketFromDatabase(results);
             }
         } catch (SQLException ex) {
-            throw handleFailedToGetAllOrders(ex);
+            throw handleFailedToGetAllRockets(ex);
         }
     }
 
@@ -363,8 +351,7 @@ public class H2Repository implements MarsRepository {
             return rockets;
 
         } catch (SQLException ex) {
-            logger.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not get rockets!");
+            throw  handleFailedToGetAllRockets(ex);
         }
     }
 
@@ -565,6 +552,11 @@ public class H2Repository implements MarsRepository {
     private MarsException handleFailedToGetAllOrders(Exception ex) {
         logger.log(Level.SEVERE, ex.getMessage());
         return new MarsException("Failed to get all orders");
+    }
+
+    private MarsException handleFailedToGetAllRockets(Exception ex) {
+        logger.log(Level.SEVERE, ex.getMessage());
+        return new MarsException("Failed to get all rockets");
     }
 
     public static Connection getConnection() throws SQLException {
