@@ -1,4 +1,4 @@
-package be.howest.ti.mars.logic.data;
+package be.howest.ti.mars.logic.util;
 
 import be.howest.ti.mars.logic.util.TokenAES;
 import org.junit.jupiter.api.Test;
