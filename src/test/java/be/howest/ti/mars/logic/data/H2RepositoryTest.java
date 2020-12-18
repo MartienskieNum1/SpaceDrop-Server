@@ -182,6 +182,14 @@ public class H2RepositoryTest {
         });
     }
 
+    @Test
+    void testUpdateRocketAvailableMassAndVolume() {
+        Rocket rocket = new Rocket(1,"Falcon Heavy", "Mars","2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 9600.0f, 2500.0f);
+        h2Repository.updateRocketAvailableMassAndVolume(1, 9600.0f, 2500.f);
+
+        assertEquals(rocket, h2Repository.getRocketById(1));
+    }
+
     private void createDatabase() throws IOException {
         executeScript("src/test/resources/testdb-create.sql");
         executeScript("src/test/resources/testdb-populate.sql");
