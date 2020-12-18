@@ -144,6 +144,7 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public Order createOrder(Order order, int userId) {
+        updateRocketAvailableMassAndVolume(order.getRocketId(), order.getMass(), order.calculateVolume());
         orders.add(order);
         return order;
     }

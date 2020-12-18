@@ -7,21 +7,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class H2RepositoryTest {
@@ -182,6 +181,71 @@ public class H2RepositoryTest {
     void getRockets() {
         List<Rocket> rockets = h2Repository.getRockets();
         assertEquals(66, rockets.size());
+    }
+
+    @Test
+    void getRocketById() {
+        Rocket rocket = new Rocket(1,"Falcon Heavy", "Mars","2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f);
+
+        assertEquals(rocket, h2Repository.getRocketById(1));
+        assertThrows(IllegalStateException.class, () -> h2Repository.getRocketById(5000));
+    }
+
+    @Test
+    void testUpdateRocketAvailableMassAndVolume() {
+        Rocket rocket = new Rocket(1,"Falcon Heavy", "Mars","2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 9600.0f, 2500.0f);
+        h2Repository.updateRocketAvailableMassAndVolume(1, 9600.0f, 2500.f);
+
+        assertEquals(rocket, h2Repository.getRocketById(1));
+    }
+
+    @Test
+    void testGetFilteredRocketsFastUrgency() {
+        LocalDateTime[] datesFast = new LocalDateTime[2];
+        datesFast[0] = LocalDateTime.of(2055, Month.DECEMBER, 17, 15, 30, 0);
+        datesFast[1] = LocalDateTime.of(2055, Month.DECEMBER, 19, 15, 30, 0);
+        List<Rocket> rocketsFast = new ArrayList<>() {{
+            add(new Rocket(1, "Falcon Heavy", "Mars", "2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f));
+            add(new Rocket(2, "Shear Razor", "Earth", "2055-12-19 12:15:20", "2055-01-19 22:30:00", 120.0f, 15000.0f, 1100.0f, 15000.0f, 1100.0f));
+        }};
+
+        assertEquals(rocketsFast, h2Repository.getFilteredRockets(200, 200, datesFast));
+        assertEquals(1, h2Repository.getFilteredRockets(1500, 1500, datesFast).size());
+    }
+
+    @Test
+    void testGetFilteredRocketsNormalUrgency() {
+        LocalDateTime[] datesNormal = new LocalDateTime[2];
+        datesNormal[0] = LocalDateTime.of(2055, Month.DECEMBER, 17, 15, 30, 0);
+        datesNormal[1] = datesNormal[0].plusDays(5);
+        List<Rocket> rocketsNormal = new ArrayList<>() {{
+            add(new Rocket(1, "Falcon Heavy", "Mars", "2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f));
+            add(new Rocket(2, "Shear Razor", "Earth", "2055-12-19 12:15:20", "2055-01-19 22:30:00", 120.0f, 15000.0f, 1100.0f, 15000.0f, 1100.0f));
+            add(new Rocket(3, "Starship", "Mars", "2055-12-20 12:15:20", "2055-01-20 22:30:00", 110.0f, 1600.0f, 1150.0f, 1600.0f, 1150.0f));
+            add(new Rocket(4, "Cataphract", "Earth", "2055-12-21 12:15:20", "2055-01-21 22:30:00", 115.0f, 16000.0f, 5000.0f, 16000.0f, 5000.0f));
+            add(new Rocket(5, "Maiden Voyage", "Mars", "2055-12-22 12:15:20", "2055-01-22 22:30:00", 110.0f, 1300.0f, 560.0f, 1300.0f, 560.0f));
+        }};
+
+        assertEquals(rocketsNormal, h2Repository.getFilteredRockets(200, 200, datesNormal));
+        assertEquals(2, h2Repository.getFilteredRockets(1000, 2000, datesNormal).size());
+    }
+
+    @Test
+    void testGetFilteredRocketsSlowUrgency() {
+        LocalDateTime[] datesSlow = new LocalDateTime[2];
+        datesSlow[0] = LocalDateTime.of(2055, Month.DECEMBER, 22, 15, 30, 0);
+        datesSlow[1] = datesSlow[0].plusMonths(3);
+
+        assertEquals(61, h2Repository.getFilteredRockets(50, 50, datesSlow).size());
+    }
+
+    @Test
+    void testGetFilteredRocketsWrongDates() {
+        LocalDateTime[] datesWrong = new LocalDateTime[2];
+        datesWrong[0] = LocalDateTime.of(2055, Month.DECEMBER, 22, 15, 30, 0);
+        datesWrong[1] = datesWrong[0].minusDays(2);
+
+        assertEquals(0, h2Repository.getFilteredRockets(50, 50, datesWrong).size());
     }
 
     private void createDatabase() throws IOException {
