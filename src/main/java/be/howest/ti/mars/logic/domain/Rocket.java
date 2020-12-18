@@ -60,6 +60,22 @@ public class Rocket {
         this.availableVolume = availableVolume;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDepartLocation() {
+        return departLocation;
+    }
+
+    public float getPricePerKilo() {
+        return pricePerKilo;
+    }
+
+    public float getMaxVolume() {
+        return maxVolume;
+    }
+
     @Override
     public String toString() {
         return "Rocket{" +
