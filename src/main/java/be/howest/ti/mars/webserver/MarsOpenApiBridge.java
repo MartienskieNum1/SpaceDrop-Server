@@ -5,9 +5,7 @@ import be.howest.ti.mars.logic.data.Repositories;
 import be.howest.ti.mars.logic.domain.Order;
 import be.howest.ti.mars.logic.domain.Rocket;
 import be.howest.ti.mars.logic.domain.User;
-import be.howest.ti.mars.logic.util.MarsException;
 import be.howest.ti.mars.logic.util.TokenAES;
-import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
@@ -15,9 +13,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.api.validation.ValidationException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 class MarsOpenApiBridge {
@@ -105,7 +101,7 @@ class MarsOpenApiBridge {
         }
 
         if (createdOrder == null) {
-            ctx.fail(400, new ValidationException("Package to big or too heavy"));
+            ctx.fail(400, new ValidationException("Package too big or too heavy or rocket departed"));
         }
 
         return createdOrder;

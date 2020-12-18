@@ -7,7 +7,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
@@ -70,13 +69,15 @@ public class H2Repository implements MarsRepository {
     private static final String SQL_SELECT_ROCKET_VIA_ID = "select * from rockets where id = ?";
     private static final String SQL_UPDATE_ROCKET = "update rockets set available_mass = ?, available_volume = ? where id = ?";
     private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ? and departure between ? and ?";
-    //private static final String SQL_SELECT_FILTERED_ROCKETS = "select * from rockets where available_mass >= ? and available_volume >= ?";
+
     private static final String SQL_SELECT_ALL_ORDERS = "select * from orders";
     private static final String SQL_INSERT_ORDER = "insert into Orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ORDER_VIA_ID = "select * from orders where id = ?";
     private static final String SQL_SELECT_ORDER_VIA_UUID = "select * from orders where uuid = ?";
     private static final String SQL_SELECT_ORDERS_FOR_USER = "select * from orders where user_id = (select id from users where email = ?)";
+    private static final String SQL_UPDATE_ORDER_STATUS = "update orders set status_id = ? where id = ?";
+
     private static final String SQL_SELECT_STATUS_ID_AND_NAME = "select * from statuses";
 
     // User methods:
@@ -286,17 +287,7 @@ public class H2Repository implements MarsRepository {
             List<Rocket> rockets = new ArrayList<>();
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String departLocation = rs.getString("depart_location");
-                String departure = rs.getString("departure");
-                String arrival = rs.getString("arrival");
-                int pricePerKilo = rs.getInt("price_per_kilo");
-                int maxMass = rs.getInt("max_mass");
-                int maxVolume = rs.getInt("max_volume");
-                int availableMass = rs.getInt("available_mass");
-                int availableVolume = rs.getInt("available_volume");
-                rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+                rockets.add(createRocketFromDatabase(rs));
             }
 
             return rockets;
@@ -317,21 +308,10 @@ public class H2Repository implements MarsRepository {
             try (ResultSet results = stmt.executeQuery()) {
                 results.next();
 
-                int id = results.getInt("id");
-                String name = results.getString("name");
-                String departLocation = results.getString("depart_location");
-                String departure = results.getString("departure");
-                String arrival = results.getString("arrival");
-                float pricePerKilo = results.getFloat("price_per_kilo");
-                float maxMass = results.getFloat("max_mass");
-                float maxVolume = results.getFloat("max_volume");
-                float availableMass = results.getFloat("available_mass");
-                float availableVolume = results.getFloat("available_volume");
-
-                return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+                return createRocketFromDatabase(results);
             }
         } catch (SQLException ex) {
-            throw handleFailedToGetAllOrders(ex);
+            throw handleFailedToGetAllRockets(ex);
         }
     }
 
@@ -366,25 +346,14 @@ public class H2Repository implements MarsRepository {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String name = rs.getString("name");
-                    String departLocation = rs.getString("depart_location");
-                    String departure = rs.getString("departure");
-                    String arrival = rs.getString("arrival");
-                    int pricePerKilo = rs.getInt("price_per_kilo");
-                    int maxMass = rs.getInt("max_mass");
-                    int maxVolume = rs.getInt("max_volume");
-                    int availableMass = rs.getInt("available_mass");
-                    int availableVolume = rs.getInt("available_volume");
-                    rockets.add(new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume));
+                    rockets.add(createRocketFromDatabase(rs));
                 }
             }
 
             return rockets;
 
         } catch (SQLException ex) {
-            logger.log(Level.WARNING, ex.getMessage());
-            throw new MarsException("Could not get rockets!");
+            throw  handleFailedToGetAllRockets(ex);
         }
     }
 
@@ -506,6 +475,22 @@ public class H2Repository implements MarsRepository {
     }
 
     @Override
+    public void updateOrderStatus(int orderId, int statusId) {
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
+
+            stmt.setInt(1, statusId);
+            stmt.setInt(2, orderId);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new MarsException("Failed to update order");
+        }
+    }
+
+    @Override
     public Map<Integer, String> getIdsForStatuses() {
         Map<Integer, String> statuses = new HashMap<>();
 
@@ -546,6 +531,26 @@ public class H2Repository implements MarsRepository {
         }
     }
 
+    private Rocket createRocketFromDatabase(ResultSet results) {
+        try {
+            int id = results.getInt("id");
+            String name = results.getString("name");
+            String departLocation = results.getString("depart_location");
+            String departure = results.getString("departure");
+            String arrival = results.getString("arrival");
+            int pricePerKilo = results.getInt("price_per_kilo");
+            int maxMass = results.getInt("max_mass");
+            int maxVolume = results.getInt("max_volume");
+            int availableMass = results.getInt("available_mass");
+            int availableVolume = results.getInt("available_volume");
+
+            return new Rocket(id, name, departLocation, departure, arrival, pricePerKilo, maxMass, maxVolume, availableMass, availableVolume);
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new IllegalStateException("Failed to create rocket from database results");
+        }
+    }
+
     private Address createAddressFromDatabase(ResultSet results) {
         try {
             String planet = results.getString("planet");
@@ -565,6 +570,11 @@ public class H2Repository implements MarsRepository {
     private MarsException handleFailedToGetAllOrders(Exception ex) {
         logger.log(Level.SEVERE, ex.getMessage());
         return new MarsException("Failed to get all orders");
+    }
+
+    private MarsException handleFailedToGetAllRockets(Exception ex) {
+        logger.log(Level.SEVERE, ex.getMessage());
+        return new MarsException("Failed to get all rockets");
     }
 
     public static Connection getConnection() throws SQLException {

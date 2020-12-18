@@ -33,5 +33,8 @@ public interface MarsRepository {
     Order getOrderById(int orderId);
     Order getOrderByUuid(UUID uuid);
     List<Order> getOrdersForUser(String email);
+    void updateOrderStatus(int orderId, int statusId);
+
+    // Status methods:
     Map<Integer, String> getIdsForStatuses();
 }

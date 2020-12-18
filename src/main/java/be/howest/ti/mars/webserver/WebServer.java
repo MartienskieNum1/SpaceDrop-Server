@@ -1,6 +1,7 @@
 package be.howest.ti.mars.webserver;
 
 import be.howest.ti.mars.logic.data.H2Repository;
+import be.howest.ti.mars.logic.util.StatusUpdateTask;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -21,6 +22,7 @@ import io.vertx.ext.web.handler.LoggerHandler;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
+import java.util.Timer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -69,6 +71,7 @@ public class WebServer extends AbstractVerticle {
                     dbProps.getString("username"),
                     dbProps.getString("password"),
                     dbProps.getInteger("webconsole.port", DB_WEB_CONSOLE_FALLBACK));
+            new Timer().scheduleAtFixedRate(new StatusUpdateTask(), 0, 300000);
             LOGGER.info("Database webconsole started on port: " + dbProps.getInteger("webconsole.port"));
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE,"DB web console is unavailable", ex);
