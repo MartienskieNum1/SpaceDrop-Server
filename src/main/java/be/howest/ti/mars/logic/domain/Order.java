@@ -102,6 +102,10 @@ public class Order {
         return width * height * depth;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
