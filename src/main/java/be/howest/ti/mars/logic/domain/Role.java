@@ -15,18 +15,6 @@ public class Role {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
     @Override
     public String toString() {
         return "Role{" +

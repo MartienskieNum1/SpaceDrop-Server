@@ -32,14 +32,6 @@ public class Rocket {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDepartLocation() {
-        return departLocation;
-    }
-
     public String getDeparture() {
         return departure;
     }
@@ -48,16 +40,8 @@ public class Rocket {
         return arrival;
     }
 
-    public float getPricePerKilo() {
-        return pricePerKilo;
-    }
-
     public float getMaxMass() {
         return maxMass;
-    }
-
-    public float getMaxVolume() {
-        return maxVolume;
     }
 
     public float getAvailableMass() {
