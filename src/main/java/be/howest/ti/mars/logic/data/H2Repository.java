@@ -342,7 +342,7 @@ public class H2Repository implements MarsRepository {
 
             stmt.setFloat(1, weight);
             stmt.setFloat(2, volume);
-            stmt.setDouble(3, rocketId);
+            stmt.setInt(3, rocketId);
 
             stmt.executeUpdate();
 
