@@ -74,10 +74,6 @@ public class Order {
         return statusId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public float getMass() {
         return mass;
     }
