@@ -15,6 +15,10 @@ public class Role {
         return name;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
