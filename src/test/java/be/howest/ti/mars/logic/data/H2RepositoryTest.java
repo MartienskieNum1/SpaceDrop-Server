@@ -239,6 +239,15 @@ public class H2RepositoryTest {
         assertEquals(61, h2Repository.getFilteredRockets(50, 50, datesSlow).size());
     }
 
+    @Test
+    void testGetFilteredRocketsWrongDates() {
+        LocalDateTime[] datesWrong = new LocalDateTime[2];
+        datesWrong[0] = LocalDateTime.of(2055, Month.DECEMBER, 22, 15, 30, 0);
+        datesWrong[1] = datesWrong[0].minusDays(2);
+
+        assertEquals(0, h2Repository.getFilteredRockets(50, 50, datesWrong).size());
+    }
+
     private void createDatabase() throws IOException {
         executeScript("src/test/resources/testdb-create.sql");
         executeScript("src/test/resources/testdb-populate.sql");
