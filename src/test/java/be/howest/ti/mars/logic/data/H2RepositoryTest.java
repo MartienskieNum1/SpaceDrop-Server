@@ -10,13 +10,13 @@ import org.junit.jupiter.api.TestInstance;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -186,6 +186,20 @@ public class H2RepositoryTest {
         h2Repository.updateRocketAvailableMassAndVolume(1, 9600.0f, 2500.f);
 
         assertEquals(rocket, h2Repository.getRocketById(1));
+    }
+
+    @Test
+    void testGetFilteredRocketsFast() {
+        LocalDateTime[] datesFast = new LocalDateTime[2];
+        datesFast[0] = LocalDateTime.of(2055, Month.DECEMBER, 17, 15, 30, 0);
+        datesFast[1] = LocalDateTime.of(2055, Month.DECEMBER, 19, 15, 30, 0);
+        List<Rocket> rocketsFast = new ArrayList<>() {{
+            add(new Rocket(1, "Falcon Heavy", "Mars", "2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f));
+            add(new Rocket(2, "Shear Razor", "Earth", "2055-12-19 12:15:20", "2055-01-19 22:30:00", 120.0f, 15000.0f, 1100.0f, 15000.0f, 1100.0f));
+        }};
+        System.out.println(h2Repository.getFilteredRockets(200, 200, datesFast));
+        assertEquals(rocketsFast, h2Repository.getFilteredRockets(200, 200, datesFast));
+        assertEquals(1, h2Repository.getFilteredRockets(1500, 1500, datesFast).size());
     }
 
     private void createDatabase() throws IOException {
