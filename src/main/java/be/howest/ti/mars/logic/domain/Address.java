@@ -26,40 +26,20 @@ public class Address {
         return planet;
     }
 
-    public void setPlanet(String planet) {
-        this.planet = planet;
-    }
-
     public String getCountryOrColony() {
         return countryOrColony;
-    }
-
-    public void setCountryOrColony(String countryOrColony) {
-        this.countryOrColony = countryOrColony;
     }
 
     public String getCityOrDistrict() {
         return cityOrDistrict;
     }
 
-    public void setCityOrDistrict(String cityOrDistrict) {
-        this.cityOrDistrict = cityOrDistrict;
-    }
-
     public String getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     @Override
