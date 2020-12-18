@@ -188,7 +188,7 @@ public class H2RepositoryTest {
         Rocket rocket = new Rocket(1,"Falcon Heavy", "Mars","2055-12-18 13:30:00", "2055-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f);
 
         assertEquals(rocket, h2Repository.getRocketById(1));
-        assertThrows(MarsException.class, () -> h2Repository.getRocketById(5000));
+        assertThrows(IllegalStateException.class, () -> h2Repository.getRocketById(5000));
     }
 
     @Test
