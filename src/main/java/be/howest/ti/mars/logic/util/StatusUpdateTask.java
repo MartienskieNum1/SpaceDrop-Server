@@ -24,7 +24,7 @@ public class StatusUpdateTask extends TimerTask {
             Rocket rocket = repo.getRocketById(order.getRocketId());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now().plusYears(35);
             LocalDateTime departure = LocalDateTime.parse(rocket.getDeparture(), formatter);
             LocalDateTime arrival = LocalDateTime.parse(rocket.getArrival(), formatter);
 
