@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -198,6 +199,13 @@ class MarsControllerTest {
         controller.createOrder(order2, user.getId());
 
         assertEquals(orders, controller.getOrdersForUser(user.getEmail()));
+    }
+
+    @Test
+    void testGetFilteredRockets() {
+        assertEquals(5, controller.getFilteredFlights(50, 50, "fast").size());
+        assertEquals(1, controller.getFilteredFlights(3000, 3000, "fast").size());
+        assertEquals(3, controller.getFilteredFlights(50, 1150, "fast").size());
     }
 
     @Test
