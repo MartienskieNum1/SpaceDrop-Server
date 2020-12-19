@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -139,7 +140,7 @@ class MarsControllerTest {
     @Test
     void departedCreateOrder() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
-        Order order = new Order(1, UUID.randomUUID(), 1, 2, 1, "status", 1, 1, 1, 1, 1, address);
+        Order order = new Order(1, UUID.randomUUID(), 1, 4, 1, "status", 1, 1, 1, 1, 1, address);
 
         assertNull(controller.createOrder(order, 1));
     }
@@ -149,8 +150,6 @@ class MarsControllerTest {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         Order order1 = new Order(1, UUID.randomUUID(), 1, 1, 1, "status", 1, 1, 1, 1, 1, address);
         Order order2 = new Order(2, UUID.randomUUID(), 1, 1, 1, "status", 1, 1, 1, 1, 1, address);
-
-        System.out.println(controller.getRockets());
 
         controller.createOrder(order1, 1);
         controller.createOrder(order2, 1);
@@ -189,8 +188,8 @@ class MarsControllerTest {
     void successfulGetOrdersForUser() {
         Address address = new Address("Earth", "Belgium", "City", "Street", 0);
         User user = new User(15, "Mira", "Vogelsang", "0412345678", "mira@mira", "pass", address);
-        Order order1 = new Order(1, UUID.randomUUID(), 15, 1, 1, "status", 1, 1, 1, 1, 1, address);
-        Order order2 = new Order(2, UUID.randomUUID(), 15, 1, 1, "status", 1, 1, 1, 1, 1, address);
+        Order order1 = new Order(100, UUID.randomUUID(), 15, 1, 1, "status", 1, 1, 1, 1, 1, address);
+        Order order2 = new Order(102, UUID.randomUUID(), 15, 1, 1, "status", 1, 1, 1, 1, 1, address);
         List<Order> orders = Arrays.asList(order1, order2);
 
         controller.createUser(user);
@@ -198,6 +197,13 @@ class MarsControllerTest {
         controller.createOrder(order2, user.getId());
 
         assertEquals(orders, controller.getOrdersForUser(user.getEmail()));
+    }
+
+    @Test
+    void testGetFilteredRockets() {
+        assertEquals(5, controller.getFilteredFlights(50, 50, "fast").size());
+        assertEquals(1, controller.getFilteredFlights(3000, 3000, "fast").size());
+        assertEquals(3, controller.getFilteredFlights(50, 1150, "fast").size());
     }
 
     @Test

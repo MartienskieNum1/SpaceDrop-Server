@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MockRepository implements MarsRepository {
@@ -26,8 +27,11 @@ public class MockRepository implements MarsRepository {
     private static final String COULD_NOT_FIND_THE_ORDERS = "Failed to get all orders";
 
     {
-        createRocket(new Rocket(1,"Falcon Heavy", "Mars", "2057-06-05 13:30:00", "2057-07-05 08:20:30", 100.0f, 100000.0f, 270.0f, 100000.0f, 270.0f));
-        createRocket(new Rocket(2, "departed rocket", "Mars", "2000-01-01 12:00:00", "2000-04-01 12:00:00", 100, 100000, 270, 100000, 270));
+        createRocket(new Rocket(1, "Falcon Heavy", "Mars", "2056-12-18 13:30:00", "2057-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f));
+        createRocket(new Rocket(2, "Shear Razor", "Earth", "2056-12-19 12:15:20", "2057-01-19 22:30:00", 120.0f, 15000.0f, 1100.0f, 15000.0f, 1100.0f));
+        createRocket(new Rocket(3, "Starship", "Mars", "2056-12-20 12:15:20", "2057-01-20 22:30:00", 110.0f, 1600.0f, 1150.0f, 1600.0f, 1150.0f));
+        createRocket(new Rocket(4, "Cataphract", "Earth", "2055-12-10 12:15:20", "2055-01-10 22:30:00", 115.0f, 16000.0f, 5000.0f, 16000.0f, 5000.0f));
+        createRocket(new Rocket(5, "Maiden Voyage", "Mars", "2056-12-22 12:15:20", "2057-01-22 22:30:00", 110.0f, 1300.0f, 560.0f, 1300.0f, 560.0f));
     }
 
     @Override
@@ -134,7 +138,15 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public List<Rocket> getFilteredRockets(float weight, float volume, LocalDateTime[] dates) {
-        return null;
+        List<Rocket> matchingRockets = new ArrayList<>();
+
+        for (Rocket rocket : rockets) {
+            if (rocket.getAvailableMass() >= weight && rocket.getAvailableVolume() >= volume) {
+                matchingRockets.add(rocket);
+            }
+        }
+
+        return matchingRockets;
     }
 
     @Override
