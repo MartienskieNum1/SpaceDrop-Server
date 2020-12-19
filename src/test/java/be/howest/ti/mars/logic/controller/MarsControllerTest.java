@@ -194,6 +194,7 @@ class MarsControllerTest {
 
         controller.createUser(user);
         controller.createOrder(order1, user.getId());
+        controller.createOrder(order2, user.getId());
 
         assertEquals(orders, controller.getOrdersForUser(user.getEmail()));
     }
