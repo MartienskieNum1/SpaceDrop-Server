@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.channels.NotYetBoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MockRepository implements MarsRepository {
@@ -137,7 +138,15 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public List<Rocket> getFilteredRockets(float weight, float volume, LocalDateTime[] dates) {
-        return null;
+        List<Rocket> matchingRockets = new ArrayList<>();
+
+        for (Rocket rocket : rockets) {
+            if (rocket.getAvailableMass() >= weight && rocket.getAvailableVolume() >= volume) {
+                matchingRockets.add(rocket);
+            }
+        }
+
+        return matchingRockets;
     }
 
     @Override
