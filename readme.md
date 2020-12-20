@@ -11,8 +11,13 @@ Most endpoints are about users or orders:
 - `api/users` Get a list of all users [admin]
 - `api/order` Create a new order, returns order information
 - `api/orders` Get all orders [admin]
+- `api/details/orders` Get all your orders
 - `api/orders/{id}` Get a order information for a specific order through order id
+- `api/orders/qr/{uuid}` Get a specific order based on UUID
 - `api/rockets` Get a list of all the rockets
+- `api/filteredRockets` Get a list of rockets filtered on available weight, volume and the urgency of your delivery
+
+You can also find all of the endpoints in our [openapi specification](https://git.ti.howest.be/TI/2020-2021/s3/project-ii/openapi/-/blob/master/openapi-group-03.yaml).
 
 ## How to run the server locally
 Make sure to have Java installed. We are using [Azul Zulu 11](https://www.azul.com/downloads/zulu-community/?package=jdk).
