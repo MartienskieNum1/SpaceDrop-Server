@@ -3,7 +3,7 @@ values('Mock', 'User', 'user@space.drop', '04586541', '$2a$10$y4ZEbUKH1NBMOneHg.
       ('no-user', 0, 'motloggedin@space.drop', 0, 0, 0, 0, 0, 0, 0),
        ('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
        ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
-        ('Admin', 'Admin', 'admin@spacedrop.com', 0, 0, 0, 0, 0, 0, 0);
+        ('Admin', 'Admin', 'admin@spacedrop.com', 0, '$2a$10$etD6b6R/7DtEFmoaJ6FDX.34/g4WfZ5PX8EwmZ4Co1tWzjS/GjiHy', 0, 0, 0, 0, 0);
 
 insert into roles(name, rank)
 values('Admin', 1), ('User', 2);
