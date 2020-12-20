@@ -84,7 +84,5 @@ values('Falcon Heavy', 'Mars', '2055-12-18 13:30:00', '2056-01-18 08:20:30', 100
 insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number)
 values (3, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
        (3, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1),
-       (3, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
-       (3, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1),
        (1, 2, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
        (1, 1, 2, 75, 20, 15, 15, 100, 'Mars', 'E-545', 'City', 'Street', 1);
