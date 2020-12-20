@@ -25,7 +25,7 @@ public class MockRepository implements MarsRepository {
     private static final String COULD_NOT_FIND_THE_USER = "Could not find the user!";
     private static final String COULD_NOT_FIND_THE_ORDERS = "Failed to get all orders";
 
-    {
+    public MockRepository() {
         createRocket(new Rocket(1, "Falcon Heavy", "Mars", "2056-12-18 13:30:00", "2057-01-18 08:20:30", 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f));
         createRocket(new Rocket(2, "Shear Razor", "Earth", "2056-12-19 12:15:20", "2057-01-19 22:30:00", 120.0f, 15000.0f, 1100.0f, 15000.0f, 1100.0f));
         createRocket(new Rocket(3, "Starship", "Mars", "2056-12-20 12:15:20", "2057-01-20 22:30:00", 110.0f, 1600.0f, 1150.0f, 1600.0f, 1150.0f));
