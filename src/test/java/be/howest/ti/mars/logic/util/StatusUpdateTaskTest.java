@@ -19,7 +19,7 @@ class StatusUpdateTaskTest {
     @Test
     void updateStatus() throws InterruptedException {
         LocalDateTime now = LocalDateTime.now().plusYears(35);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         StatusUpdateTask updateTask = new StatusUpdateTask();
 
         Address address = new Address("Earth", "Belgium", "City", "Street", 1);
@@ -27,21 +27,21 @@ class StatusUpdateTaskTest {
         Order order2 = new Order(2, UUID.randomUUID(), 1, 10, 1, "status", 500, 5, 5, 5, 50, address);
         Rocket rocket = new Rocket(10, "ultra fast rocket", "Mars", now.plusSeconds(1).format(formatter), now.plusSeconds(2).format(formatter), 100.0f, 10000.0f, 2700.0f, 10000.0f, 2700.0f);
 
+        repo.createRocket(rocket);
         repo.createOrder(order1, 1);
         repo.createOrder(order2, 1);
-        repo.createRocket(rocket);
 
         updateTask.updateStatus(repo);
         assertEquals(1, repo.getOrderById(order1.getOrderId()).getStatusId());
         assertEquals(1, repo.getOrderById(order2.getOrderId()).getStatusId());
 
-        Thread.sleep(1050);
+        Thread.sleep(1000);
 
         updateTask.updateStatus(repo);
         assertEquals(2, repo.getOrderById(order1.getOrderId()).getStatusId());
         assertEquals(2, repo.getOrderById(order2.getOrderId()).getStatusId());
 
-        Thread.sleep(2050);
+        Thread.sleep(1000);
 
         updateTask.updateStatus(repo);
         assertEquals(3, repo.getOrderById(order1.getOrderId()).getStatusId());
