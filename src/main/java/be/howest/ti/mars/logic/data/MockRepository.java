@@ -196,7 +196,10 @@ public class MockRepository implements MarsRepository {
 
     @Override
     public void updateOrderStatus(int orderId, int statusId) {
-        throw new NotYetBoundException();
+        Order order = getOrderById(orderId);
+        Order updatedOrder = new Order(order.getOrderId(), order.getUuid(), order.getUserId(), order.getRocketId(), statusId, "status", order.getMass(), order.getWidth(), order.getHeight(), order.getDepth(), order.getCost(), order.getAddress());
+        orders.remove(order);
+        orders.add(updatedOrder);
     }
 
     @Override

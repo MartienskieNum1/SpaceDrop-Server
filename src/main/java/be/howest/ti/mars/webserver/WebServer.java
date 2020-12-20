@@ -33,7 +33,7 @@ public class WebServer extends AbstractVerticle {
     private static final Logger LOGGER = Logger.getLogger(WebServer.class.getName());
     private static final Integer DB_WEB_CONSOLE_FALLBACK = 9000;
     private static final String OPEN_API_SPEC = "openapi-group-03.yaml";
-    private MarsOpenApiBridge bridge;
+    private final MarsOpenApiBridge bridge;
 
     public WebServer(MarsOpenApiBridge bridge) {
         this.bridge = bridge;
