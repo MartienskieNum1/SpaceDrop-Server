@@ -2,13 +2,14 @@ insert into users(first_name, last_name, email, phone_number, password, planet, 
 values('Mock', 'User', 'user@space.drop', '04586541', '$2a$10$y4ZEbUKH1NBMOneHg.JwrecL8VIyNFfoZcQPsBw2tbriXyIdRzQKW', 'Earth', 'Belgium', 'Bruges', 'SomeStreet', 15),
       ('no-user', 0, 'motloggedin@space.drop', 0, 0, 0, 0, 0, 0, 0),
        ('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
-       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1);
+       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
+        ('Admin', 'Admin', 'admin@spacedrop.com', 0, 0, 0, 0, 0, 0, 0);
 
 insert into roles(name, rank)
 values('Admin', 1), ('User', 2);
 
 insert into userroles(user_id, role_id)
-values(3, 1), (4, 2);
+values(3, 1), (4, 2), (5, 1);
 
 insert into statuses(status)
 values ('Processing'), ('Travelling'), ('Arrived');
