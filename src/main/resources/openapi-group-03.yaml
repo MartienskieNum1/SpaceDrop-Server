@@ -240,7 +240,7 @@ paths:
     patch:
       tags:
         - Users
-      description: Update a user's details
+      description: Update a users details
       operationId: setUser
       requestBody:
         required: true
@@ -271,7 +271,7 @@ paths:
       tags:
         - Orders
         - Details
-      description: Get your specific user
+      description: Get your specific orders
       operationId: getOrdersForUser
       security:
         - userToken: []
