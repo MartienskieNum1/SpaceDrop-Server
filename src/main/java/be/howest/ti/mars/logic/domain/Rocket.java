@@ -1,5 +1,8 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Rocket {
@@ -14,8 +17,10 @@ public class Rocket {
     private float availableMass;
     private float availableVolume;
 
-    public Rocket(int id, String name, String departLocation, String departure, String arrival, float pricePerKilo, float maxMass,
-                  float maxVolume, float availableMass, float availableVolume) {
+    @JsonCreator
+    public Rocket(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("departLocation") String departLocation, @JsonProperty("departure") String departure,
+                  @JsonProperty("arrival") String arrival, @JsonProperty("pricePerKilo") float pricePerKilo, @JsonProperty("maxMass") float maxMass,
+                  @JsonProperty("maxVolume") float maxVolume, @JsonProperty("availableMass") float availableMass, @JsonProperty("availableVolume") float availableVolume) {
         this.id = id;
         this.name = name;
         this.departLocation = departLocation;
