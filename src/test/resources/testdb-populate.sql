@@ -2,13 +2,14 @@ insert into users(first_name, last_name, email, phone_number, password, planet, 
 values('Mock', 'User', 'user@space.drop', '04586541', '$2a$10$y4ZEbUKH1NBMOneHg.JwrecL8VIyNFfoZcQPsBw2tbriXyIdRzQKW', 'Earth', 'Belgium', 'Bruges', 'SomeStreet', 15),
       ('no-user', 0, 'motloggedin@space.drop', 0, 0, 0, 0, 0, 0, 0),
        ('Maarten', 'De Meyere', 'maarten.demeyere@hotmail.com', '0488270112', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
-       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1);
+       ('Mira', 'Vogelsang', 'mira.vogelsang@telenet.com', '0470010909', 'pass', 'Earth', 'Belgium', 'City', 'Street', 1),
+        ('Admin', 'Admin', 'admin@spacedrop.com', 0, 0, 0, 0, 0, 0, 0);
 
 insert into roles(name, rank)
 values('Admin', 1), ('User', 2);
 
 insert into userroles(user_id, role_id)
-values(3, 1), (4, 2);
+values(3, 1), (4, 2), (5, 1);
 
 insert into statuses(status)
 values ('Processing'), ('Travelling'), ('Arrived');
@@ -83,4 +84,6 @@ values('Falcon Heavy', 'Mars', '2055-12-18 13:30:00', '2056-01-18 08:20:30', 100
 
 insert into orders(user_id, rocket_id, status_id, mass, width, height, depth, cost, planet, country_or_colony, city_or_district, street, number)
 values (3, 1, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
-       (3, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1);
+       (3, 2, 1, 150, 75, 82, 31, 150, 'Earth', 'Belgium', 'City', 'Street', 1),
+       (1, 2, 2, 50, 20, 20, 15, 100, 'Earth', 'Belgium', 'City', 'Street', 1),
+       (1, 1, 2, 75, 20, 15, 15, 100, 'Mars', 'E-545', 'City', 'Street', 1);
