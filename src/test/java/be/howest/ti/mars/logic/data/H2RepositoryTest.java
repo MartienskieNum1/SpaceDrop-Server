@@ -40,7 +40,7 @@ public class H2RepositoryTest {
     @Test
     void getUsers() {
         List<User> users = h2Repository.getUsers();
-        assertEquals(4, users.size());
+        assertEquals(5, users.size());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class H2RepositoryTest {
 
         h2Repository.createUser(newUser);
 
-        assertEquals(5, h2Repository.getUsers().size());
+        assertEquals(6, h2Repository.getUsers().size());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class H2RepositoryTest {
     @Test
     void getOrders() {
         List<Order> orders = h2Repository.getOrders();
-        assertEquals(2, orders.size());
+        assertEquals(4, orders.size());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class H2RepositoryTest {
         Order newOrder = new Order(0, UUID.randomUUID(), 1, 1, 3, "status", 220, 50, 50, 50, 250, ogAddress);
         h2Repository.createOrder(newOrder, 1);
 
-        assertEquals(3, h2Repository.getOrders().size());
+        assertEquals(5, h2Repository.getOrders().size());
     }
 
     @Test
