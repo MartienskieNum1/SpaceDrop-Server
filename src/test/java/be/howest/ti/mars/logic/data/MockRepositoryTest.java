@@ -2,6 +2,8 @@ package be.howest.ti.mars.logic.data;
 
 import be.howest.ti.mars.logic.domain.*;
 import be.howest.ti.mars.logic.util.MarsException;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -131,5 +133,25 @@ class MockRepositoryTest {
         repo.updateRocketAvailableMassAndVolume(1, 15000000.0f, 200.0f);
         assertEquals(9850.0f, repo.getRocketById(1).getAvailableMass());
         assertEquals(2500.0f, repo.getRocketById(1).getAvailableVolume());
+    }
+
+    @Test
+    void rocketsJSON() {
+        Rocket rocket = repo.getRocketById(1);
+        JsonObject rocketAsJsonObject = JsonObject.mapFrom(rocket);
+
+        assertTrue(rocketAsJsonObject.containsKey("id"));
+        assertTrue(rocketAsJsonObject.containsKey("name"));
+        assertTrue(rocketAsJsonObject.containsKey("departLocation"));
+        assertTrue(rocketAsJsonObject.containsKey("departure"));
+        assertTrue(rocketAsJsonObject.containsKey("arrival"));
+        assertTrue(rocketAsJsonObject.containsKey("pricePerKilo"));
+        assertTrue(rocketAsJsonObject.containsKey("maxMass"));
+        assertTrue(rocketAsJsonObject.containsKey("maxVolume"));
+        assertTrue(rocketAsJsonObject.containsKey("availableMass"));
+        assertTrue(rocketAsJsonObject.containsKey("availableVolume"));
+
+        assertEquals(rocket, rocketAsJsonObject.mapTo(Rocket.class));
+        assertEquals(rocket, Json.decodeValue(Json.encode(rocket), Rocket.class));
     }
 }

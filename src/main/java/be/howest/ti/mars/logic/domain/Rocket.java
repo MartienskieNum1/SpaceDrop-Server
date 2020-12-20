@@ -1,5 +1,7 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 
 public class Rocket {
@@ -14,6 +16,7 @@ public class Rocket {
     private float availableMass;
     private float availableVolume;
 
+    @JsonCreator
     public Rocket(int id, String name, String departLocation, String departure, String arrival, float pricePerKilo, float maxMass,
                   float maxVolume, float availableMass, float availableVolume) {
         this.id = id;
