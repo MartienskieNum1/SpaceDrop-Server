@@ -54,7 +54,16 @@ Second, we configure the database. The database is contained in a file on your l
 
 ## Testing if setup was successful
 If everything went well you should now be able to use the api. Start with visiting `localhost:8080/api/message`, this should return "Hello, Mars!".
-  
+
+## Creating database and populating with mock data
+To create all necessary tables, there is a database creation script you can find [here](src/test/resources/testdb-create.sql).
+To populate the tables with mock data, you can use a population script you can find [here](src/test/resources/testdb-populate.sql).
+
+You can paste the content of these files in your H2 Console and execute all of it, or run the [H2RepositoryTest](src/test/java/be/howest/ti/mars/logic/data/H2RepositoryTest.java).
+
+To make eveything work, a  manual change is required:
+- Change the ID of the user `no-user` to `-10`
+
 ## Standard Local locations
  - H2 web client
    - localhost:9000
