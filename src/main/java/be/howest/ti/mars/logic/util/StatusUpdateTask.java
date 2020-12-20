@@ -11,10 +11,14 @@ import java.util.List;
 import java.util.TimerTask;
 
 public class StatusUpdateTask extends TimerTask {
-    private MarsRepository repo = Repositories.H2REPO;
+    private static final MarsRepository h2Repo = Repositories.H2REPO;
 
     @Override
     public void run() {
+        updateStatus(h2Repo);
+    }
+
+    public void updateStatus(MarsRepository repo) {
         List<Order> orders = repo.getOrders();
 
         orders.forEach(order -> {
