@@ -183,6 +183,8 @@ public class MarsController {
             case "slow":
                 dates[0] = dates[0].plusDays(7);
                 dates[1] = dates[0].plusMonths(3);
+            default:
+                throw new MarsException("Failed to process dates");
         }
 
         return dates;
