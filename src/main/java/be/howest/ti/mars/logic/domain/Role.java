@@ -1,12 +1,16 @@
 package be.howest.ti.mars.logic.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Role {
     private String name;
     private int rank;
 
-    public Role(String name, int rank) {
+    @JsonCreator
+    public Role(@JsonProperty("name") String name, @JsonProperty("rank") int rank) {
         this.name = name;
         this.rank = rank;
     }
