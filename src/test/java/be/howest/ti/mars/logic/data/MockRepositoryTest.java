@@ -204,4 +204,22 @@ class MockRepositoryTest {
         assertEquals(role, roleAsJsonObject.mapTo(Role.class));
         assertEquals(role, Json.decodeValue(Json.encode(role), Role.class));
     }
+
+    @Test
+    void usersJSON() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        User user = new User(1, "Maarten", "De Meyere", "0412345678", "maarten@maarten", "pass", address);
+        JsonObject userAsJsonObject = JsonObject.mapFrom(user);
+
+        assertTrue(userAsJsonObject.containsKey("id"));
+        assertTrue(userAsJsonObject.containsKey("firstName"));
+        assertTrue(userAsJsonObject.containsKey("lastName"));
+        assertTrue(userAsJsonObject.containsKey("phoneNumber"));
+        assertTrue(userAsJsonObject.containsKey("email"));
+        assertTrue(userAsJsonObject.containsKey("password"));
+        assertTrue(userAsJsonObject.containsKey("address"));
+
+        assertEquals(user, userAsJsonObject.mapTo(User.class));
+        assertEquals(user, Json.decodeValue(Json.encode(user), User.class));
+    }
 }
