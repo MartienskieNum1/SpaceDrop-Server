@@ -27,6 +27,8 @@ Open the project in your editor of choice, if you are running with vscode, you w
 - [Gradle Tasks](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-gradle).
 - [Gradle Language Support](https://marketplace.visualstudio.com/items?itemName=naco-siren.gradle-language).
 
+If you are unsure how to install vscode extensions, then have a look at the [VS code documentation](https://code.visualstudio.com/docs/editor/extension-gallery).
+
 Now you can run the gradle task 'run' and your server should be up and running. 
 However, to use the server, you will need a working database and set a port.
 
@@ -49,7 +51,7 @@ For this we need to make a folder in the root `conf` which contains `config.json
 ```
 
 First a port is set for the api, here this is port 8080. This means that the api will be accessible at `localhost:8080`.
-Second, we configure the database. The database is contained in a file on your local system, here `~/mars-db`. Username and password can be set. We also configure a port for the H2 webinterface, here accessible at `localhost:9000`.
+Second, we configure the database. The database is contained in a file on your local system, here `~/mars-db`. Username and password can be set. We also configure a port for the H2 webinterface, here accessible at `localhost:9000`. The standard credentials are `sa` as username with no password. The config file above can be edited to change these credentials to your liking.
 
 
 ## Testing if setup was successful
