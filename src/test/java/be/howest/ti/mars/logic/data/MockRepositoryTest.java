@@ -154,4 +154,19 @@ class MockRepositoryTest {
         assertEquals(rocket, rocketAsJsonObject.mapTo(Rocket.class));
         assertEquals(rocket, Json.decodeValue(Json.encode(rocket), Rocket.class));
     }
+
+    @Test
+    void addressJSON() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        JsonObject addressAsJsonObject = JsonObject.mapFrom(address);
+
+        assertTrue(addressAsJsonObject.containsKey("planet"));
+        assertTrue(addressAsJsonObject.containsKey("countryOrColony"));
+        assertTrue(addressAsJsonObject.containsKey("cityOrDistrict"));
+        assertTrue(addressAsJsonObject.containsKey("street"));
+        assertTrue(addressAsJsonObject.containsKey("number"));
+
+        assertEquals(address, addressAsJsonObject.mapTo(Address.class));
+        assertEquals(address, Json.decodeValue(Json.encode(address), Address.class));
+    }
 }
