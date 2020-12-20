@@ -169,4 +169,27 @@ class MockRepositoryTest {
         assertEquals(address, addressAsJsonObject.mapTo(Address.class));
         assertEquals(address, Json.decodeValue(Json.encode(address), Address.class));
     }
+
+    @Test
+    void ordersJSON() {
+        Address address = new Address("Earth", "Belgium", "City", "Street", 0);
+        Order order = new Order(1, UUID.randomUUID(), 1, 1, 1, "status", 500, 500, 500, 500, 500, address);
+        JsonObject orderASJsonObject = JsonObject.mapFrom(order);
+
+        assertTrue(orderASJsonObject.containsKey("orderId"));
+        assertTrue(orderASJsonObject.containsKey("uuid"));
+        assertTrue(orderASJsonObject.containsKey("userId"));
+        assertTrue(orderASJsonObject.containsKey("rocketId"));
+        assertTrue(orderASJsonObject.containsKey("statusId"));
+        assertTrue(orderASJsonObject.containsKey("status"));
+        assertTrue(orderASJsonObject.containsKey("mass"));
+        assertTrue(orderASJsonObject.containsKey("width"));
+        assertTrue(orderASJsonObject.containsKey("height"));
+        assertTrue(orderASJsonObject.containsKey("depth"));
+        assertTrue(orderASJsonObject.containsKey("cost"));
+        assertTrue(orderASJsonObject.containsKey("address"));
+
+        assertEquals(order, orderASJsonObject.mapTo(Order.class));
+        assertEquals(order, Json.decodeValue(Json.encode(order), Order.class));
+    }
 }
