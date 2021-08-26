@@ -17,7 +17,7 @@ Most endpoints are about users or orders:
 - `api/rockets` Get a list of all the rockets
 - `api/filteredRockets` Get a list of rockets filtered on available weight, volume and the urgency of your delivery
 
-You can also find all of the endpoints in our [openapi specification](https://git.ti.howest.be/TI/2020-2021/s3/project-ii/openapi/-/blob/master/openapi-group-03.yaml).
+You can also find all of the endpoints in our [openapi specification](src/main/resources/openapi-group-03.yaml).
 
 ## How to run the server locally
 Make sure to have Java installed. We are using [Azul Zulu 11](https://www.azul.com/downloads/zulu-community/?package=jdk).
@@ -64,7 +64,7 @@ If everything went well you should now be able to use the api. Start with visiti
 
 ## Creating database and populating with mock data
 To create all necessary tables, there is a database creation script you can find [here](src/test/resources/testdb-create.sql).
-To populate the tables with mock data, you can use a population script you can find [here](src/test/resources/testdb-populate.sql).
+To populate the tables with mock data, you can use a population script which you can find [here](src/test/resources/testdb-populate.sql).
 
 You can paste the content of these files in your H2 Console and execute all of it, or run the [H2RepositoryTest](src/test/java/be/howest/ti/mars/logic/data/H2RepositoryTest.java).
 
